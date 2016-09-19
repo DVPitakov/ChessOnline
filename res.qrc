@@ -1,0 +1,17 @@
+<RCC>
+    <qresource prefix="/">
+        <file alias="blackFerz.png">../../Desktop/sourse/BlackFerz.png</file>
+        <file alias="blackKing.png">../../Desktop/sourse/BlackKing.png</file>
+        <file alias="blackKon.png">../../Desktop/sourse/BlackKon.png</file>
+        <file alias="blackLadia.png">../../Desktop/sourse/BlackLadia.png</file>
+        <file alias="blackPeshka.png">../../Desktop/sourse/BlackPeshka.png</file>
+        <file alias="blackSlon.png">../../Desktop/sourse/BlackSlon.png</file>
+        <file alias="whiteFerz.png">../../Desktop/sourse/whiteFerz.png</file>
+        <file alias="whiteKing.png">../../Desktop/sourse/whiteKing.png</file>
+        <file alias="whiteKon.png">../../Desktop/sourse/whiteKon.png</file>
+        <file alias="whiteLadia.png">../../Desktop/sourse/whiteLadia.png</file>
+        <file alias="whitePeshka.png">../../Desktop/sourse/whitePeshka.png</file>
+        <file alias="whiteSlon.png">../../Desktop/sourse/whiteSlon.png</file>
+        <file alias="anonim.png">../../Desktop/sourse/anonim.png</file>
+    </qresource>
+</RCC>
