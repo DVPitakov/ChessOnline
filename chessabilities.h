@@ -1,0 +1,5 @@
+#ifndef CHESSABILITIES_H
+#define CHESSABILITIES_H
+
+
+#endif // CHESSABILITIES_H
