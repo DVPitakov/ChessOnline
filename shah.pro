@@ -18,7 +18,6 @@ SOURCES += main.cpp\
     mylabel.cpp \
     pawtrans.cpp \
     mymenue.cpp \
-    MyButton.cpp \
     variant.cpp \
     board.cpp \
     WebSocketsConnector.cpp \
@@ -32,7 +31,6 @@ HEADERS  += mainwindow.h \
     mylabel.h \
     pawtrans.h \
     mymenue.h \
-    MyButton.h \
     variant.h \
     board.h \
     WebSocketsConnector.h \

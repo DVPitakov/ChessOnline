@@ -87,6 +87,7 @@ signals:
     void pawOnOtherSide(char);
     void pawChanged(char, char);
     void victory(char, char);
+    void defeat(char, char);
 public slots:
     void chngSto() {
             storona = !storona;

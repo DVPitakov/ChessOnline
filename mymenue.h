@@ -5,13 +5,13 @@
 #include <QPainter>
 #include <mylabel.h>
 #include <QPaintEvent>
-#include <MyButton.h>
 #include <QDebug>
 #include <QMouseEvent>
 
 struct ButtonInfo {
     QString buttonActionName;
     QString buttonText;
+    char type {0};
 };
 
 class MyMenue : public QWidget
@@ -29,9 +29,14 @@ public:
 
     }
     void failMenue() {
-
+        addButton("defeat", "Вы проиграли");
+        addButton("continue", "Ок");
     }
     void winMenue() {
+        addButton("victory", "Вы выиграли");
+        addButton("continue", "Ок");
+    }
+    void pawTrensformationMenue() {
 
     }
 
@@ -76,6 +81,21 @@ signals:
     void buttonClicked(QString);
 
 public slots:
+    void showStartGame() {
+        releaseButton();
+        startMenue();
+        this->show();
+    }
+    void showWinMenue() {
+        releaseButton();
+        winMenue();
+        this->show();
+    }
+    void showFailMenue() {
+        releaseButton();
+        failMenue();
+        this->show();
+    }
 };
 
 #endif // MYMENUE_H

@@ -3,9 +3,6 @@
 void Bord::bordChng(char current) {
     char bufa = storona;
     qDebug() << "storona: " << storona + 0;
-    for(int i = 0; i < 64; i++) {
-        masView[i] = 0;
-    }
     int kingPos = 0;
     for(int i = 0; i < 64; i++) {
         if ((sto[i] == sto[current]) && (mas[i] == KOROL)) {
@@ -14,8 +11,7 @@ void Bord::bordChng(char current) {
         }
     }
     if ((mas[current] != 0) && (sto[current] == storona)
-            && ((whiteOpen && (storona == 0)) || (blackOpen && (storona == 1)))
-            && ((kingPos == current)  || !podUdarom(kingPos))) {
+            && ((whiteOpen && (storona == 0)) || (blackOpen && (storona == 1)))) {
         masView[current] = masView[current] | SELECTED;
         MyVec<char> vec = steps(current % 8, current / 8);
         for(; vec.lastNum() >= 0;) {
@@ -31,22 +27,23 @@ void Bord::bordChng(char current) {
     }
     else if(targeted != 64) {
         int kingPos = 0;
-        for(int i = 0; i < 64; i++) {
-            if ((sto[i] == sto[targeted]) && (mas[i] == KOROL)) {
-                kingPos = i;
-                break;
+        qDebug() << "step";
+        MyVec<char> vec = steps(targeted % 8, targeted / 8);
+        if (vec.pos(current) != -1) {
+            moveFig(targeted, current);
+            for(int i = 0; i < 64; i++) {
+                if ((sto[i] == sto[targeted]) && (mas[i] == KOROL)) {
+                    kingPos = i;
+                    break;
+                }
             }
-        }
-        if ((kingPos == targeted)  || !podUdarom(kingPos)) {
-            qDebug() << "step";
-            MyVec<char> vec = steps(targeted % 8, targeted / 8);
-            if (vec.pos(current) != -1) {
-                moveFig(targeted, current);
+            if (podUdarom(kingPos)) {
+                backStep();
+            }
+            else {
                 storona = !storona;
                 emit moved(targeted, current);
-                for(int i = 0; i < 64; i++) {
-                    masView[i] = 0;
-                }
+
                 for(int i = 0; i < 64; i++) {
                     if ((bufa != sto[i]) && (mas[i] == KOROL)) {
                         if (thisIsVictory(i)) {
@@ -58,9 +55,12 @@ void Bord::bordChng(char current) {
                 }
 
             }
-            targeted = 64;
-        }
+            for(int i = 0; i < 64; i++) {
+                masView[i] = 0;
+            }
 
+        }
+        targeted = 64;
     }
     update();
 
@@ -511,9 +511,6 @@ MyVec<char> Bord::steps(int x0, int y0) {
         break;
     default: break;
     }
-   for(int i = 0; i <= out.lastNum(); i++) {
-       qDebug() << "myVec: " << out.buf[i] + 0;
-   }
     return out;
 }
 
