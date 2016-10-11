@@ -8,6 +8,7 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QDebug>
+#include <QTimer>
 
 class EchoClient : public QObject
 {
@@ -20,9 +21,21 @@ signals:
     void closed();
     void friendIsFound(int);
     void newStep(int, int);
-    void pawTransed(char, char);
+    void pawTransed(char);
     void gameEnd(char);
+
 public slots:
+    void connectionError() {
+        if (connected == false) {
+            qDebug() << "Соединение разорвано";
+        }
+        else {
+            connected = false;
+            sendHowAreYou();
+            timer->start(3000);
+        }
+    }
+
     void open();
     void onConnected();
     void onTextMessageReceived(QString message);
@@ -33,16 +46,17 @@ public slots:
                                          " ,\n\"oldPos\": " + QString::number(oldPos) +
                                          " ,\n\"newPos\": " + QString::number(newPos) +
                                          " \n}"));
+            qDebug() << "STEP SENDED:" << oldPos + 0.1 << newPos + 0.1;
 
         }
 
     }
-    void sendPawTrans(char figure, char pos) {
+    void sendPawTrans(char figure) {
         if (online) {
             m_webSocket.sendTextMessage((QString(
                                              "{\"action\": ") + " \"pawTrans\"" +
                                          " ,\n\"figure\": " + QString::number(figure) +
-                                         " ,\n\"pos\": " + QString::number(pos) +
+                                         " ,\n\"pos\": " + QString::number(0) +
                                          " \n}"));
         }
     }
@@ -55,11 +69,22 @@ public slots:
                                          " \n}"));
         }
     }
+    void sendHowAreYou() {
+        if (online) {
+            qDebug() << "how are you sended";
+            m_webSocket.sendTextMessage((QString(
+                                             "{\"action\": ") + " \"howAreYou\"" +
+                                         " ,\n\"forBro\": " + "Are you alive bro?" +
+                                         " \n}"));
+        }
+    }
 
 private:
     QWebSocket m_webSocket;
     QUrl m_url;
+    QTimer *timer;
     bool m_debug;
+    bool connected = true;
 };
 
 

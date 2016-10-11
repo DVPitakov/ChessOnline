@@ -14,30 +14,26 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    MyNet.cpp \
-    mylabel.cpp \
     pawtrans.cpp \
     mymenue.cpp \
-    variant.cpp \
     board.cpp \
     WebSocketsConnector.cpp \
     MuUser.cpp \
     MyConnectionWindow.cpp \
-    MyPlayer.cpp \
-    myvec.cpp
+    myvec.cpp \
+    MyTimer.cpp \
+    MyBoardLogic.cpp
 
 HEADERS  += mainwindow.h \
-    MyNet.h \
-    mylabel.h \
     pawtrans.h \
     mymenue.h \
-    variant.h \
-    board.h \
     WebSocketsConnector.h \
     MyUser.h \
     MyConnectionWindow.h \
-    MyPlayer.h \
-    myvec.h
+    myvec.h \
+    MyTimer.h \
+    MyBoardLogic.h \
+    board.h
 
 DISTFILES +=
 

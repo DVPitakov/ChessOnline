@@ -2,6 +2,7 @@
 #define MYVEC_H
 #include <malloc.h>
 #include <stdio.h>
+#include <QDebug>
 struct Step {
     char _posOld;
     char _posNew;
@@ -22,6 +23,7 @@ public:
 
 
     T *buf;
+
     MyVec():size(32),last(-1) {
         buf = (T*)malloc(32 * (sizeof(T)));
     }

@@ -11,13 +11,13 @@ static int counter = 0;
 #include <board.h>
 #include <QPaintEvent>
 #include <QPushButton>
-#include <MyNet.h>
 #include <QLabel>
 #include <mylabel.h>
 #include <mymenue.h>
 #include "WebSocketsConnector.h"
 #include "MyUser.h"
 #include "MyConnectionWindow.h"
+#include "MyTimer.h"
 class MainWindow : public QWidget
 {
     Q_OBJECT
@@ -26,12 +26,12 @@ public:
     MyConnectionForm * connectionForm;
     MyUser *whiteUser;
     MyUser *blackUser;
+    MyTimer* myTimer;
     EchoClient *ws;
     Bord *bord;
     QPushButton* pushButton;
     QPushButton* menueButton;
     MyMenue* menue;
-    MyNet *net;
     bool online{0};
 
     MainWindow(QWidget *parent = 0);
@@ -43,6 +43,7 @@ public:
         (width() > height() * 0.9) ? bw = height() * 0.9: bw = width();
         whiteUser->setGeometry(bw * 1.02 ,0, 0.2 * bw, 0.2 * bw);
         blackUser->setGeometry(bw * 1.02, 0.22 * bw, 0.2 * bw, 0.2 * bw);
+        myTimer->setGeometry(bw * 1.02, 0.42 * bw, 0.2 * bw, 0.2 * bw);
         bord->setGeometry(0,0,bw,bw);
         connectionForm->setGeometry(width() * 0.05 ,height() * 0.05, width()*0.9, height() * 0.9);
         menueButton->setGeometry(width() * 0.62, height() * 0.91, width()*0.3, height() * 0.09);

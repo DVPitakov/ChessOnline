@@ -9,6 +9,8 @@ MainWindow::MainWindow(QWidget *parent)
     blackUser->setIsWhite(false);
     whiteUser = new MyUser(this);
     whiteUser->setIsWhite(true);
+    myTimer = new MyTimer(this);
+    myTimer->setTime(60);
     menueButton = new QPushButton(this);
     menueButton->setText("Меню");
     setGeometry(100,100,700,600);
@@ -22,7 +24,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(menue, SIGNAL(buttonClicked(QString)), this, SLOT(buttonManager(QString)));
     menue->startMenue();
     connect(bord, SIGNAL(moved(int, int)), ws, SLOT(sendStep(int,int)));
-    connect(bord, SIGNAL(pawChanged(char, char)), ws, SLOT(sendPawTrans(char, char)));
+    connect(bord, SIGNAL(pawChanged(char)), ws, SLOT(sendPawTrans(char)));
     connect(bord, SIGNAL(victory(char, char)), ws, SLOT(sendGameEnd(char,char)));
     connect(bord, SIGNAL(victory(char,char)), menue, SLOT(showWinMenue()));
 
@@ -30,8 +32,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ws, SIGNAL(friendIsFound(int)), connectionForm, SLOT(friendFounded()));
     connect(ws, SIGNAL(friendIsFound(int)), menue, SLOT(hide()));
     connect(ws, SIGNAL(newStep(int,int)), bord, SLOT(moveFig(int,int)));
-    connect(ws, SIGNAL(newStep(int,int)), bord, SLOT(update()));
-    connect(ws, SIGNAL(pawTransed(char,char)), bord, SLOT(afterPawTrans(char,char)));
+    connect(ws, SIGNAL(pawTransed(char)), bord, SLOT(afterPawTrans(char)));
     connect(ws, SIGNAL(gameEnd(char)), menue, SLOT(showFailMenue()));
     connect(ws, SIGNAL(newStep(int,int)), bord, SLOT(chngSto()));
 

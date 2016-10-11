@@ -25,13 +25,13 @@ public:
         int x = event->x();
         int y = event->y();
         if (width() * 0.05 < x && height() * 0.10 < y && width() * 0.95 > x && height() * 0.30 > y)
-        {emit figureChosed(FERZ, _pos); return;}
+        {emit figureChosed(FERZ); this->hide(); return;}
         if (width() * 0.05 < x && height() * 0.31 < y && width() * 0.95 > x && height() * 0.51 > y)
-        {emit figureChosed(KON, _pos); return;}
+        {emit figureChosed(KON); this->hide(); return;}
         if (width() * 0.05 < x && height() * 0.52 < y && width() * 0.95 > x && height() * 0.72 > y)
-        {emit figureChosed(SLON, _pos); return;}
+        {emit figureChosed(SLON); this->hide(); return;}
         if (width() * 0.05 < x && height() * 0.73 < y && width() * 0.95 > x && height() * 0.93 > y)
-        {emit figureChosed(LADIA, _pos); return;}
+        {emit figureChosed(LADIA); this->hide(); return;}
     }
 
     void paintEvent(QPaintEvent *) {
@@ -57,10 +57,9 @@ public:
     explicit PawTrans(QWidget *parent = 0);
 
 signals:
-    void figureChosed(char, char);
+    void figureChosed(char);
 public slots:
-    void activ(char pos) {
-        _pos = pos;
+    void activ() {
         this->show();
     }
 };
