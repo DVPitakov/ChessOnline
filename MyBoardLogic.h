@@ -64,7 +64,7 @@ public:
         mas[target] = chosed;
         target = 64;
         curColor = 1 - curColor;
-        return 0;
+        return thisIsVictory(kingPos(curColor));
     }
     char getCurColor() {
         return curColor;

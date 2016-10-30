@@ -26,7 +26,7 @@ public:
     MyConnectionForm * connectionForm;
     MyUser *whiteUser;
     MyUser *blackUser;
-    MyTimer* myTimer;
+   // MyTimer* myTimer;
     EchoClient *ws;
     Bord *bord;
     QPushButton* pushButton;
@@ -39,32 +39,112 @@ public:
     QTime timer;
     ~MainWindow();
     void paintEvent(QPaintEvent* event) {
+        int x0 = 0;
+        int y0 = 0;
+        bool b =  width() > height();
+        int awidth = width();
+        int aheight = height();
+        if (b) {
+            if (double(awidth) / aheight < 1.2) {
+               aheight =  awidth / 1.2;
+               y0 = (height() - aheight)/2;
+            }
+            else if (double(awidth) / aheight > 1.4) {
+                awidth = aheight * 1.4;
+                x0 = (width() - awidth)/2;
+            }
+        }
+        else {
+            if (double(aheight) / awidth < 1.2) {
+                awidth = aheight / 1.2;
+                x0 = (width() - awidth)/2;
+            } else if (double(aheight) / awidth > 1.4) {
+                aheight = awidth * 1.4;
+                y0 = (height() - aheight)/2;
+            }
+        }
         int bw;
-        (width() > height() * 0.9) ? bw = height() * 0.9: bw = width();
-        whiteUser->setGeometry(bw * 1.02 ,0, 0.2 * bw, 0.2 * bw);
-        blackUser->setGeometry(bw * 1.02, 0.22 * bw, 0.2 * bw, 0.2 * bw);
-        myTimer->setGeometry(bw * 1.02, 0.42 * bw, 0.2 * bw, 0.2 * bw);
-        bord->setGeometry(0,0,bw,bw);
-        connectionForm->setGeometry(width() * 0.05 ,height() * 0.05, width()*0.9, height() * 0.9);
-        menueButton->setGeometry(width() * 0.62, height() * 0.91, width()*0.3, height() * 0.09);
-        menue->setGeometry(width() * 0.05 ,height() * 0.05, width()*0.9, height() * 0.9);
+        b = awidth > aheight;
+        bw = b ? aheight : awidth;
+        int w0 = 0;
+        int h0 = 0;
+        int dw = 0;
+        int dh = 0;
+
+        int w;
+        int h;
+
+        if (b) {
+            w = awidth - aheight;
+            h = aheight / 3;
+        }
+        else {
+            w = awidth / 3;
+            h = aheight - awidth;
+        }
+        b ? w0 = bw : h0 = bw;
+        b ? dh = aheight / 3 : dw = awidth / 3;
+        whiteUser->setGeometry(x0 + w0,y0 + h0, w, h);
+        menueButton->setGeometry(x0 + w0 + dw, y0 + h0 +  dh, w, h);
+        blackUser->setGeometry(x0 + w0 + 2 * dw, y0 + h0 + 2 * dh, w, h);
+       // myTimer->setGeometry(bw * 1.02, 0.42 * bw, 0.2 * bw, 0.2 * bw);
+        bord->setGeometry(x0,y0,bw,bw);
+        connectionForm->setGeometry(0, 0, width() ,height());
+        menue->setGeometry(0,0,width(),height());
 
     }
 
 
 signals:
-    readyToShow(char);
+    void readyToShow(char);
 public slots:
+    void chooseEndMenue(char couse) {
+        if(couse == 0) {
+            menue->showFailMenue();
+        }
+        else if (couse == 25) {
+            menue->showWinMenue();
+        }
+        else if (couse == 45) {
+            menue->showFailMenue();
+        }
+    }
+
     void buttonManager(QString eventName) {
         if (eventName ==  "online") {
             connectionForm->friendSearch();
             ws->open();
         }
-        else if (eventName ==  "onePlayer") {}
-        else if (eventName ==  "twoPlayers") {}
-        else if (eventName ==  "exit") {}
+
+        else if (eventName ==  "continue") {
+            bord->restart();
+            menue->showStartGame();
+            menue->update();
+        }
+        else if (eventName == "return") {
+            menue->hide();
+            bord->setHidden(false);
+        }
+        else if (eventName ==  "settings") {}
+        else if (eventName ==  "exit") {
+            this->close();
+        }
+        else if (eventName == "nichia") {
+            ws->sendNichia();
+            menue->showWait();
+        }
         else if (eventName == "breakGame") {}
-        else {}
+        else if (eventName == "sayYes") {
+            ws->sayYes();
+            menue->showNichia();
+        }
+        else if (eventName == "sayNot") {
+            ws->sayNot();
+            menue->setHidden(true);
+        }
+        else {
+            qDebug() << "my event is not founded";
+        }
     }
 
     void onlineGameChosed() {
@@ -93,6 +173,8 @@ public slots:
     void showMenue() {
         bord->setEnabled(false);
         menueButton->setEnabled(false);
+        menue->setEnabled(true);
+        menue->setHidden(false);
         emit readyToShow(1);
     }
 };

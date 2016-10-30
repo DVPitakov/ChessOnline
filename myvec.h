@@ -21,7 +21,6 @@ class MyVec {
     long last;
 public:
 
-
     T *buf;
 
     MyVec():size(32),last(-1) {

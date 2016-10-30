@@ -8,25 +8,33 @@ EchoClient::EchoClient(const QUrl &url, bool debug, QObject *parent) :
     m_debug(debug)
 {
     timer = new QTimer(this);
+    openTimer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(connectionError()));
-    if (m_debug)
-
-        connect(&m_webSocket, &QWebSocket::connected, this, &EchoClient::onConnected);
+    connect(openTimer, SIGNAL(timeout()), this, SLOT(open()));
+    connect(&m_webSocket, &QWebSocket::connected, this, &EchoClient::onConnected);
     connect(&m_webSocket, &QWebSocket::disconnected, this, &EchoClient::closed);
 
 
 }
 
 void EchoClient::open() {
-
-    m_webSocket.open(QUrl(m_url));
+    if (!isConnected) {
+        openTimer->start(2000);
+        m_webSocket.close();
+        m_webSocket.open(QUrl(m_url));
+    }
+    else {
+        openTimer->stop();
+        isConnected = false;
+    }
 }
 void EchoClient::onConnected()
 {
     online = true;
-    if (m_debug)
-        connect(&m_webSocket, &QWebSocket::textMessageReceived,
-                this, &EchoClient::onTextMessageReceived);
+    isConnected = true;
+    isActive = true;
+    connect(&m_webSocket, &QWebSocket::textMessageReceived, this, &EchoClient::onTextMessageReceived);
+    emit wsConnected();
 }
 void EchoClient::onTextMessageReceived(QString message)
 {
@@ -52,11 +60,21 @@ void EchoClient::onTextMessageReceived(QString message)
             emit friendIsFound(color);
         }
         else if (action == "gameEnd") {
-            emit gameEnd(0);
+            int couse = root.value("couse").toInt();
+            timer->stop();
+            emit gameEnd(couse);
         }
         else if (action == "howAreYou") {
-            qDebug() << "TIME UPDATE";
-            connected = true;
+            isActive = true;
+        }
+        else if (action == "nichia") {
+            emit nichia();
+        }
+        else if (action == "sayYes") {
+            emit saidYes();
+        }
+        else if (action == "sayNot") {
+            emit saidNot();
         }
     }
 }

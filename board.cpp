@@ -2,8 +2,8 @@
 
 Bord::Bord(QWidget* parent):QWidget(parent)
 {
-    positions = boardLogic.getPositions();
-    qDebug() << positions.toString();
+    boardLogic = new MyBoardLogic();
+    positions = boardLogic->getPositions();
     blackKing = QImage(":/blackKing.png");
     blackPeshka = QImage(":/blackPeshka.png");
     blackFerz = QImage(":/blackFerz.png");
@@ -36,7 +36,7 @@ void Bord::bordChng(char current) {
             masView[i] = 0;
         }
         masView[current] = masView[current] | SELECTED;
-        MyVec<char> vec = boardLogic.steps(current);
+        MyVec<char> vec = boardLogic->steps(current);
         for(; vec.lastNum() >= 0;) {
             int num = vec.pop();
             masView[num] = masView[num] | MOZHNO;
@@ -44,13 +44,13 @@ void Bord::bordChng(char current) {
         targeted = current;
     }
     else if(targeted != 64) {
-        MyVec<char> vec = boardLogic.steps(targeted);
+        MyVec<char> vec = boardLogic->steps(targeted);
         if (vec.pos(current) != -1) {    
                 int res = moveFig(targeted, current);
                 if ((res == 0) || (res == 4)) {
                     storona = !storona;
                     emit moved(targeted, current);
-                    if (boardLogic.thisIsVictory(boardLogic.kingPos(1 - bufa))) {
+                    if (boardLogic->thisIsVictory(boardLogic->kingPos(1 - bufa))) {
                         qDebug() << "Victory!";
                         emit victory(0, 0);
                     }

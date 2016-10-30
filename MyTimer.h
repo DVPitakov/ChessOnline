@@ -21,7 +21,7 @@ public:
 
 
 signals:
-    timeOut();
+    void timeOut();
 public slots:
     void setTime(int time) {
         myTime = time;

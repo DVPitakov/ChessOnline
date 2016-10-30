@@ -16,7 +16,7 @@ class Bord:public QWidget
 {
     Q_OBJECT
 private:
-    MyBoardLogic boardLogic;
+    MyBoardLogic* boardLogic;
     ChessPositions positions;
     bool whiteOpen{false};
     bool blackOpen{false};
@@ -46,10 +46,22 @@ public:
     void setColor(char color) {
         if (color == 0) {
             whiteOpen = true;
+            blackOpen = false;
         }
         else if (color == 1){
+            whiteOpen = false;
             blackOpen = true;
         }
+    }
+    void restart() {
+        qDebug() << "restart working";
+        last = 64;
+        targeted = 64;
+        storona = 0;
+        delete boardLogic;
+        boardLogic  =  new MyBoardLogic();
+        positions = boardLogic->getPositions();
+        update();
     }
 
 
@@ -66,22 +78,26 @@ public slots:
     }
 
     void afterPawTrans(char chosed) {
-        boardLogic.pawTrans(chosed);
-        positions = boardLogic.getPositions();
+        if(boardLogic->pawTrans(chosed)) {
+             emit victory(0, 0);
+        }
+        positions = boardLogic->getPositions();
         update();
     }
 
     int moveFig(int pos1, int pos2) {
-        int res = boardLogic.moveFig(pos1, pos2);
+        qDebug() << "moveFig becoming";
+        int res = boardLogic->moveFig(pos1, pos2);
+        qDebug() << "boardLogic.moveFig(pos1, pos2) returned";
         switch(res) {
         case 4: {
-            if ((whiteOpen && !boardLogic.getCurColor()) || (blackOpen && boardLogic.getCurColor())) {
+            if ((whiteOpen && !boardLogic->getCurColor()) || (blackOpen && boardLogic->getCurColor())) {
                 emit pawOnOtherSide();
             }
             break;
         }
         case 0: {
-            positions = boardLogic.getPositions();
+            positions = boardLogic->getPositions();
             update();
             break;
         }

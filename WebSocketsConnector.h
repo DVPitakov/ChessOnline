@@ -14,6 +14,9 @@ class EchoClient : public QObject
 {
     Q_OBJECT
     bool online{false};
+    bool isConnected{false};
+    bool isActive{false};
+    long int myId{0};
 public:
     explicit EchoClient(const QUrl &url, bool debug = false, QObject *parent = Q_NULLPTR);
 
@@ -23,14 +26,21 @@ signals:
     void newStep(int, int);
     void pawTransed(char);
     void gameEnd(char);
+    void wsConnected();
+    void lose();
+    void nichia();
+    void saidYes();
+    void saidNot();
 
 public slots:
     void connectionError() {
-        if (connected == false) {
+        if (isActive == false) {
             qDebug() << "Соединение разорвано";
+            timer->stop();
+            emit lose();
         }
         else {
-            connected = false;
+            isActive = false;
             sendHowAreYou();
             timer->start(3000);
         }
@@ -51,6 +61,13 @@ public slots:
         }
 
     }
+    void sendNichia() {
+        if (online) {
+            m_webSocket.sendTextMessage((QString(
+                                             "{\"action\": ") + " \"nichia\"" +  " \n}"));
+        }
+    }
+
     void sendPawTrans(char figure) {
         if (online) {
             m_webSocket.sendTextMessage((QString(
@@ -62,6 +79,7 @@ public slots:
     }
     void sendGameEnd(char couse, char pos) {
         if (online) {
+            timer->stop();
             m_webSocket.sendTextMessage((QString(
                                              "{\"action\": ") + " \"gameEnd\"" +
                                          " ,\n\"couse\": " + QString::number(couse) +
@@ -69,12 +87,25 @@ public slots:
                                          " \n}"));
         }
     }
+    void sayYes() {
+        if (online) {
+            m_webSocket.sendTextMessage((QString(
+                                             "{\"action\": ") + " \"sayYes\"" +
+                                         " \n}"));
+        }
+    }
+    void sayNot()  {
+        if (online) {
+            m_webSocket.sendTextMessage((QString(
+                                             "{\"action\": ") + " \"sayNot\"" +
+                                         " \n}"));
+        }
+    }
+
     void sendHowAreYou() {
         if (online) {
-            qDebug() << "how are you sended";
             m_webSocket.sendTextMessage((QString(
                                              "{\"action\": ") + " \"howAreYou\"" +
-                                         " ,\n\"forBro\": " + "Are you alive bro?" +
                                          " \n}"));
         }
     }
@@ -83,6 +114,7 @@ private:
     QWebSocket m_webSocket;
     QUrl m_url;
     QTimer *timer;
+    QTimer *openTimer;
     bool m_debug;
     bool connected = true;
 };
