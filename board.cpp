@@ -2,8 +2,7 @@
 
 Bord::Bord(QWidget* parent):QWidget(parent)
 {
-    boardLogic = new MyBoardLogic();
-    positions = boardLogic->getPositions();
+    positions = boardLogic.getPositions();
     blackKing = QImage(":/blackKing.png");
     blackPeshka = QImage(":/blackPeshka.png");
     blackFerz = QImage(":/blackFerz.png");
@@ -17,6 +16,8 @@ Bord::Bord(QWidget* parent):QWidget(parent)
     whiteKon = QImage(":/whiteKon.png");
     whiteLadia = QImage(":/whiteLadia.png");
     whiteSlon = QImage(":/whiteSlon.png");
+
+    board = QImage(":/board.jpg");
 
     pawTrans = new PawTrans(this);
     pawTrans->hide();
@@ -36,7 +37,7 @@ void Bord::bordChng(char current) {
             masView[i] = 0;
         }
         masView[current] = masView[current] | SELECTED;
-        MyVec<char> vec = boardLogic->steps(current);
+        MyVec<char> vec = boardLogic.steps(current);
         for(; vec.lastNum() >= 0;) {
             int num = vec.pop();
             masView[num] = masView[num] | MOZHNO;
@@ -44,16 +45,15 @@ void Bord::bordChng(char current) {
         targeted = current;
     }
     else if(targeted != 64) {
-        MyVec<char> vec = boardLogic->steps(targeted);
+        MyVec<char> vec = boardLogic.steps(targeted);
         if (vec.pos(current) != -1) {    
                 int res = moveFig(targeted, current);
                 if ((res == 0) || (res == 4)) {
                     storona = !storona;
                     emit moved(targeted, current);
-                    if (boardLogic->thisIsVictory(boardLogic->kingPos(1 - bufa))) {
-                        qDebug() << "Victory!";
-                        emit victory(0, 0);
-                    }
+                }
+                else if (res == 25) {
+                     emit victory(0, 0);
                 }
 
         }
@@ -77,8 +77,9 @@ void Bord::paintEvent(QPaintEvent *) {
     pawTrans->setGeometry(width() * 0.1, height() * 0.1 , width() * 0.8, height() * 0.8);
     QPainter painter(this);
     bool b = true;
-    int r_w = (width()-1)/8;
-    int r_h = (height()-1)/8;
+    int r_w = (width() - 1)/8;
+    int r_h = (height() - 1)/8;
+    QImage board2 = board.scaled(width(),height());
     QImage blackKing2 = blackKing.scaled(0.9*r_w,0.9*r_h);
     QImage blackKon2 = blackKon.scaled(0.9*r_w,0.9*r_h);
     QImage blackLadia2 = blackLadia.scaled(0.9*r_w,0.9*r_h);

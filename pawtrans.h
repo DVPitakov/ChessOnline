@@ -21,17 +21,28 @@ private:
     char _pos;
 public:
     void mouseReleaseEvent(QMouseEvent* event) {
-        char fig = 0;
         int x = event->x();
         int y = event->y();
-        if (width() * 0.05 < x && height() * 0.10 < y && width() * 0.95 > x && height() * 0.30 > y)
-        {emit figureChosed(FERZ); this->hide(); return;}
-        if (width() * 0.05 < x && height() * 0.31 < y && width() * 0.95 > x && height() * 0.51 > y)
-        {emit figureChosed(KON); this->hide(); return;}
-        if (width() * 0.05 < x && height() * 0.52 < y && width() * 0.95 > x && height() * 0.72 > y)
-        {emit figureChosed(SLON); this->hide(); return;}
-        if (width() * 0.05 < x && height() * 0.73 < y && width() * 0.95 > x && height() * 0.93 > y)
-        {emit figureChosed(LADIA); this->hide(); return;}
+        if (width() * 0.05 < x && height() * 0.10 < y && width() * 0.95 > x && height() * 0.30 > y) {
+            emit figureChosed(FERZ);
+            this->hide();
+            return;
+        }
+        if (width() * 0.05 < x && height() * 0.31 < y && width() * 0.95 > x && height() * 0.51 > y) {
+            emit figureChosed(KON);
+            this->hide();
+            return;
+        }
+        if (width() * 0.05 < x && height() * 0.52 < y && width() * 0.95 > x && height() * 0.72 > y) {
+            emit figureChosed(SLON);
+            this->hide();
+            return;
+        }
+        if (width() * 0.05 < x && height() * 0.73 < y && width() * 0.95 > x && height() * 0.93 > y) {
+            emit figureChosed(LADIA);
+            this->hide();
+            return;
+        }
     }
 
     void paintEvent(QPaintEvent *) {

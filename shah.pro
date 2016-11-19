@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui network multimedia xml websockets
+QT       += core gui network multimedia xml websockets testlib
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -21,8 +21,8 @@ SOURCES += main.cpp\
     MuUser.cpp \
     MyConnectionWindow.cpp \
     myvec.cpp \
-    MyTimer.cpp \
-    MyBoardLogic.cpp
+    MyBoardLogic.cpp \
+    test_MyBoardLogic.cpp
 
 HEADERS  += mainwindow.h \
     pawtrans.h \
@@ -31,9 +31,9 @@ HEADERS  += mainwindow.h \
     MyUser.h \
     MyConnectionWindow.h \
     myvec.h \
-    MyTimer.h \
     MyBoardLogic.h \
-    board.h
+    board.h \
+    test_MyBoardLogic.h
 
 DISTFILES +=
 

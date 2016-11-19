@@ -2,7 +2,6 @@
 #define BORD_H
 #include <QWidget>
 #include <QPainter>
-#include <QDebug>
 #include <QMouseEvent>
 #include <pawtrans.h>
 #include <QBitmap>
@@ -16,7 +15,7 @@ class Bord:public QWidget
 {
     Q_OBJECT
 private:
-    MyBoardLogic* boardLogic;
+    MyBoardLogic boardLogic;
     ChessPositions positions;
     bool whiteOpen{false};
     bool blackOpen{false};
@@ -37,6 +36,7 @@ private:
     QImage whiteFerz;
     QImage whiteLadia;
     QImage whiteSlon;
+    QImage board;
 
     void mouseReleaseEvent(QMouseEvent* event);
     void paintEvent(QPaintEvent *);
@@ -54,13 +54,13 @@ public:
         }
     }
     void restart() {
-        qDebug() << "restart working";
         last = 64;
         targeted = 64;
         storona = 0;
-        delete boardLogic;
-        boardLogic  =  new MyBoardLogic();
-        positions = boardLogic->getPositions();
+        boardLogic = MyBoardLogic();
+        positions = boardLogic.getPositions();
+        whiteOpen = false;
+        blackOpen = false;
         update();
     }
 
@@ -78,26 +78,24 @@ public slots:
     }
 
     void afterPawTrans(char chosed) {
-        if(boardLogic->pawTrans(chosed)) {
+        if(boardLogic.pawTrans(chosed)) {
              emit victory(0, 0);
         }
-        positions = boardLogic->getPositions();
+        positions = boardLogic.getPositions();
         update();
     }
 
     int moveFig(int pos1, int pos2) {
-        qDebug() << "moveFig becoming";
-        int res = boardLogic->moveFig(pos1, pos2);
-        qDebug() << "boardLogic.moveFig(pos1, pos2) returned";
+        int res = boardLogic.moveFig(pos1, pos2);
         switch(res) {
         case 4: {
-            if ((whiteOpen && !boardLogic->getCurColor()) || (blackOpen && boardLogic->getCurColor())) {
+            if ((whiteOpen && !boardLogic.getCurColor()) || (blackOpen && boardLogic.getCurColor())) {
                 emit pawOnOtherSide();
             }
             break;
         }
         case 0: {
-            positions = boardLogic->getPositions();
+            positions = boardLogic.getPositions();
             update();
             break;
         }

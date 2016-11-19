@@ -1,5 +1,4 @@
 #include "MyBoardLogic.h"
-#include <QDebug>
 
 
 const char LADIA = 1;
@@ -53,6 +52,7 @@ void MyBoardLogic::backStep() {
     else {
         mas[st._posNew] = 0;
     }
+
 }
 
 //0-правильный ход
@@ -61,7 +61,9 @@ void MyBoardLogic::backStep() {
 //3-недоступный ход
 //4-превращение пешки
 int MyBoardLogic::moveFig(char pos1, char pos2, bool b) {
-    if (target != 64  || (sto[pos1] != curColor)) return 4;
+    if (target != 64  || (sto[pos1] != curColor)) {
+        return 3;
+    }
     if ((mas[pos1] == 0)) return 1;
     MyVec<char> avaliable = steps(pos1);
     if (avaliable.pos(pos2) == -1) { return 3;}
@@ -109,6 +111,9 @@ int MyBoardLogic::moveFig(char pos1, char pos2, bool b) {
     if (b && (mas[pos2] == PESHKA) && (((pos2 / 8) == 0) || ((pos2 / 8) == 7))) {
         target = pos2;
         return 4;
+    }
+    if (thisIsVictory(curColor)) {
+        return 25;
     }
     curColor = 1 - curColor;
     return 0;

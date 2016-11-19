@@ -5,8 +5,8 @@
 #include <QPainter>
 #include <mylabel.h>
 #include <QPaintEvent>
-#include <QDebug>
 #include <QMouseEvent>
+#include <QImage>
 
 struct ButtonInfo {
     QString buttonActionName;
@@ -19,10 +19,10 @@ class MyMenue : public QWidget
     Q_OBJECT
     ButtonInfo buttonList[10];
     int buttonListLen{0};
+    QImage backGround;
 public:
     void startMenue() {
         addButton("online", "Играть онлайн");
-        //addButton("settings", "Настройки");
         addButton("exit", "Выход");
     }
     void gameMenue() {
@@ -56,7 +56,7 @@ public:
         addButton("info", "Ожидание ответа", "header");
     }
 
-    void pawTrensformationMenue() {
+    void pawTrensMenue() {
 
     }
 
@@ -81,6 +81,8 @@ public:
         painter.drawRect(0,0,width() - 1,height() - 1);
         painter.setPen(color2);
         painter.setBrush(QColor(255,255,255));
+        QImage backGround2 = backGround.scaled(width(),height());
+         painter.drawImage(0,0, backGround2);
 
         for(int i = 0; i < buttonListLen; i++) {
 
@@ -98,7 +100,6 @@ public:
         int y = event->y();
         for (int i = 0; i < buttonListLen; i++) {
             if (width() * 0.05 < x && height() * (0.1 + 0.22 * i) < y && width() * 0.95 > x && height() * (0.3 + 0.22 * i) > y) {
-                qDebug() << "event is: " << buttonList[i].buttonActionName;
                 emit buttonClicked(buttonList[i].buttonActionName);
             }
         }
@@ -146,7 +147,6 @@ public slots:
         update();
     }
     void proposedNichia() {
-        qDebug() << "workibg";
         releaseButton();
         nichiaMenue();
         this->show();

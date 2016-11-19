@@ -13,5 +13,9 @@
         <file alias="whitePeshka.png">sourse/whitePeshka.png</file>
         <file alias="whiteSlon.png">sourse/whiteSlon.png</file>
         <file alias="anonim.png">sourse/anonim.png</file>
+        <file alias="background.jpg">sourse/background.jpg</file>
+        <file alias="blackImg.jpg">sourse/blackImg.jpg</file>
+        <file alias="whiteImg.jpg">sourse/whiteImg.jpg</file>
+         <file alias="board.jpg">sourse/board.jpg</file>
     </qresource>
 </RCC>

@@ -1,7 +1,9 @@
 #ifndef MYBOARDLOGIC_H
 #define MYBOARDLOGIC_H
 #include <memory.h>
+#include <memory>
 #include "myvec.h"
+
 
 const char  MOZHNO  =   0b00000010;
 const char VRAG =       0b00000100;
@@ -15,26 +17,24 @@ struct ChessPositions {
         memcpy(this->type, oth.type, sizeof(this->type));
         memcpy(this->color, oth.color, sizeof(this->color));
     }
-    QString toString() {
-        QString out;
-        for(int i = 0; i < 8; i++)
-        {
-            out += "text mas \n";
-            for (int j = 0; j < 8; j++)
-            {
-                out += QString::number(type[8*i + j]);
-                out += ' ';
-            }
-            out += "\n";
-        }
+    ChessPositions(const char* newType64, const char* newColor64) {
+        memcpy(this->type, newType64, sizeof(this->type));
+        memcpy(this->color, newColor64, sizeof(this->color));
     }
+    bool operator==(const ChessPositions& oth) {
+        for(int i = 0; i  <64; i++) {
+            if (type[i] != oth.type[i] || color[i] != oth.color[i]) {
+                return false;
+            }
+        }
+        return true;
+}
 };
 
 class MyBoardLogic
 {
 private:
     MyVec<Step> history;
-    char blackKingPos;
     char curColor{0};
     char hodil[64]{{0}};
     char sto[64];
@@ -45,7 +45,7 @@ private:
     inline bool isEmpty(char _pos) {return mas[_pos] == 0;}
     inline bool isNotEmpty(char _pos) {return mas[_pos] != 0;}
     inline bool isRival(char pos1, char pos2) {return sto[pos1] != sto[pos2];}
-
+    bool thisIsVictory(char pos);
 
 public:
 
@@ -73,7 +73,6 @@ public:
     MyBoardLogic();
     MyVec<char> steps(char pos);
     int moveFig(char pos1, char pos2, bool b = true);
-    bool thisIsVictory(char pos);
 };
 
 #endif // MYBOARDLOGIC_H

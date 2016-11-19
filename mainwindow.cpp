@@ -2,30 +2,22 @@
 MainWindow::MainWindow(QWidget *parent)
     : QWidget(parent)
 {
-    ws = new EchoClient(QUrl("ws://127.0.0.1:8081"), true);
+    //ws = new EchoClient(QUrl("ws://chess12.herokuapp.com"), this);
+    ws = new EchoClient(QUrl("ws://127.0.0.1:8081"), this);
     bord = new Bord(this);
     blackUser = new MyUser(this);
-    blackUser->setIsWhite(false);
     whiteUser = new MyUser(this);
-    whiteUser->setIsWhite(true);
-    //myTimer = new MyTimer(this);
-    //myTimer->setTime(60);
     menueButton = new QPushButton(this);
-    menueButton->setText("Меню");
-    setGeometry(100,100,700,600);
     menue = new MyMenue(this);
     connectionForm = new MyConnectionForm(this);
 
-    connect(menueButton, SIGNAL(clicked(bool)), menue, SLOT(showGameMenue()));
     connect(this, SIGNAL(readyToShow(char)), menue, SLOT(update()));
-
+    connect(menueButton, SIGNAL(clicked(bool)), menue, SLOT(showGameMenue()));
     connect(menue, SIGNAL(buttonClicked(QString)), this, SLOT(buttonManager(QString)));
-    menue->startMenue();
     connect(bord, SIGNAL(moved(int, int)), ws, SLOT(sendStep(int,int)));
     connect(bord, SIGNAL(pawChanged(char)), ws, SLOT(sendPawTrans(char)));
     connect(bord, SIGNAL(victory(char, char)), ws, SLOT(sendGameEnd(char,char)));
     connect(bord, SIGNAL(victory(char,char)), menue, SLOT(showWinMenue()));
-
     connect(ws, SIGNAL(friendIsFound(int)), this, SLOT(startGame(int)));
     connect(ws, SIGNAL(friendIsFound(int)), connectionForm, SLOT(friendFounded()));
     connect(ws, SIGNAL(friendIsFound(int)), menue, SLOT(hide()));
@@ -39,8 +31,11 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ws, SIGNAL(saidYes()), menue, SLOT(showNichia()));
     connect(ws, SIGNAL(saidNot()), menue, SLOT(hide()));
 
-    bord->setEnabled(false);
-    menueButton->setEnabled(false);
+    setGeometry(100,100,700,600);
+    menueButton->setText("Меню");
+    whiteUser->setIsWhite(true);
+    blackUser->setIsWhite(false);
+    menue->startMenue();
     connectionForm->hide();
 }
 

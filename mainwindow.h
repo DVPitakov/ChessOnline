@@ -7,7 +7,6 @@ static int counter = 0;
 #include <QPainter>
 #include <QPaintEvent>
 #include <QEvent>
-#include <QDebug>
 #include <board.h>
 #include <QPaintEvent>
 #include <QPushButton>
@@ -17,7 +16,6 @@ static int counter = 0;
 #include "WebSocketsConnector.h"
 #include "MyUser.h"
 #include "MyConnectionWindow.h"
-#include "MyTimer.h"
 class MainWindow : public QWidget
 {
     Q_OBJECT
@@ -26,18 +24,16 @@ public:
     MyConnectionForm * connectionForm;
     MyUser *whiteUser;
     MyUser *blackUser;
-   // MyTimer* myTimer;
     EchoClient *ws;
     Bord *bord;
     QPushButton* pushButton;
     QPushButton* menueButton;
     MyMenue* menue;
-    bool online{0};
-
     MainWindow(QWidget *parent = 0);
     bool listen_now;
     QTime timer;
     ~MainWindow();
+
     void paintEvent(QPaintEvent* event) {
         int x0 = 0;
         int y0 = 0;
@@ -49,8 +45,8 @@ public:
                aheight =  awidth / 1.2;
                y0 = (height() - aheight)/2;
             }
-            else if (double(awidth) / aheight > 1.4) {
-                awidth = aheight * 1.4;
+            else if (double(awidth) / aheight > 1.3) {
+                awidth = aheight * 1.3;
                 x0 = (width() - awidth)/2;
             }
         }
@@ -58,8 +54,8 @@ public:
             if (double(aheight) / awidth < 1.2) {
                 awidth = aheight / 1.2;
                 x0 = (width() - awidth)/2;
-            } else if (double(aheight) / awidth > 1.4) {
-                aheight = awidth * 1.4;
+            } else if (double(aheight) / awidth > 1.3) {
+                aheight = awidth * 1.3;
                 y0 = (height() - aheight)/2;
             }
         }
@@ -87,7 +83,6 @@ public:
         whiteUser->setGeometry(x0 + w0,y0 + h0, w, h);
         menueButton->setGeometry(x0 + w0 + dw, y0 + h0 +  dh, w, h);
         blackUser->setGeometry(x0 + w0 + 2 * dw, y0 + h0 + 2 * dh, w, h);
-       // myTimer->setGeometry(bw * 1.02, 0.42 * bw, 0.2 * bw, 0.2 * bw);
         bord->setGeometry(x0,y0,bw,bw);
         connectionForm->setGeometry(0, 0, width() ,height());
         menue->setGeometry(0,0,width(),height());
@@ -97,6 +92,7 @@ public:
 
 signals:
     void readyToShow(char);
+
 public slots:
     void chooseEndMenue(char couse) {
         if(couse == 0) {
@@ -108,24 +104,34 @@ public slots:
         else if (couse == 45) {
             menue->showFailMenue();
         }
+        else if (couse == 100) {
+            menue->showWinMenue();
+        }
     }
 
     void buttonManager(QString eventName) {
-        if (eventName ==  "online") {
+        if (eventName ==  "sdatsa") {
+            menue->showFailMenue();
+            ws->sendGameEnd(100,0);
+        }
+        else if (eventName ==  "online") {
             connectionForm->friendSearch();
             ws->open();
         }
-
         else if (eventName ==  "continue") {
             bord->restart();
             menue->showStartGame();
+            whiteUser->setIsUser(false);
+            blackUser->setIsUser(false);
             menue->update();
         }
         else if (eventName == "return") {
             menue->hide();
             bord->setHidden(false);
         }
-        else if (eventName ==  "settings") {}
+        else if (eventName ==  "settings") {
+
+        }
         else if (eventName ==  "exit") {
             this->close();
         }
@@ -133,7 +139,9 @@ public slots:
             ws->sendNichia();
             menue->showWait();
         }
-        else if (eventName == "breakGame") {}
+        else if (eventName == "breakGame") {
+
+        }
         else if (eventName == "sayYes") {
             ws->sayYes();
             menue->showNichia();
@@ -143,22 +151,17 @@ public slots:
             menue->setHidden(true);
         }
         else {
-            qDebug() << "my event is not founded";
         }
-    }
-
-    void onlineGameChosed() {
-        online == true;
     }
 
     void activeBoard() {
         bord->setEnabled(true);
         menueButton->setEnabled(true);
     }
+
     void startGame(int color) {
         activeBoard();
         whiteUser->setMyStep(true);
-        qDebug() << "color worked";
         if(color) {
             whiteUser->setIsUser(true);
             bord->setColor(0);

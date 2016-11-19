@@ -7,7 +7,6 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
-#include <QDebug>
 #include <QTimer>
 
 class EchoClient : public QObject
@@ -18,7 +17,7 @@ class EchoClient : public QObject
     bool isActive{false};
     long int myId{0};
 public:
-    explicit EchoClient(const QUrl &url, bool debug = false, QObject *parent = Q_NULLPTR);
+    explicit EchoClient(const QUrl &url, QObject *parent = Q_NULLPTR);
 
 signals:
     void closed();
@@ -35,7 +34,6 @@ signals:
 public slots:
     void connectionError() {
         if (isActive == false) {
-            qDebug() << "Соединение разорвано";
             timer->stop();
             emit lose();
         }
@@ -47,6 +45,17 @@ public slots:
     }
 
     void open();
+    void stop() {
+        online = false;
+        isConnected = false;
+        isActive = false;
+        myId = 0;
+        timer->stop();
+        openTimer->stop();
+        disconnect(&m_webSocket, &QWebSocket::textMessageReceived, this, &EchoClient::onTextMessageReceived);
+        m_webSocket.close();
+    }
+
     void onConnected();
     void onTextMessageReceived(QString message);
     void sendStep(int oldPos, int newPos) {
@@ -56,7 +65,6 @@ public slots:
                                          " ,\n\"oldPos\": " + QString::number(oldPos) +
                                          " ,\n\"newPos\": " + QString::number(newPos) +
                                          " \n}"));
-            qDebug() << "STEP SENDED:" << oldPos + 0.1 << newPos + 0.1;
 
         }
 
@@ -85,6 +93,7 @@ public slots:
                                          " ,\n\"couse\": " + QString::number(couse) +
                                          " ,\n\"data\": " + QString::number(pos) +
                                          " \n}"));
+            stop();
         }
     }
     void sayYes() {
@@ -92,6 +101,7 @@ public slots:
             m_webSocket.sendTextMessage((QString(
                                              "{\"action\": ") + " \"sayYes\"" +
                                          " \n}"));
+            stop();
         }
     }
     void sayNot()  {

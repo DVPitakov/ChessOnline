@@ -4,7 +4,6 @@
 #include <QWidget>
 #include <QPainter>
 #include <QPaintEvent>
-#include <QDebug>
 #include <QColor>
 class MyConnectionForm : public QWidget
 {
@@ -36,7 +35,6 @@ public slots:
     }
 
     void friendSearch() {
-        qDebug() << "friendSearch";
         this->show();
     }
 

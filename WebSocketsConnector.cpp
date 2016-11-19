@@ -1,11 +1,8 @@
 #include "WebSocketsConnector.h"
 
-#include <QtCore/QDebug>
-
-EchoClient::EchoClient(const QUrl &url, bool debug, QObject *parent) :
+EchoClient::EchoClient(const QUrl &url, QObject *parent) :
     QObject(parent),
-    m_url(url),
-    m_debug(debug)
+    m_url(url)
 {
     timer = new QTimer(this);
     openTimer = new QTimer(this);
@@ -18,6 +15,7 @@ EchoClient::EchoClient(const QUrl &url, bool debug, QObject *parent) :
 }
 
 void EchoClient::open() {
+
     if (!isConnected) {
         openTimer->start(2000);
         m_webSocket.close();
@@ -61,8 +59,11 @@ void EchoClient::onTextMessageReceived(QString message)
         }
         else if (action == "gameEnd") {
             int couse = root.value("couse").toInt();
+            qDebug()  << "!!! " << couse;
             timer->stop();
+            isConnected = false;
             emit gameEnd(couse);
+            stop();
         }
         else if (action == "howAreYou") {
             isActive = true;
@@ -72,6 +73,7 @@ void EchoClient::onTextMessageReceived(QString message)
         }
         else if (action == "sayYes") {
             emit saidYes();
+            stop();
         }
         else if (action == "sayNot") {
             emit saidNot();
