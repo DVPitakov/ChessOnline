@@ -3,10 +3,10 @@
 #include <QWidget>
 #include <QPainter>
 #include <QMouseEvent>
-#include <pawtrans.h>
+#include <PawTrans.h>
 #include <QBitmap>
 #include <QPixmap>
-#include "myvec.h"
+#include "MyVec.h"
 #include "MyBoardLogic.h"
 
 const char SELECTED = 0b00000001;

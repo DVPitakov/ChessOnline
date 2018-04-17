@@ -85,6 +85,7 @@ public slots:
                                          " \n}"));
         }
     }
+
     void sendGameEnd(char couse, char pos) {
         if (online) {
             timer->stop();
@@ -96,27 +97,23 @@ public slots:
             stop();
         }
     }
+
     void sayYes() {
         if (online) {
-            m_webSocket.sendTextMessage((QString(
-                                             "{\"action\": ") + " \"sayYes\"" +
-                                         " \n}"));
+            m_webSocket.sendTextMessage((QString("{\"action\": ") + " \"sayYes\"" + " \n}"));
             stop();
         }
     }
+
     void sayNot()  {
         if (online) {
-            m_webSocket.sendTextMessage((QString(
-                                             "{\"action\": ") + " \"sayNot\"" +
-                                         " \n}"));
+            m_webSocket.sendTextMessage((QString("{\"action\": ") + " \"sayNot\"" + " \n}"));
         }
     }
 
     void sendHowAreYou() {
         if (online) {
-            m_webSocket.sendTextMessage((QString(
-                                             "{\"action\": ") + " \"howAreYou\"" +
-                                         " \n}"));
+            m_webSocket.sendTextMessage((QString("{\"action\": ") + " \"howAreYou\"" + " \n}"));
         }
     }
 

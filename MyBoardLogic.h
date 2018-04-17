@@ -2,11 +2,11 @@
 #define MYBOARDLOGIC_H
 #include <memory.h>
 #include <memory>
-#include "myvec.h"
+#include "MyVec.h"
 
 
-const char  MOZHNO  =   0b00000010;
-const char VRAG =       0b00000100;
+const char MOZHNO = 0b00000010;
+const char VRAG   = 0b00000100;
 
 
 struct ChessPositions {

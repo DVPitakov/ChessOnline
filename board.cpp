@@ -1,4 +1,4 @@
-#include "board.h"
+#include "Board.h"
 
 Bord::Bord(QWidget* parent):QWidget(parent)
 {
@@ -79,7 +79,6 @@ void Bord::paintEvent(QPaintEvent *) {
     bool b = true;
     int r_w = (width() - 1)/8;
     int r_h = (height() - 1)/8;
-    QImage board2 = board.scaled(width(),height());
     QImage blackKing2 = blackKing.scaled(0.9*r_w,0.9*r_h);
     QImage blackKon2 = blackKon.scaled(0.9*r_w,0.9*r_h);
     QImage blackLadia2 = blackLadia.scaled(0.9*r_w,0.9*r_h);

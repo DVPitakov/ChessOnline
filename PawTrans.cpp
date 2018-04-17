@@ -1,4 +1,4 @@
-#include "pawtrans.h"
+#include "PawTrans.h"
 
 PawTrans::PawTrans(QWidget *parent) : QWidget(parent)
 {

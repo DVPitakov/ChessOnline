@@ -7,12 +7,12 @@ static int counter = 0;
 #include <QPainter>
 #include <QPaintEvent>
 #include <QEvent>
-#include <board.h>
+#include <Board.h>
 #include <QPaintEvent>
 #include <QPushButton>
 #include <QLabel>
 #include <mylabel.h>
-#include <mymenue.h>
+#include <MyMenue.h>
 #include "WebSocketsConnector.h"
 #include "MyUser.h"
 #include "MyConnectionWindow.h"
