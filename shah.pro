@@ -13,7 +13,6 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-    board.cpp \
     WebSocketsConnector.cpp \
     MyConnectionWindow.cpp \
     MyBoardLogic.cpp \
@@ -21,7 +20,9 @@ SOURCES += main.cpp\
     MyVec.cpp \
     PawTrans.cpp \
     MyUser.cpp \
-    MainWindow.cpp
+    MainWindow.cpp \
+    NetManager.cpp \
+    Board.cpp
 
 HEADERS  += \
     WebSocketsConnector.h \
@@ -32,7 +33,8 @@ HEADERS  += \
     MyVec.h \
     PawTrans.h \
     Board.h \
-    MainWindow.h
+    MainWindow.h \
+    NetManager.h
 
 DISTFILES +=
 
