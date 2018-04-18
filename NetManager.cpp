@@ -4,9 +4,10 @@
 #include <QNetworkRequest>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
-#include <QJsonDocument>
-#include <QJsonObject>
+#include <QtXml>
 #include <QUrlQuery>
+#include <QDomElement>
+#include <QDomDocument>
 
 NetManager::NetManager(QObject *parent) : QObject(parent) {
     timer = new QTimer(this);
@@ -27,7 +28,7 @@ void NetManager::sendGameMessage(QString msg) {
 }
 
 void NetManager::upgradeGameState() {
-   sendGameMessage("{\"action\": \"nothing\"}");
+   sendGameMessage("{\"action\": \"upgrade\"}");
 
 }
 
@@ -38,47 +39,83 @@ void NetManager::runUpdates(int interval) {
 
 }
 
-void NetManager::performRequest(QString message) {
-    QJsonDocument document = QJsonDocument::fromJson(message.toUtf8());
-    QJsonObject root = document.object();
-    QString action = root.value("action").toString();
-    if (action == "step") {
-        int oldPos = root.value("oldPos").toInt();
-        int newPos = root.value("newPos").toInt();
-        emit(newStep(oldPos, newPos));
+void NetManager::performResponse(QString message) {
+    QDomDocument doc;
+    if (false == doc.setContent(message))
+         throw QString("bad XML-file: setContent");
+    QDomElement root = doc.documentElement();
+    for(QDomNode event = root.firstChild(); !event.isNull(); event = event.nextSibling()) {
+        QString action;
+        QString user_id;
+        QString game_id;
+        int newPos;
+        int oldPos;
+        int pos;
+        int figure;
+        int color;
+        int couse;
+        for (QDomNode eventField = event.firstChild(); !eventField.isNull(); eventField = eventField.nextSibling()) {
+            if (eventField.nodeName() == "action") {
+                action = eventField.firstChild().nodeValue();
+            }
+            else if (eventField.nodeName() == "oldPos") {
+                oldPos = eventField.firstChild().nodeValue().toInt();
+            }
+            else if (eventField.nodeName() == "newPos") {
+                newPos = eventField.firstChild().nodeValue().toInt();
+            }
+            else if (eventField.nodeName() == "figure") {
+                figure = eventField.firstChild().nodeValue().toInt();
+            }
+            else if (eventField.nodeName() == "pos") {
+                pos = eventField.firstChild().nodeValue().toInt();
+            }
+            else if (eventField.nodeName() == "userColor") {
+                color = eventField.firstChild().nodeValue().toInt();
+            }
+            else if (eventField.nodeName() == "user_id") {
+                user_id = eventField.firstChild().nodeValue();
+            }
+            else if (eventField.nodeName() == "game_id") {
+                game_id = eventField.firstChild().nodeValue();
+            }
+            else if (eventField.nodeName() == "couse") {
+                couse = eventField.firstChild().nodeValue().toInt();
+            }
+        }
+
+        if (action == "step") {
+            emit(newStep(oldPos, newPos));
+        }
+        else if (action == "pawTrans") {
+            emit pawTransed(figure);
+        }
+        else if (action == "color") {
+            timer->start(3000);
+            emit friendIsFound(color);
+        }
+        else if (action == "gameEnd") {
+            timer->stop();
+            emit gameEnd(couse);
+            //stop();
+        }
+        else if (action == "nichia") {
+            emit nichia();
+        }
+        else if (action == "sayYes") {
+            emit saidYes();
+            //stop();
+        }
+        else if (action == "sayNot") {
+            emit saidNot();
+        }
+        else if (action == "userKey") {
+            this->userId = user_id;
+            this->gameId = game_id;
+            emit wsConnected();
+            qDebug() << userId;
+            qDebug() << gameId;
+        }
     }
-    else if (action == "pawTrans") {
-        int figure = root.value("figure").toInt();
-        int pos = root.value("pos").toInt();
-        emit pawTransed(figure);
-    }
-    else if (action == "color") {
-        int color = root.value("userColor").toInt();
-        qDebug() << "color taked";
-        timer->start(3000);
-        emit friendIsFound(color);
-    }
-    else if (action == "gameEnd") {
-        int couse = root.value("couse").toInt();
-        qDebug()  << "!!! " << couse;
-        timer->stop();
-        emit gameEnd(couse);
-        //stop();
-    }
-    else if (action == "nichia") {
-        emit nichia();
-    }
-    else if (action == "sayYes") {
-        emit saidYes();
-        //stop();
-    }
-    else if (action == "sayNot") {
-        emit saidNot();
-    }
-    else if (action == "userKey") {
-        userId = root.value("user_id").toString();
-        gameId = root.value("game_id").toString();
-        qDebug() << userId;
-        qDebug() << gameId;
-    }
+
 }

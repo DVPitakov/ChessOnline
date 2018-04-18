@@ -13,7 +13,6 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-    WebSocketsConnector.cpp \
     MyConnectionWindow.cpp \
     MyBoardLogic.cpp \
     MyMenue.cpp \
@@ -25,7 +24,6 @@ SOURCES += main.cpp\
     Board.cpp
 
 HEADERS  += \
-    WebSocketsConnector.h \
     MyUser.h \
     MyConnectionWindow.h \
     MyBoardLogic.h \

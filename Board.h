@@ -78,6 +78,7 @@ public slots:
     }
 
     void afterPawTrans(char chosed) {
+
         if(boardLogic.pawTrans(chosed)) {
              emit victory(0, 0);
         }

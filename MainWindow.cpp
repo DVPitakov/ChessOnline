@@ -3,7 +3,7 @@ MainWindow::MainWindow(QWidget *parent)
     : QWidget(parent)
 {
     //ws = new EchoClient(QUrl("ws://chess12.herokuapp.com"), this);
-    ws = new EchoClient(QUrl("ws://127.0.0.1:8081"), this);
+    ws = new NetManager(this);
     bord = new Bord(this);
     blackUser = new MyUser(this);
     whiteUser = new MyUser(this);

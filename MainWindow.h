@@ -13,7 +13,7 @@ static int counter = 0;
 #include <QLabel>
 #include <mylabel.h>
 #include <MyMenue.h>
-#include "WebSocketsConnector.h"
+#include "NetManager.h"
 #include "MyUser.h"
 #include "MyConnectionWindow.h"
 class MainWindow : public QWidget
@@ -24,7 +24,7 @@ public:
     MyConnectionForm * connectionForm;
     MyUser *whiteUser;
     MyUser *blackUser;
-    EchoClient *ws;
+    NetManager *ws;
     Bord *bord;
     QPushButton* pushButton;
     QPushButton* menueButton;
@@ -116,7 +116,7 @@ public slots:
         }
         else if (eventName ==  "online") {
             connectionForm->friendSearch();
-            ws->open();
+            ws->run();
         }
         else if (eventName ==  "continue") {
             bord->restart();
