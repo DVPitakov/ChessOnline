@@ -147,3 +147,48 @@ void BordWidget::paintEvent(QPaintEvent *) {
 
     }
 }
+
+void BordWidget::setColor(Storona color) {
+    if (color == 0) {
+        whiteOpen = true;
+        blackOpen = false;
+    }
+    else if (color == 1){
+        whiteOpen = false;
+        blackOpen = true;
+    }
+}
+
+void BordWidget::restart() {
+    last = 64;
+    targeted = 64;
+    storona = 0;
+    boardLogic = MyBoardLogic();
+    positions = boardLogic.getPositions();
+    whiteOpen = false;
+    blackOpen = false;
+    update();
+}
+
+void BordWidget::afterPawTrans(char chosed) {
+
+    if(boardLogic.pawTrans(chosed)) {
+         emit victory(EndCouse::YOUR_FAIL_ONE, 0);
+    }
+    positions = boardLogic.getPositions();
+    update();
+}
+
+StepEnum BordWidget::moveFig(FigurePos pos1, FigurePos pos2) {
+    StepEnum res = boardLogic.moveFig(pos1, pos2);
+    if (res == StepEnum::PROMOTION) {
+        if ((whiteOpen && !boardLogic.getCurColor()) || (blackOpen && boardLogic.getCurColor())) {
+            emit pawOnOtherSide();
+        }
+    }
+    else if (res == StepEnum::SIMPLE_STEP) {
+        positions = boardLogic.getPositions();
+        update();
+    }
+    return res;
+}

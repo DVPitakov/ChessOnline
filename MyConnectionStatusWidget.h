@@ -15,18 +15,11 @@ public:
     void paintEvent(QPaintEvent*);
 signals:
 public slots:
-    void connected() {
-        isConnected = true;
-        update();
-    }
+    void connected();
 
-    void friendSearch() {
-        this->show();
-    }
+    void friendSearch();
 
-    void friendFounded() {
-        this->hide();
-    }
+    void friendFounded();
 };
 
 #endif // MYCONNECTIONFORM_H

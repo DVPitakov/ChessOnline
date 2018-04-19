@@ -18,27 +18,10 @@ class BordWidget:public QWidget
 public:
     BordWidget(QWidget *parent = 0);
 
-    void setColor(Storona color) {
-        if (color == 0) {
-            whiteOpen = true;
-            blackOpen = false;
-        }
-        else if (color == 1){
-            whiteOpen = false;
-            blackOpen = true;
-        }
-    }
+    void setColor(Storona color);
 
-    void restart() {
-        last = 64;
-        targeted = 64;
-        storona = 0;
-        boardLogic = MyBoardLogic();
-        positions = boardLogic.getPositions();
-        whiteOpen = false;
-        blackOpen = false;
-        update();
-    }
+    void restart();
+
     void bordChng(char current);
 signals:
     void moved(FigurePos, FigurePos);
@@ -51,33 +34,10 @@ public slots:
         storona = !storona;
     }
 
-    void afterPawTrans(char chosed) {
-
-        if(boardLogic.pawTrans(chosed)) {
-             emit victory(EndCouse::YOUR_FAIL_ONE, 0);
-        }
-        positions = boardLogic.getPositions();
-        update();
-    }
+    void afterPawTrans(char chosed);
 
 
-    StepEnum moveFig(FigurePos pos1, FigurePos pos2) {
-        StepEnum res = boardLogic.moveFig(pos1, pos2);
-        switch(res) {
-            case StepEnum::PROMOTION: {
-                if ((whiteOpen && !boardLogic.getCurColor()) || (blackOpen && boardLogic.getCurColor())) {
-                    emit pawOnOtherSide();
-                }
-                break;
-            }
-            case StepEnum::SIMPLE_STEP: {
-                positions = boardLogic.getPositions();
-                update();
-                break;
-            }
-        }
-        return res;
-    }
+    StepEnum moveFig(FigurePos pos1, FigurePos pos2);
 
 private:
     MyBoardLogic boardLogic;

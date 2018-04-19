@@ -56,57 +56,56 @@ void MyBoardLogic::backStep() {
 }
 
 
-
-StepEnum MyBoardLogic::moveFig(FigurePos pos1, FigurePos pos2, bool b) {
-    if (target != 64  || (whitePoses[pos1] != curColor)) {
+StepEnum MyBoardLogic::moveFig(FigurePos posOne, FigurePos posTwo, bool b) {
+    if (target != 64  || (whitePoses[posOne] != curColor)) {
         return StepEnum::WRONG_STEP;
     }
-    if ((figuresTypes[pos1] == 0)) return StepEnum::NOT_TARGETED_USER_OR_FREE_FIELD;
-    MyVec<char> avaliable = steps(pos1);
-    if (avaliable.pos(pos2) == -1) { return StepEnum::WRONG_STEP;}
-    history.push(Step(pos1, pos2, whitePoses[pos1], figuresTypes[pos1], figuresTypes[pos2]));
-    if ((figuresTypes[pos1] == PESHKA) && (figuresTypes[pos2] == 0) && (pos2 - pos1 != 8) && (pos1 - pos2 !=8) && (pos2 - pos1 != 16) && (pos1 - pos2 !=16)) {
+    if ((figuresTypes[posOne] == 0)) return StepEnum::NOT_TARGETED_USER_OR_FREE_FIELD;
+    MyVec<char> avaliable = steps(posOne);
+    if (avaliable.pos(posTwo) == -1) { return StepEnum::WRONG_STEP;}
+    history.push(Step(posOne, posTwo, whitePoses[posOne], figuresTypes[posOne], figuresTypes[posTwo]));
+    if ((figuresTypes[posOne] == PESHKA) && (figuresTypes[posTwo] == 0) && (posTwo - posOne != 8) && (posOne - posTwo !=8) && (posTwo - posOne != 16) && (posOne - posTwo !=16)) {
         int len;
-        if (whitePoses[pos1]) len = + 8; else len = - 8;
-        if (figuresTypes[pos2 + len] == PESHKA) {
-            figuresTypes[pos2 + len] = 0;
-            whitePoses[pos2 + len] = 0;
+        if (whitePoses[posOne]) len = + 8; else len = - 8;
+        if (figuresTypes[posTwo + len] == PESHKA) {
+            figuresTypes[posTwo + len] = 0;
+            whitePoses[posTwo + len] = 0;
         }
 
     }
-    if ((figuresTypes[pos1] == PESHKA) && (((pos2 / 8 == 0) &&  (curColor))|| ((pos2 / 8 == 7) && (!curColor)))) {
+    if ((figuresTypes[posOne] == PESHKA) && (((posTwo / 8 == 0) &&  (curColor))|| ((posTwo / 8 == 7) && (!curColor)))) {
     }
-    if ((figuresTypes[pos1] == KOROL) && ((pos2 - pos1) == 2)) {
+    if ((figuresTypes[posOne] == KOROL) && ((posTwo - posOne) == 2)) {
 
-        hodil[pos1 + 3] = true;
-        figuresTypes[pos2] = figuresTypes[pos1];
-        figuresTypes[pos1] = 0;
-        figuresTypes[pos1 + 1] = figuresTypes[pos1 + 3];
-        figuresTypes[pos1 + 3] = 0;
+        hodil[posOne + 3] = true;
+        figuresTypes[posTwo] = figuresTypes[posOne];
+        figuresTypes[posOne] = 0;
+        figuresTypes[posOne + 1] = figuresTypes[posOne + 3];
+        figuresTypes[posOne + 3] = 0;
     }
     else {
-        if ((figuresTypes[pos1] == KOROL) && ((pos1 - pos2) == 2)) {
-            hodil[pos1 - 4] = true;
-            figuresTypes[pos2] = figuresTypes[pos1];
-            figuresTypes[pos1] = 0;
-            figuresTypes[pos1 - 1] = figuresTypes[pos1 - 4];
-            figuresTypes[pos1 - 4] = 0;
+        if ((figuresTypes[posOne] == KOROL) && ((posOne - posTwo) == 2)) {
+            hodil[posOne - 4] = true;
+            figuresTypes[posTwo] = figuresTypes[posOne];
+            figuresTypes[posOne] = 0;
+            figuresTypes[posOne - 1] = figuresTypes[posOne - 4];
+            figuresTypes[posOne - 4] = 0;
         }
         else {
-            figuresTypes[pos2] = figuresTypes[pos1];
-            whitePoses[pos2] = whitePoses[pos1];
+            figuresTypes[posTwo] = figuresTypes[posOne];
+            whitePoses[posTwo] = whitePoses[posOne];
         }
-        hodil[pos1] = true;
-        hodil[pos2] = true;
-        figuresTypes[pos1] = 0;
+        hodil[posOne] = true;
+        hodil[posTwo] = true;
+        figuresTypes[posOne] = 0;
     }
     if (podUdarom(kingPos(curColor))) {
         backStep();
         return StepEnum::KING_UNDER_ATTACK;
     }
 
-    if (b && (figuresTypes[pos2] == PESHKA) && (((pos2 / 8) == 0) || ((pos2 / 8) == 7))) {
-        target = pos2;
+    if (b && (figuresTypes[posTwo] == PESHKA) && (((posTwo / 8) == 0) || ((posTwo / 8) == 7))) {
+        target = posTwo;
         return StepEnum::PROMOTION;
     }
     if (thisIsVictory(kingPos(1 - curColor))) {
@@ -430,4 +429,22 @@ bool MyBoardLogic::thisIsVictory(char pos)
         }
     }
     return true;
+}
+
+ChessPositions MyBoardLogic::getPositions() {
+    ChessPositions positions;
+    memcpy(positions.type, figuresTypes, BOARD_FIELDS_COUNT);
+    memcpy(positions.color, whitePoses, BOARD_FIELDS_COUNT);
+    return positions;
+}
+
+int MyBoardLogic::pawTrans(const char chosed) {
+    figuresTypes[target] = chosed;
+    target = BOARD_FIELDS_COUNT;
+    curColor = 1 - curColor;
+    return thisIsVictory(kingPos(curColor));
+}
+
+char MyBoardLogic::getCurColor() const {
+    return curColor;
 }

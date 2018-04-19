@@ -19,3 +19,15 @@ void MyConnectionStatusWidget::paintEvent(QPaintEvent *) {
 
 }
 
+void MyConnectionStatusWidget::friendSearch() {
+    this->show();
+}
+
+void MyConnectionStatusWidget::friendFounded() {
+    this->hide();
+}
+
+void MyConnectionStatusWidget::connected() {
+    isConnected = true;
+    update();
+}

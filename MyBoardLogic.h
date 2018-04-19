@@ -30,22 +30,25 @@ struct ChessPositions {
     char type[BOARD_FIELDS_COUNT];
     char color[BOARD_FIELDS_COUNT];
     ChessPositions(){}
+
     ChessPositions(const ChessPositions& oth) {
         memcpy(this->type, oth.type, sizeof(this->type));
         memcpy(this->color, oth.color, sizeof(this->color));
     }
+
     ChessPositions(const char* newType64, const char* newColor64) {
         memcpy(this->type, newType64, sizeof(this->type));
         memcpy(this->color, newColor64, sizeof(this->color));
     }
-    bool operator==(const ChessPositions& oth) {
+
+    bool operator==(const ChessPositions& oth) const {
         for(int i = 0; i  < BOARD_FIELDS_COUNT; i++) {
             if (type[i] != oth.type[i] || color[i] != oth.color[i]) {
                 return false;
             }
         }
         return true;
-}
+    }
 };
 
 class MyBoardLogic {
@@ -54,27 +57,16 @@ public:
     void backStep();
 
     char kingPos(const char kingColor) const;
-    ChessPositions getPositions() {
-        ChessPositions positions;
-        memcpy(positions.type, figuresTypes, BOARD_FIELDS_COUNT);
-        memcpy(positions.color, whitePoses, BOARD_FIELDS_COUNT);
-        return positions;
-    }
 
-    int pawTrans(const char chosed) {
-        figuresTypes[target] = chosed;
-        target = BOARD_FIELDS_COUNT;
-        curColor = 1 - curColor;
-        return thisIsVictory(kingPos(curColor));
-    }
+    ChessPositions getPositions();
 
-    char getCurColor() const {
-        return curColor;
-    }
+    int pawTrans(const char chosed);
+
+    char getCurColor() const;
 
     MyBoardLogic();
-    MyVec<char> steps(char pos);
     StepEnum moveFig(FigurePos pos1, FigurePos pos2, bool b = true);
+    MyVec<char> steps(char pos);
 
 private:
     MyVec<Step> history;
