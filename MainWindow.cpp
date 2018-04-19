@@ -36,4 +36,59 @@ MainWindow::MainWindow(QWidget *parent): QWidget(parent) {
     connectionForm->hide();
 }
 
+void MainWindow::paintEvent(QPaintEvent* event) {
+    int x0 = 0;
+    int y0 = 0;
+    bool b =  width() > height();
+    int awidth = width();
+    int aheight = height();
+    if (b) {
+        if (double(awidth) / aheight < 1.2) {
+           aheight =  awidth / 1.2;
+           y0 = (height() - aheight)/2;
+        }
+        else if (double(awidth) / aheight > 1.3) {
+            awidth = aheight * 1.3;
+            x0 = (width() - awidth)/2;
+        }
+    }
+    else {
+        if (double(aheight) / awidth < 1.2) {
+            awidth = aheight / 1.2;
+            x0 = (width() - awidth)/2;
+        } else if (double(aheight) / awidth > 1.3) {
+            aheight = awidth * 1.3;
+            y0 = (height() - aheight)/2;
+        }
+    }
+    int bw;
+    b = awidth > aheight;
+    bw = b ? aheight : awidth;
+    int w0 = 0;
+    int h0 = 0;
+    int dw = 0;
+    int dh = 0;
+
+    int w;
+    int h;
+
+    if (b) {
+        w = awidth - aheight;
+        h = aheight / 3;
+    }
+    else {
+        w = awidth / 3;
+        h = aheight - awidth;
+    }
+    b ? w0 = bw : h0 = bw;
+    b ? dh = aheight / 3 : dw = awidth / 3;
+    whiteUser->setGeometry(x0 + w0,y0 + h0, w, h);
+    menueButton->setGeometry(x0 + w0 + dw, y0 + h0 +  dh, w, h);
+    blackUser->setGeometry(x0 + w0 + 2 * dw, y0 + h0 + 2 * dh, w, h);
+    bord->setGeometry(x0,y0,bw,bw);
+    connectionForm->setGeometry(0, 0, width() ,height());
+    menue->setGeometry(0,0,width(),height());
+
+}
+
 MainWindow::~MainWindow() {}
