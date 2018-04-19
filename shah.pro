@@ -19,23 +19,23 @@ SOURCES += main.cpp\
     MyVec.cpp \
     MainWindow.cpp \
     NetManager.cpp \
-    PawTransView.cpp \
     BoardWidget.cpp \
     MyUserWidget.cpp \
     MyMenueWidget.cpp \
-    MyConnectionStatusWidget.cpp
+    MyConnectionStatusWidget.cpp \
+    PawTransWidget.cpp
 
 HEADERS  += \
     MyBoardLogic.h \
     MyVec.h \
     MainWindow.h \
     NetManager.h \
-    PawTransView.h \
     BoardWidget.h \
     MyUserWidget.h \
     MyMenueWidget.h \
     MyConnectionStatusWidget.h \
-    Models.h
+    Models.h \
+    PawTransWidget.h
 
 DISTFILES +=
 

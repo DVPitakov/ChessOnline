@@ -12,7 +12,7 @@ class MyConnectionStatusWidget : public QWidget
     Q_OBJECT
 public:
     explicit MyConnectionStatusWidget(QWidget *parent = 0);
-    void paintEvent(QPaintEvent *);
+    void paintEvent(QPaintEvent*);
 signals:
 public slots:
     void connected() {

@@ -7,7 +7,7 @@ template <class T>
 class MyVec {
 public:
     MyVec():size(32),last(-1) {
-        buf = (T*)malloc(size * (sizeof(T)));
+        buf = (T*)malloc(size* (sizeof(T)));
     }
 
     ~MyVec() {

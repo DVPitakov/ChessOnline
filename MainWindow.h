@@ -26,11 +26,11 @@ public:
     void paintEvent(QPaintEvent* event);
 
 private:
-    MyConnectionStatusWidget * connectionForm;
-    MyUser *whiteUser;
-    MyUser *blackUser;
-    NetManager *netManager;
-    BordWidget *bord;
+    MyConnectionStatusWidget* connectionForm;
+    MyUser* whiteUser;
+    MyUser* blackUser;
+    NetManager* netManager;
+    BordWidget* bord;
     QPushButton* pushButton;
     QPushButton* menueButton;
     MyMenue* menue;

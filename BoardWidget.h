@@ -3,7 +3,7 @@
 #include <QWidget>
 #include <QPainter>
 #include <QMouseEvent>
-#include <PawTransView.h>
+#include <PawTransWidget.h>
 #include <QBitmap>
 #include <QPixmap>
 #include "MyVec.h"
@@ -15,33 +15,6 @@ const char SELECTED = 0b00000001;
 class BordWidget:public QWidget
 {
     Q_OBJECT
-private:
-    MyBoardLogic boardLogic;
-    ChessPositions positions;
-    bool whiteOpen{false};
-    bool blackOpen{false};
-    PawTrans* pawTrans;
-    char masView[64]{0};
-    char targeted;
-    char last;
-    char storona;
-    QImage blackKing;
-    QImage blackKon;
-    QImage blackPeshka;
-    QImage blackFerz;
-    QImage blackLadia;
-    QImage blackSlon;
-    QImage whiteKing;
-    QImage whiteKon;
-    QImage whitePeshka;
-    QImage whiteFerz;
-    QImage whiteLadia;
-    QImage whiteSlon;
-    QImage board;
-
-    void mouseReleaseEvent(QMouseEvent* event);
-    void paintEvent(QPaintEvent *);
-
 public:
     BordWidget(QWidget *parent = 0);
 
@@ -66,8 +39,6 @@ public:
         blackOpen = false;
         update();
     }
-
-
     void bordChng(char current);
 signals:
     void moved(FigurePos, FigurePos);
@@ -107,6 +78,33 @@ public slots:
         }
         return res;
     }
+
+private:
+    MyBoardLogic boardLogic;
+    ChessPositions positions;
+    bool whiteOpen{false};
+    bool blackOpen{false};
+    PawTrans* pawTrans;
+    char masView[64]{0};
+    char targeted;
+    char last;
+    char storona;
+    QImage blackKing;
+    QImage blackKon;
+    QImage blackPeshka;
+    QImage blackFerz;
+    QImage blackLadia;
+    QImage blackSlon;
+    QImage whiteKing;
+    QImage whiteKon;
+    QImage whitePeshka;
+    QImage whiteFerz;
+    QImage whiteLadia;
+    QImage whiteSlon;
+    QImage board;
+
+    void mouseReleaseEvent(QMouseEvent* event);
+    void paintEvent(QPaintEvent *);
 
 };
 

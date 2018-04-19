@@ -26,7 +26,7 @@ const char startSto[] = {0,0,0,0,0,0,0,0,
                          1,1,1,1,1,1,1,1,
                          1,1,1,1,1,1,1,1};
 
-char MyBoardLogic::kingPos(char kingColor) {
+char MyBoardLogic::kingPos(const char kingColor) const {
     for(int i = 0; i < 64; i++) {
         if ((mas[i] == KOROL) && (sto[i] == kingColor)) {
             return i;
@@ -116,7 +116,7 @@ StepEnum MyBoardLogic::moveFig(FigurePos pos1, FigurePos pos2, bool b) {
     return StepEnum::SIMPLE_STEP;
 }
 
-bool MyBoardLogic::podUdarom(char pos1) {
+bool MyBoardLogic::podUdarom(const FigurePos pos1) {
     int x0 = pos1 % 8;
     int y0 = pos1 / 8;
     int x1 = x0;

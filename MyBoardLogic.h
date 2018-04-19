@@ -55,10 +55,10 @@ struct ChessPositions {
 
 class MyBoardLogic {
 public:
-    bool podUdarom(FigurePos pos);
+    bool podUdarom(const FigurePos pos);
     void backStep();
 
-    char kingPos(char kingColor);
+    char kingPos(const char kingColor) const;
     ChessPositions getPositions() {
         ChessPositions positions;
         memcpy(positions.type, mas, BOARD_FIELDS_COUNT);
@@ -66,13 +66,14 @@ public:
         return positions;
     }
 
-    int pawTrans(char chosed) {
+    int pawTrans(const char chosed) {
         mas[target] = chosed;
         target = BOARD_FIELDS_COUNT;
         curColor = 1 - curColor;
         return thisIsVictory(kingPos(curColor));
     }
-    char getCurColor() {
+
+    char getCurColor() const {
         return curColor;
     }
 
@@ -83,16 +84,16 @@ public:
 private:
     MyVec<Step> history;
     char curColor{0};
-    char hodil[BOARD_FIELDS_COUNT]{{0}};
-    char sto[BOARD_FIELDS_COUNT];
-    char mas[BOARD_FIELDS_COUNT];
-    char masBuf[BOARD_FIELDS_COUNT];
-    char stoBuf[BOARD_FIELDS_COUNT];
-    char target{BOARD_FIELDS_COUNT};
-    inline bool isEmpty(char _pos) {return mas[_pos] == 0;}
-    inline bool isNotEmpty(char _pos) {return mas[_pos] != 0;}
-    inline bool isRival(char pos1, char pos2) {return sto[pos1] != sto[pos2];}
-    bool thisIsVictory(char pos);
+    unsigned char hodil[BOARD_FIELDS_COUNT]{{0}};
+    unsigned char sto[BOARD_FIELDS_COUNT];
+    unsigned char mas[BOARD_FIELDS_COUNT];
+    unsigned char masBuf[BOARD_FIELDS_COUNT];
+    unsigned char stoBuf[BOARD_FIELDS_COUNT];
+    unsigned char target{BOARD_FIELDS_COUNT};
+    inline bool isEmpty(const FigurePos _pos) {return mas[_pos] == 0;}
+    inline bool isNotEmpty(const FigurePos _pos) {return mas[_pos] != 0;}
+    inline bool isRival(const FigurePos pos1, const FigurePos pos2) {return sto[pos1] != sto[pos2];}
+    bool thisIsVictory(const char pos);
 };
 
 #endif // MYBOARDLOGIC_H

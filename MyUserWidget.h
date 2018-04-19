@@ -47,11 +47,6 @@ private:
             painter.drawText(0, height() * 0.9, width(), height() * 0.1, Qt::AlignCenter, "user");
         }
 
-        //        QColor color = (isWhite)?Qt::white:Qt::black;
-
-        //        painter.setBrush(color);
-        //        painter.setPen(Qt::gray);
-        //        painter.drawRect(0,0,width() * 0.1, height() * 0.1);
 
         QString str = (isWhite)?"white":"black";
         painter.drawText(0,0,  width(),  0.1 * height(), Qt::AlignCenter, str);

@@ -114,18 +114,21 @@ public slots:
         this->show();
         update();
     }
+
     void showGameMenue() {
         releaseButton();
         gameMenue();
         this->show();
         update();
     }
+
     void showWinMenue() {
         releaseButton();
         winMenue();
         this->show();
         update();
     }
+
     void showWait() {
         releaseButton();
         waitMenue();
@@ -139,24 +142,28 @@ public slots:
         this->show();
         update();
     }
+
     void showDisconnectMenue() {
         releaseButton();
         disconnectMenue();
         this->show();
         update();
     }
+
     void proposedNichia() {
         releaseButton();
         nichiaMenue();
         this->show();
         update();
     }
+
     void showNichia() {
         releaseButton();
         staticNichia();
         this->show();
         update();
     }
+
 };
 
 #endif // MYMENUE_H

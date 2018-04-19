@@ -16,5 +16,6 @@ void MyConnectionStatusWidget::paintEvent(QPaintEvent *) {
     painter.drawText(width() * 0.7, 0, width() * 0.1, height() * 0.3, Qt::AlignRight, (isConnected?"true":"false"));
     painter.drawText(width() * 0.3, height() * 0.04, width(), height() * 0.1, Qt::AlignLeft, "Поиск соперника");
     painter.drawText(width() * 0.7, height() * 0.04, width() * 0.1, height() * 0.3, Qt::AlignRight, ("false"));
+
 }
 
