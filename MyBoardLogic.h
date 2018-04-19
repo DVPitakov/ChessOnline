@@ -61,13 +61,13 @@ public:
     char kingPos(const char kingColor) const;
     ChessPositions getPositions() {
         ChessPositions positions;
-        memcpy(positions.type, mas, BOARD_FIELDS_COUNT);
-        memcpy(positions.color, sto, BOARD_FIELDS_COUNT);
+        memcpy(positions.type, figuresTypes, BOARD_FIELDS_COUNT);
+        memcpy(positions.color, whitePoses, BOARD_FIELDS_COUNT);
         return positions;
     }
 
     int pawTrans(const char chosed) {
-        mas[target] = chosed;
+        figuresTypes[target] = chosed;
         target = BOARD_FIELDS_COUNT;
         curColor = 1 - curColor;
         return thisIsVictory(kingPos(curColor));
@@ -84,15 +84,15 @@ public:
 private:
     MyVec<Step> history;
     char curColor{0};
-    unsigned char hodil[BOARD_FIELDS_COUNT]{{0}};
-    unsigned char sto[BOARD_FIELDS_COUNT];
-    unsigned char mas[BOARD_FIELDS_COUNT];
-    unsigned char masBuf[BOARD_FIELDS_COUNT];
-    unsigned char stoBuf[BOARD_FIELDS_COUNT];
+    bool hodil[BOARD_FIELDS_COUNT]{{false}};
+    unsigned char whitePoses[BOARD_FIELDS_COUNT];
+    unsigned char figuresTypes[BOARD_FIELDS_COUNT];
+    unsigned char figuresTypesBuf[BOARD_FIELDS_COUNT];
+    unsigned char whitePosesBuf[BOARD_FIELDS_COUNT];
     unsigned char target{BOARD_FIELDS_COUNT};
-    inline bool isEmpty(const FigurePos _pos) {return mas[_pos] == 0;}
-    inline bool isNotEmpty(const FigurePos _pos) {return mas[_pos] != 0;}
-    inline bool isRival(const FigurePos pos1, const FigurePos pos2) {return sto[pos1] != sto[pos2];}
+    inline bool isEmpty(const FigurePos _pos) {return figuresTypes[_pos] == 0;}
+    inline bool isNotEmpty(const FigurePos _pos) {return figuresTypes[_pos] != 0;}
+    inline bool isRival(const FigurePos pos1, const FigurePos pos2) {return whitePoses[pos1] != whitePoses[pos2];}
     bool thisIsVictory(const char pos);
 };
 

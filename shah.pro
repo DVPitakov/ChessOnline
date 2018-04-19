@@ -16,7 +16,6 @@ QMAKE_CXXFLAGS += -std=c++11
 
 SOURCES += main.cpp\
     MyBoardLogic.cpp \
-    MyVec.cpp \
     MainWindow.cpp \
     NetManager.cpp \
     BoardWidget.cpp \
