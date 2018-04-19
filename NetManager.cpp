@@ -51,7 +51,10 @@ void NetManager::performResponse(QString message) {
 
     QDomDocument doc;
     if (false == doc.setContent(message)) {
-        throw QString("bad XML-file: setContent");
+        errorCounter += 1;
+    }
+    else {
+        errorCounter = 0;
     }
     QDomElement root = doc.documentElement();
     for(QDomNode event = root.firstChild(); !event.isNull(); event = event.nextSibling()) {

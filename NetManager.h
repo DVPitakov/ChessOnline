@@ -13,6 +13,7 @@ public:
     bool isConnected{false};
     bool isActive{false};
     long int myId{0};
+    int errorCounter{0};
     explicit NetManager(QObject *parent = 0);
     void run() {
         runUpdates(500);
