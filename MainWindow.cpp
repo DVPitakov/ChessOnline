@@ -23,10 +23,10 @@ MainWindow::MainWindow(QWidget *parent): QWidget(parent) {
     connect(netManager, SIGNAL(pawTransed(char)), bord, SLOT(afterPawTrans(char)));
     connect(netManager, SIGNAL(gameEnd(EndCouse)), this, SLOT(chooseEndMenue(EndCouse)));
     connect(netManager, SIGNAL(userDataReceived()), connectionForm, SLOT(connected()));
-    connect(netManager, SIGNAL(lose()), menue, SLOT(showDisconnectMenue()));
+    connect(netManager, SIGNAL(connectionFail()), menue, SLOT(showDisconnectMenue()));
     connect(netManager, SIGNAL(nichia()), menue, SLOT(proposedNichia()));
-    connect(netManager, SIGNAL(saidYes()), menue, SLOT(showNichia()));
-    connect(netManager, SIGNAL(saidNot()), menue, SLOT(hide()));
+    connect(netManager, SIGNAL(anotheUserAnsweredYes()), menue, SLOT(showNichia()));
+    connect(netManager, SIGNAL(anotheUserAnsweredNot()), menue, SLOT(hide()));
 
     setGeometry(100,100,700,600);
     menueButton->setText("Меню");

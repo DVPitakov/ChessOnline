@@ -115,11 +115,11 @@ void NetManager::performResponse(QString message) {
             emit nichia();
         }
         else if (action == "sayYes") {
-            emit saidYes();
+            emit anotheUserAnsweredYes();
             stop();
         }
         else if (action == "sayNot") {
-            emit saidNot();
+            emit anotheUserAnsweredNot();
         }
         else if (action == "userKey") {
             this->userId = userId;

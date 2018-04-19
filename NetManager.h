@@ -10,17 +10,17 @@ class NetManager : public QObject
 {
     Q_OBJECT
 public:
-    bool online{false};
-    bool isConnected{false};
-    bool isActive{false};
-    long int myId{0};
-    int errorCounter{0};
     explicit NetManager(QObject *parent = 0);
     void run() {
         runUpdates(500);
     }
 
 private:
+    bool online{false};
+    bool isConnected{false};
+    bool isActive{false};
+    long int myId{0};
+    int errorCounter{0};
     QNetworkAccessManager *restclient;
     QString userId;
     QString gameId;
@@ -33,16 +33,15 @@ private:
 
 
 signals:
-    void closed();
     void friendIsFound(int);
     void newStep(FigurePos, FigurePos);
     void pawTransed(char);
     void gameEnd(EndCouse);
     void userDataReceived();
-    void lose();
+    void connectionFail();
     void nichia();
-    void saidYes();
-    void saidNot();
+    void anotheUserAnsweredYes();
+    void anotheUserAnsweredNot();
 
 
 public slots:
@@ -51,16 +50,6 @@ public slots:
     void replyFinished(QNetworkReply * reply) {
         QString replyData = reply->readAll();
         performResponse(replyData);
-    }
-
-    void connectionError() {
-        if (isActive == false) {
-            timer->stop();
-            emit lose();
-        }
-        else {
-            isActive = false;
-        }
     }
 
     void stop() {
@@ -105,6 +94,17 @@ public slots:
 
     void sayNot()  {
         sendGameMessage((QString("{\"action\": ") + " \"sayNot\"" + " \n}"));
+    }
+
+private slots:
+    void connectionError() {
+        if (isActive == false) {
+            timer->stop();
+            emit connectionFail();
+        }
+        else {
+            isActive = false;
+        }
     }
 
 };
