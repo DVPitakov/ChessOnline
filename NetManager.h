@@ -36,7 +36,7 @@ signals:
     void newStep(int, int);
     void pawTransed(char);
     void gameEnd(char);
-    void wsConnected();
+    void userDataReceived();
     void lose();
     void nichia();
     void saidYes();
@@ -90,7 +90,6 @@ public slots:
 
     void sendGameEnd(char couse, char pos) {
         timer->stop();
-        qDebug() << "gameEndSendong";
         sendGameMessage((QString("{\"action\": ") + " \"gameEnd\"" +
                                  " ,\n\"couse\": " + QString::number(couse) +
                                  " ,\n\"data\": " + QString::number(pos) +

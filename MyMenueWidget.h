@@ -7,15 +7,15 @@
 #include <QMouseEvent>
 #include <QImage>
 
-struct ButtonInfo {
-    QString buttonActionName;
-    QString buttonText;
-    QString type{"button"};
-};
-
 class MyMenue : public QWidget
 {
     Q_OBJECT
+    struct ButtonInfo {
+        QString buttonActionName;
+        QString buttonText;
+        QString type{"button"};
+    };
+
     ButtonInfo buttonList[10];
     int buttonListLen{0};
     QImage backGround;

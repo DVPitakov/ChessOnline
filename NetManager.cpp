@@ -40,14 +40,26 @@ void NetManager::runUpdates(int interval) {
 }
 
 void NetManager::performResponse(QString message) {
+    const char * const ACTION_TAG = "action";
+    const char * const OLD_POS_TAG = "oldPos";
+    const char * const NEW_POS_TAG = "newPos";
+    const char * const FIGURE_TAG = "figure";
+    const char * const POS_TAG = "pos";
+    const char * const USER_COLOR_TAG = "userColor";
+    const char * const USER_ID_TAG = "user_id";
+    const char * const GAME_ID_TAG = "game_id";
+    const char * const COURSE_TAG = "course";
+
+
     QDomDocument doc;
-    if (false == doc.setContent(message))
-         throw QString("bad XML-file: setContent");
+    if (false == doc.setContent(message)) {
+        throw QString("bad XML-file: setContent");
+    }
     QDomElement root = doc.documentElement();
     for(QDomNode event = root.firstChild(); !event.isNull(); event = event.nextSibling()) {
         QString action;
-        QString user_id;
-        QString game_id;
+        QString userId;
+        QString gameId;
         int newPos;
         int oldPos;
         int pos;
@@ -55,31 +67,31 @@ void NetManager::performResponse(QString message) {
         int color;
         int couse;
         for (QDomNode eventField = event.firstChild(); !eventField.isNull(); eventField = eventField.nextSibling()) {
-            if (eventField.nodeName() == "action") {
+            if (eventField.nodeName() == ACTION_TAG) {
                 action = eventField.firstChild().nodeValue();
             }
-            else if (eventField.nodeName() == "oldPos") {
+            else if (eventField.nodeName() == OLD_POS_TAG) {
                 oldPos = eventField.firstChild().nodeValue().toInt();
             }
-            else if (eventField.nodeName() == "newPos") {
+            else if (eventField.nodeName() == NEW_POS_TAG) {
                 newPos = eventField.firstChild().nodeValue().toInt();
             }
-            else if (eventField.nodeName() == "figure") {
+            else if (eventField.nodeName() == FIGURE_TAG) {
                 figure = eventField.firstChild().nodeValue().toInt();
             }
-            else if (eventField.nodeName() == "pos") {
+            else if (eventField.nodeName() == POS_TAG) {
                 pos = eventField.firstChild().nodeValue().toInt();
             }
-            else if (eventField.nodeName() == "userColor") {
+            else if (eventField.nodeName() == USER_COLOR_TAG) {
                 color = eventField.firstChild().nodeValue().toInt();
             }
-            else if (eventField.nodeName() == "user_id") {
-                user_id = eventField.firstChild().nodeValue();
+            else if (eventField.nodeName() == USER_ID_TAG) {
+                userId = eventField.firstChild().nodeValue();
             }
-            else if (eventField.nodeName() == "game_id") {
-                game_id = eventField.firstChild().nodeValue();
+            else if (eventField.nodeName() == GAME_ID_TAG) {
+                gameId = eventField.firstChild().nodeValue();
             }
-            else if (eventField.nodeName() == "couse") {
+            else if (eventField.nodeName() == COURSE_TAG) {
                 couse = eventField.firstChild().nodeValue().toInt();
             }
         }
@@ -109,11 +121,9 @@ void NetManager::performResponse(QString message) {
             emit saidNot();
         }
         else if (action == "userKey") {
-            this->userId = user_id;
-            this->gameId = game_id;
-            emit wsConnected();
-            qDebug() << userId;
-            qDebug() << gameId;
+            this->userId = userId;
+            this->gameId = gameId;
+            emit userDataReceived();
         }
     }
 

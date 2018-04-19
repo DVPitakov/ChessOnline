@@ -13,26 +13,26 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-    MyConnectionWindow.cpp \
     MyBoardLogic.cpp \
-    MyMenue.cpp \
     MyVec.cpp \
-    PawTrans.cpp \
-    MyUser.cpp \
     MainWindow.cpp \
     NetManager.cpp \
-    Board.cpp
+    PawTransView.cpp \
+    BoardWidget.cpp \
+    MyUserWidget.cpp \
+    MyMenueWidget.cpp \
+    MyConnectionStatusWidget.cpp
 
 HEADERS  += \
-    MyUser.h \
-    MyConnectionWindow.h \
     MyBoardLogic.h \
-    MyMenue.h \
     MyVec.h \
-    PawTrans.h \
-    Board.h \
     MainWindow.h \
-    NetManager.h
+    NetManager.h \
+    PawTransView.h \
+    BoardWidget.h \
+    MyUserWidget.h \
+    MyMenueWidget.h \
+    MyConnectionStatusWidget.h
 
 DISTFILES +=
 

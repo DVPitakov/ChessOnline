@@ -55,7 +55,9 @@ void MyBoardLogic::backStep() {
 
 }
 
-STEP MyBoardLogic::moveFig(const char pos1, const char pos2, bool b) {
+
+
+STEP MyBoardLogic::moveFig(char pos1, char pos2, bool b) {
     if (target != 64  || (sto[pos1] != curColor)) {
         return STEP::WRONG_STEP;
     }

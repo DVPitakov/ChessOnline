@@ -10,8 +10,25 @@ const char MOZHNO = 0b00000010;
 const char VRAG   = 0b00000100;
 const int BOARD_FIELDS_COUNT = 64;
 
+
+enum class COLOR {
+
+};
+
 enum class STEP {
     SIMPLE_STEP, NOT_TARGETED_USER_OR_FREE_FIELD, KING_UNDER_ATTACK, WRONG_STEP, PROMOTION, VICTORY_STEP
+};
+
+struct Step {
+    char _posOld;
+    char _posNew;
+    char _storona;
+    char _figura;
+    char _eaten;
+    bool isWhite{0};
+
+    Step(char posOld, char posNew, char storona = 3, char figura = 0, char eaten = 0):
+        _posOld(posOld),_posNew(posNew),_storona(storona),_figura(figura),_eaten(eaten) {}
 };
 
 struct ChessPositions {

@@ -1,12 +1,12 @@
 #include "MainWindow.h"
 MainWindow::MainWindow(QWidget *parent): QWidget(parent) {
     netManager = new NetManager(this);
-    bord = new Bord(this);
+    bord = new BordWidget(this);
     blackUser = new MyUser(this);
     whiteUser = new MyUser(this);
     menueButton = new QPushButton(this);
     menue = new MyMenue(this);
-    connectionForm = new MyConnectionForm(this);
+    connectionForm = new MyConnectionStatusWidget(this);
 
     connect(this, SIGNAL(readyToShow(char)), menue, SLOT(update()));
     connect(menueButton, SIGNAL(clicked(bool)), menue, SLOT(showGameMenue()));
@@ -36,6 +36,4 @@ MainWindow::MainWindow(QWidget *parent): QWidget(parent) {
     connectionForm->hide();
 }
 
-MainWindow::~MainWindow() {
-
-}
+MainWindow::~MainWindow() {}

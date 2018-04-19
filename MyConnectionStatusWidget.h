@@ -5,12 +5,13 @@
 #include <QPainter>
 #include <QPaintEvent>
 #include <QColor>
-class MyConnectionForm : public QWidget
+
+class MyConnectionStatusWidget : public QWidget
 {
     bool isConnected{false};
     Q_OBJECT
 public:
-    explicit MyConnectionForm(QWidget *parent = 0);
+    explicit MyConnectionStatusWidget(QWidget *parent = 0);
     void paintEvent(QPaintEvent *);
 signals:
 public slots:

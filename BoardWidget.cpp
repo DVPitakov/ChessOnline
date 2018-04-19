@@ -1,6 +1,6 @@
-#include "Board.h"
+#include "BoardWidget.h"
 
-Bord::Bord(QWidget* parent):QWidget(parent)
+BordWidget::BordWidget(QWidget* parent):QWidget(parent)
 {
     positions = boardLogic.getPositions();
     blackKing = QImage(":/blackKing.png");
@@ -29,7 +29,7 @@ Bord::Bord(QWidget* parent):QWidget(parent)
     connect(pawTrans, SIGNAL(figureChosed(char)), this, SIGNAL(pawChanged(char)));
 }
 
-void Bord::bordChng(char current) {
+void BordWidget::bordChng(char current) {
     char bufa = storona;
     if ((positions.type[current] != 0) && (positions.color[current] == storona)
             && ((whiteOpen && (storona == 0)) || (blackOpen && (storona == 1)))) {
@@ -66,14 +66,14 @@ void Bord::bordChng(char current) {
 
 }
 
-void Bord::mouseReleaseEvent(QMouseEvent* event) {
+void BordWidget::mouseReleaseEvent(QMouseEvent* event) {
     int x = (event->x() << 3) / width();
     int y = (event->y() << 3) / height();
     int current = x + (y << 3);
     bordChng(current);
 }
 
-void Bord::paintEvent(QPaintEvent *) {
+void BordWidget::paintEvent(QPaintEvent *) {
     pawTrans->setGeometry(width() * 0.1, height() * 0.1 , width() * 0.8, height() * 0.8);
     QPainter painter(this);
     bool b = true;

@@ -1,9 +1,9 @@
-#include "MyConnectionWindow.h"
+#include "MyConnectionStatusWidget.h"
 
-MyConnectionForm::MyConnectionForm(QWidget *parent) : QWidget(parent) {}
+MyConnectionStatusWidget::MyConnectionStatusWidget(QWidget *parent) : QWidget(parent) {}
 
 
-void MyConnectionForm::paintEvent(QPaintEvent *) {
+void MyConnectionStatusWidget::paintEvent(QPaintEvent *) {
     QPainter painter(this);
     QColor color1(255,255,255,200);
     QColor color2(0,0,0);
@@ -18,3 +18,4 @@ void MyConnectionForm::paintEvent(QPaintEvent *) {
     painter.drawText(width() * 0.3, height() * 0.04, width(), height() * 0.1, Qt::AlignLeft, "Поиск соперника");
     painter.drawText(width() * 0.7, height() * 0.04, width() * 0.1, height() * 0.3, Qt::AlignRight, ("false"));
 }
+

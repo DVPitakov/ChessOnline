@@ -3,7 +3,7 @@
 #include <QWidget>
 #include <QPainter>
 #include <QMouseEvent>
-#include <PawTrans.h>
+#include <PawTransView.h>
 #include <QBitmap>
 #include <QPixmap>
 #include "MyVec.h"
@@ -11,7 +11,7 @@
 
 const char SELECTED = 0b00000001;
 
-class Bord:public QWidget
+class BordWidget:public QWidget
 {
     Q_OBJECT
 private:
@@ -42,7 +42,7 @@ private:
     void paintEvent(QPaintEvent *);
 
 public:
-    Bord(QWidget *parent = 0);
+    BordWidget(QWidget *parent = 0);
 
     void setColor(char color) {
         if (color == 0) {

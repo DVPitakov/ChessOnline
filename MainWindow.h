@@ -7,24 +7,25 @@ static int counter = 0;
 #include <QPainter>
 #include <QPaintEvent>
 #include <QEvent>
-#include <Board.h>
+#include <BoardWidget.h>
 #include <QPaintEvent>
 #include <QPushButton>
 #include <QLabel>
-#include <MyMenue.h>
+#include <MyMenueWidget.h>
 #include "NetManager.h"
-#include "MyUser.h"
-#include "MyConnectionWindow.h"
+#include "MyUserWidget.h"
+#include "MyConnectionStatusWidget.h"
+
 class MainWindow : public QWidget
 {
     Q_OBJECT
 
 public:
-    MyConnectionForm * connectionForm;
+    MyConnectionStatusWidget * connectionForm;
     MyUser *whiteUser;
     MyUser *blackUser;
     NetManager *netManager;
-    Bord *bord;
+    BordWidget *bord;
     QPushButton* pushButton;
     QPushButton* menueButton;
     MyMenue* menue;

@@ -3,18 +3,6 @@
 #include <malloc.h>
 #include <stdio.h>
 
-struct Step {
-    char _posOld;
-    char _posNew;
-    char _storona;
-    char _figura;
-    char _eaten;
-    bool isWhite{0};
-
-    Step(char posOld, char posNew, char storona = 3, char figura = 0, char eaten = 0):
-        _posOld(posOld),_posNew(posNew),_storona(storona),_figura(figura),_eaten(eaten) {}
-};
-
 template <class T>
 class MyVec {
 public:
