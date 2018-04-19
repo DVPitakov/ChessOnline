@@ -2,8 +2,6 @@
 #define NETMANAGER_H
 
 #include <QObject>
-
-#include <QObject>
 #include <QNetworkReply>
 #include <QTimer>
 

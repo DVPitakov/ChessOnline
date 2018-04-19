@@ -3,7 +3,6 @@
 
 #include <QWidget>
 #include <QPainter>
-#include <mylabel.h>
 #include <QPaintEvent>
 #include <QMouseEvent>
 #include <QImage>

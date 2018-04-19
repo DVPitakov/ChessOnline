@@ -11,7 +11,6 @@ static int counter = 0;
 #include <QPaintEvent>
 #include <QPushButton>
 #include <QLabel>
-#include <mylabel.h>
 #include <MyMenue.h>
 #include "NetManager.h"
 #include "MyUser.h"
