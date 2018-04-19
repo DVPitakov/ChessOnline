@@ -23,13 +23,13 @@ public:
     MyConnectionForm * connectionForm;
     MyUser *whiteUser;
     MyUser *blackUser;
-    NetManager *ws;
+    NetManager *netManager;
     Bord *bord;
     QPushButton* pushButton;
     QPushButton* menueButton;
     MyMenue* menue;
     MainWindow(QWidget *parent = 0);
-    bool listen_now;
+    bool listenNow;
     QTime timer;
     ~MainWindow();
 
@@ -111,11 +111,11 @@ public slots:
     void buttonManager(QString eventName) {
         if (eventName ==  "sdatsa") {
             menue->showFailMenue();
-            ws->sendGameEnd(100,0);
+            netManager->sendGameEnd(100,0);
         }
         else if (eventName ==  "online") {
             connectionForm->friendSearch();
-            ws->run();
+            netManager->run();
         }
         else if (eventName ==  "continue") {
             bord->restart();
@@ -135,18 +135,18 @@ public slots:
             this->close();
         }
         else if (eventName == "nichia") {
-            ws->sendNichia();
+            netManager->sendNichia();
             menue->showWait();
         }
         else if (eventName == "breakGame") {
 
         }
         else if (eventName == "sayYes") {
-            ws->sayYes();
+            netManager->sayYes();
             menue->showNichia();
         }
         else if (eventName == "sayNot") {
-            ws->sayNot();
+            netManager->sayNot();
             menue->setHidden(true);
         }
         else {

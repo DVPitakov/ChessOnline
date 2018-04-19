@@ -43,6 +43,7 @@ private:
 
 public:
     Bord(QWidget *parent = 0);
+
     void setColor(char color) {
         if (color == 0) {
             whiteOpen = true;
@@ -53,6 +54,7 @@ public:
             blackOpen = true;
         }
     }
+
     void restart() {
         last = 64;
         targeted = 64;
@@ -86,16 +88,17 @@ public slots:
         update();
     }
 
-    int moveFig(int pos1, int pos2) {
-        int res = boardLogic.moveFig(pos1, pos2);
+
+    STEP moveFig(int pos1, int pos2) {
+        STEP res = boardLogic.moveFig(pos1, pos2);
         switch(res) {
-        case 4: {
+        case STEP::PROMOTION: {
             if ((whiteOpen && !boardLogic.getCurColor()) || (blackOpen && boardLogic.getCurColor())) {
                 emit pawOnOtherSide();
             }
             break;
         }
-        case 0: {
+        case STEP::SIMPLE_STEP: {
             positions = boardLogic.getPositions();
             update();
             break;

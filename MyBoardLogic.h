@@ -1,5 +1,6 @@
 #ifndef MYBOARDLOGIC_H
 #define MYBOARDLOGIC_H
+
 #include <memory.h>
 #include <memory>
 #include "MyVec.h"
@@ -7,11 +8,15 @@
 
 const char MOZHNO = 0b00000010;
 const char VRAG   = 0b00000100;
+const int BOARD_FIELDS_COUNT = 64;
 
+enum class STEP {
+    SIMPLE_STEP, NOT_TARGETED_USER_OR_FREE_FIELD, KING_UNDER_ATTACK, WRONG_STEP, PROMOTION, VICTORY_STEP
+};
 
 struct ChessPositions {
-    char type[64];
-    char color[64];
+    char type[BOARD_FIELDS_COUNT];
+    char color[BOARD_FIELDS_COUNT];
     ChessPositions(){}
     ChessPositions(const ChessPositions& oth) {
         memcpy(this->type, oth.type, sizeof(this->type));
@@ -22,7 +27,7 @@ struct ChessPositions {
         memcpy(this->color, newColor64, sizeof(this->color));
     }
     bool operator==(const ChessPositions& oth) {
-        for(int i = 0; i  <64; i++) {
+        for(int i = 0; i  < BOARD_FIELDS_COUNT; i++) {
             if (type[i] != oth.type[i] || color[i] != oth.color[i]) {
                 return false;
             }
@@ -36,12 +41,12 @@ class MyBoardLogic
 private:
     MyVec<Step> history;
     char curColor{0};
-    char hodil[64]{{0}};
-    char sto[64];
-    char mas[64];
-    char masBuf[64];
-    char stoBuf[64];
-    char target{64};
+    char hodil[BOARD_FIELDS_COUNT]{{0}};
+    char sto[BOARD_FIELDS_COUNT];
+    char mas[BOARD_FIELDS_COUNT];
+    char masBuf[BOARD_FIELDS_COUNT];
+    char stoBuf[BOARD_FIELDS_COUNT];
+    char target{BOARD_FIELDS_COUNT};
     inline bool isEmpty(char _pos) {return mas[_pos] == 0;}
     inline bool isNotEmpty(char _pos) {return mas[_pos] != 0;}
     inline bool isRival(char pos1, char pos2) {return sto[pos1] != sto[pos2];}
@@ -55,14 +60,14 @@ public:
     char kingPos(char kingColor);
     ChessPositions getPositions() {
         ChessPositions positions;
-        memcpy(positions.type, mas, 64);
-        memcpy(positions.color, sto, 64);
+        memcpy(positions.type, mas, BOARD_FIELDS_COUNT);
+        memcpy(positions.color, sto, BOARD_FIELDS_COUNT);
         return positions;
     }
 
     int pawTrans(char chosed) {
         mas[target] = chosed;
-        target = 64;
+        target = BOARD_FIELDS_COUNT;
         curColor = 1 - curColor;
         return thisIsVictory(kingPos(curColor));
     }
@@ -72,7 +77,7 @@ public:
 
     MyBoardLogic();
     MyVec<char> steps(char pos);
-    int moveFig(char pos1, char pos2, bool b = true);
+    STEP moveFig(char pos1, char pos2, bool b = true);
 };
 
 #endif // MYBOARDLOGIC_H

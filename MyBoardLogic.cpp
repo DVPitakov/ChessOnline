@@ -55,20 +55,13 @@ void MyBoardLogic::backStep() {
 
 }
 
-//0-правильный ход
-//1-не тот пользователь или пустая ячейка
-//2-король под атакой
-//3-недоступный ход
-//4-превращение пешки
-//25-победа
-
-int MyBoardLogic::moveFig(char pos1, char pos2, bool b) {
+STEP MyBoardLogic::moveFig(const char pos1, const char pos2, bool b) {
     if (target != 64  || (sto[pos1] != curColor)) {
-        return 3;
+        return STEP::WRONG_STEP;
     }
-    if ((mas[pos1] == 0)) return 1;
+    if ((mas[pos1] == 0)) return STEP::NOT_TARGETED_USER_OR_FREE_FIELD;
     MyVec<char> avaliable = steps(pos1);
-    if (avaliable.pos(pos2) == -1) { return 3;}
+    if (avaliable.pos(pos2) == -1) { return STEP::WRONG_STEP;}
     history.push(Step(pos1, pos2, sto[pos1], mas[pos1], mas[pos2]));
     if ((mas[pos1] == PESHKA) && (mas[pos2] == 0) && (pos2 - pos1 != 8) && (pos1 - pos2 !=8) && (pos2 - pos1 != 16) && (pos1 - pos2 !=16)) {
         int len;
@@ -107,18 +100,18 @@ int MyBoardLogic::moveFig(char pos1, char pos2, bool b) {
     }
     if (podUdarom(kingPos(curColor))) {
         backStep();
-        return 2;
+        return STEP::KING_UNDER_ATTACK;
     }
 
     if (b && (mas[pos2] == PESHKA) && (((pos2 / 8) == 0) || ((pos2 / 8) == 7))) {
         target = pos2;
-        return 4;
+        return STEP::PROMOTION;
     }
     if (thisIsVictory(kingPos(1 - curColor))) {
-        return 25;
+        return STEP::VICTORY_STEP;
     }
     curColor = 1 - curColor;
-    return 0;
+    return STEP::SIMPLE_STEP;
 }
 
 bool MyBoardLogic::podUdarom(char pos1) {
@@ -382,10 +375,9 @@ MyVec<char> MyBoardLogic::steps(char pos) {
 
 bool MyBoardLogic::thisIsVictory(char pos)
 {
-    qDebug() << "this is victory called";
     if (!podUdarom(pos)) {
 
-        for(int i = 0; i < 64; i++) {
+        for(int i = 0; i < BOARD_FIELDS_COUNT; i++) {
             if ((sto[i] == sto[pos]) && mas[i]) {
                 MyVec<char> vec = steps(i);
                 if (vec.lastNum() != -1) {
@@ -400,8 +392,8 @@ bool MyBoardLogic::thisIsVictory(char pos)
         if (vecs.lastNum() != - 1) {
             while(vecs.lastNum() >= 0) {
                 char posa = vecs.pop();
-                int res = moveFig(pos, posa, false);
-                if ((res == 0) || (res == 4)) {
+                STEP res = moveFig(pos, posa, false);
+                if ((res == STEP::SIMPLE_STEP) || (res == STEP::PROMOTION)) {
                     if (!podUdarom(posa)) {
                         backStep();
                         curColor = 1 - curColor;
@@ -414,13 +406,13 @@ bool MyBoardLogic::thisIsVictory(char pos)
                 }
             }
         }
-        for(int i = 0; i < 64; i++) {
+        for(int i = 0; i < BOARD_FIELDS_COUNT; i++) {
             if ((sto[i] == sto[pos]) && mas[i] && (i != pos)) {
                 MyVec<char> vec = steps(i);
                 while(vec.lastNum() >= 0) {
                     char posa = vec.pop();
-                    int res = moveFig(i, posa, false);
-                    if ((res == 0) || (res == 4)) {
+                    STEP res = moveFig(i, posa, false);
+                    if ((res == STEP::SIMPLE_STEP) || (res == STEP::PROMOTION)) {
                         if (!podUdarom(pos)) {
                             backStep();
                             curColor = 1 - curColor;
@@ -435,6 +427,5 @@ bool MyBoardLogic::thisIsVictory(char pos)
             }
         }
     }
-    qDebug() << "this is victory true";
     return true;
 }

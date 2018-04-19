@@ -1,8 +1,8 @@
 #ifndef MYVEC_H
 #define MYVEC_H
 #include <malloc.h>
-
 #include <stdio.h>
+
 struct Step {
     char _posOld;
     char _posNew;

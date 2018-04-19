@@ -1,21 +1,21 @@
 <RCC>
     <qresource prefix="/">
-        <file alias="blackFerz.png">sourse/BlackFerz.png</file>
-        <file alias="blackKing.png">sourse/BlackKing.png</file>
-        <file alias="blackKon.png">sourse/BlackKon.png</file>
-        <file alias="blackLadia.png">sourse/BlackLadia.png</file>
-        <file alias="blackPeshka.png">sourse/BlackPeshka.png</file>
-        <file alias="blackSlon.png">sourse/BlackSlon.png</file>
-        <file alias="whiteFerz.png">sourse/whiteFerz.png</file>
-        <file alias="whiteKing.png">sourse/whiteKing.png</file>
-        <file alias="whiteKon.png">sourse/whiteKon.png</file>
-        <file alias="whiteLadia.png">sourse/whiteLadia.png</file>
-        <file alias="whitePeshka.png">sourse/whitePeshka.png</file>
-        <file alias="whiteSlon.png">sourse/whiteSlon.png</file>
-        <file alias="anonim.png">sourse/anonim.png</file>
-        <file alias="background.jpg">sourse/background.jpg</file>
-        <file alias="blackImg.jpg">sourse/blackImg.jpg</file>
-        <file alias="whiteImg.jpg">sourse/whiteImg.jpg</file>
-         <file alias="board.jpg">sourse/board.jpg</file>
+        <file alias="blackFerz.png">res/BlackFerz.png</file>
+        <file alias="blackKing.png">res/BlackKing.png</file>
+        <file alias="blackKon.png">res/BlackKon.png</file>
+        <file alias="blackLadia.png">res/BlackLadia.png</file>
+        <file alias="blackPeshka.png">res/BlackPeshka.png</file>
+        <file alias="blackSlon.png">res/BlackSlon.png</file>
+        <file alias="whiteFerz.png">res/whiteFerz.png</file>
+        <file alias="whiteKing.png">res/whiteKing.png</file>
+        <file alias="whiteKon.png">res/whiteKon.png</file>
+        <file alias="whiteLadia.png">res/whiteLadia.png</file>
+        <file alias="whitePeshka.png">res/whitePeshka.png</file>
+        <file alias="whiteSlon.png">res/whiteSlon.png</file>
+        <file alias="anonim.png">res/anonim.png</file>
+        <file alias="background.jpg">res/background.jpg</file>
+        <file alias="blackImg.jpg">res/blackImg.jpg</file>
+        <file alias="whiteImg.jpg">res/whiteImg.jpg</file>
+         <file alias="board.jpg">res/board.jpg</file>
     </qresource>
 </RCC>
