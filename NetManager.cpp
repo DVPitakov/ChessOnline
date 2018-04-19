@@ -108,7 +108,7 @@ void NetManager::performResponse(QString message) {
         }
         else if (action == "gameEnd") {
             timer->stop();
-            emit gameEnd(couse);
+            emit gameEnd((EndCouse)couse);
             stop();
         }
         else if (action == "nichia") {

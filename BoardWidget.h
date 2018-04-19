@@ -44,7 +44,7 @@ signals:
     void moved(FigurePos, FigurePos);
     void pawOnOtherSide();
     void pawChanged(char);
-    void victory(char, char);
+    void victory(EndCouse, char);
     void defeat(char, char);
 public slots:
     void chngSto() {
@@ -54,7 +54,7 @@ public slots:
     void afterPawTrans(char chosed) {
 
         if(boardLogic.pawTrans(chosed)) {
-             emit victory(0, 0);
+             emit victory(EndCouse::YOUR_FAIL_ONE, 0);
         }
         positions = boardLogic.getPositions();
         update();
@@ -64,17 +64,17 @@ public slots:
     StepEnum moveFig(FigurePos pos1, FigurePos pos2) {
         StepEnum res = boardLogic.moveFig(pos1, pos2);
         switch(res) {
-        case StepEnum::PROMOTION: {
-            if ((whiteOpen && !boardLogic.getCurColor()) || (blackOpen && boardLogic.getCurColor())) {
-                emit pawOnOtherSide();
+            case StepEnum::PROMOTION: {
+                if ((whiteOpen && !boardLogic.getCurColor()) || (blackOpen && boardLogic.getCurColor())) {
+                    emit pawOnOtherSide();
+                }
+                break;
             }
-            break;
-        }
-        case StepEnum::SIMPLE_STEP: {
-            positions = boardLogic.getPositions();
-            update();
-            break;
-        }
+            case StepEnum::SIMPLE_STEP: {
+                positions = boardLogic.getPositions();
+                update();
+                break;
+            }
         }
         return res;
     }

@@ -16,6 +16,7 @@ static int counter = 0;
 #include "MyUserWidget.h"
 #include "MyConnectionStatusWidget.h"
 
+
 class MainWindow : public QWidget
 {
     Q_OBJECT
@@ -41,17 +42,17 @@ signals:
     void readyToShow(char);
 
 public slots:
-    void chooseEndMenue(char couse) {
-        if(couse == 0) {
+    void chooseEndMenue(EndCouse couse) {
+        if(couse == EndCouse::YOUR_FAIL_ONE) {
             menue->showFailMenue();
         }
-        else if (couse == 25) {
+        else if (couse == EndCouse::YOUR_WIN) {
             menue->showWinMenue();
         }
-        else if (couse == 45) {
+        else if (couse == EndCouse::YOUR_FAIL_TWO) {
             menue->showFailMenue();
         }
-        else if (couse == 100) {
+        else if (couse == EndCouse::RIVAL_SURENDED) {
             menue->showWinMenue();
         }
     }
@@ -59,7 +60,7 @@ public slots:
     void buttonManager(QString eventName) {
         if (eventName ==  "sdatsa") {
             menue->showFailMenue();
-            netManager->sendGameEnd(100,0);
+            netManager->sendGameEnd(EndCouse::RIVAL_SURENDED,0);
         }
         else if (eventName ==  "online") {
             connectionForm->friendSearch();

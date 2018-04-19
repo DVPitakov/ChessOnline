@@ -37,7 +37,7 @@ signals:
     void friendIsFound(int);
     void newStep(FigurePos, FigurePos);
     void pawTransed(char);
-    void gameEnd(char);
+    void gameEnd(EndCouse);
     void userDataReceived();
     void lose();
     void nichia();
@@ -89,10 +89,10 @@ public slots:
                                  " \n}"));
     }
 
-    void sendGameEnd(char couse, char pos) {
+    void sendGameEnd(EndCouse couse, char pos) {
         timer->stop();
         sendGameMessage((QString("{\"action\": ") + " \"gameEnd\"" +
-                                 " ,\n\"couse\": " + QString::number(couse) +
+                                 " ,\n\"couse\": " + QString::number((char)couse) +
                                  " ,\n\"data\": " + QString::number(pos) +
                                  " \n}"));
         stop();

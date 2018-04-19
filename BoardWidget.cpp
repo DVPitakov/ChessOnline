@@ -53,7 +53,7 @@ void BordWidget::bordChng(char current) {
                     emit moved(targeted, current);
                 }
                 else if (res == StepEnum::VICTORY_STEP) {
-                     emit victory(0, 0);
+                     emit victory(EndCouse::YOUR_FAIL_ONE, 0);
                 }
 
         }

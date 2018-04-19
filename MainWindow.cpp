@@ -13,15 +13,15 @@ MainWindow::MainWindow(QWidget *parent): QWidget(parent) {
     connect(menue, SIGNAL(buttonClicked(QString)), this, SLOT(buttonManager(QString)));
     connect(bord, SIGNAL(moved(FigurePos, FigurePos)), netManager, SLOT(sendStep(FigurePos,FigurePos)));
     connect(bord, SIGNAL(pawChanged(char)), netManager, SLOT(sendPawTrans(char)));
-    connect(bord, SIGNAL(victory(char, char)), netManager, SLOT(sendGameEnd(char,char)));
-    connect(bord, SIGNAL(victory(char, char)), menue, SLOT(showWinMenue()));
+    connect(bord, SIGNAL(victory(EndCouse, char)), netManager, SLOT(sendGameEnd(EndCouse,char)));
+    connect(bord, SIGNAL(victory(EndCouse, char)), menue, SLOT(showWinMenue()));
     connect(netManager, SIGNAL(friendIsFound(int)), this, SLOT(startGame(int)));
     connect(netManager, SIGNAL(friendIsFound(int)), connectionForm, SLOT(friendFounded()));
     connect(netManager, SIGNAL(friendIsFound(int)), menue, SLOT(hide()));
     connect(netManager, SIGNAL(newStep(FigurePos, FigurePos)), bord, SLOT(moveFig(FigurePos, FigurePos)));
     connect(netManager, SIGNAL(newStep(FigurePos, FigurePos)), bord, SLOT(chngSto()));
     connect(netManager, SIGNAL(pawTransed(char)), bord, SLOT(afterPawTrans(char)));
-    connect(netManager, SIGNAL(gameEnd(char)), this, SLOT(chooseEndMenue(char)));
+    connect(netManager, SIGNAL(gameEnd(EndCouse)), this, SLOT(chooseEndMenue(EndCouse)));
     connect(netManager, SIGNAL(userDataReceived()), connectionForm, SLOT(connected()));
     connect(netManager, SIGNAL(lose()), menue, SLOT(showDisconnectMenue()));
     connect(netManager, SIGNAL(nichia()), menue, SLOT(proposedNichia()));
