@@ -91,20 +91,19 @@ void NetManager::performResponse(QString message) {
             emit pawTransed(figure);
         }
         else if (action == "color") {
-            timer->start(3000);
             emit friendIsFound(color);
         }
         else if (action == "gameEnd") {
             timer->stop();
             emit gameEnd(couse);
-            //stop();
+            stop();
         }
         else if (action == "nichia") {
             emit nichia();
         }
         else if (action == "sayYes") {
             emit saidYes();
-            //stop();
+            stop();
         }
         else if (action == "sayNot") {
             emit saidNot();

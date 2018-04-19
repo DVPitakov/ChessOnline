@@ -1,5 +1,5 @@
 #include "MyBoardLogic.h"
-
+#include <QDebug>
 
 const char LADIA = 1;
 const char KON = 2;
@@ -60,6 +60,8 @@ void MyBoardLogic::backStep() {
 //2-король под атакой
 //3-недоступный ход
 //4-превращение пешки
+//25-победа
+
 int MyBoardLogic::moveFig(char pos1, char pos2, bool b) {
     if (target != 64  || (sto[pos1] != curColor)) {
         return 3;
@@ -112,7 +114,7 @@ int MyBoardLogic::moveFig(char pos1, char pos2, bool b) {
         target = pos2;
         return 4;
     }
-    if (thisIsVictory(curColor)) {
+    if (thisIsVictory(kingPos(1 - curColor))) {
         return 25;
     }
     curColor = 1 - curColor;
@@ -380,6 +382,7 @@ MyVec<char> MyBoardLogic::steps(char pos) {
 
 bool MyBoardLogic::thisIsVictory(char pos)
 {
+    qDebug() << "this is victory called";
     if (!podUdarom(pos)) {
 
         for(int i = 0; i < 64; i++) {
@@ -432,6 +435,6 @@ bool MyBoardLogic::thisIsVictory(char pos)
             }
         }
     }
-
+    qDebug() << "this is victory true";
     return true;
 }

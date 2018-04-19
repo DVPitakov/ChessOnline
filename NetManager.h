@@ -17,7 +17,7 @@ public:
     long int myId{0};
     explicit NetManager(QObject *parent = 0);
     void run() {
-        runUpdates(1000);
+        runUpdates(500);
     }
 
 private:
@@ -92,6 +92,7 @@ public slots:
 
     void sendGameEnd(char couse, char pos) {
         timer->stop();
+        qDebug() << "gameEndSendong";
         sendGameMessage((QString("{\"action\": ") + " \"gameEnd\"" +
                                  " ,\n\"couse\": " + QString::number(couse) +
                                  " ,\n\"data\": " + QString::number(pos) +

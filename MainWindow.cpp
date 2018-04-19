@@ -22,9 +22,9 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ws, SIGNAL(friendIsFound(int)), connectionForm, SLOT(friendFounded()));
     connect(ws, SIGNAL(friendIsFound(int)), menue, SLOT(hide()));
     connect(ws, SIGNAL(newStep(int,int)), bord, SLOT(moveFig(int,int)));
+    connect(ws, SIGNAL(newStep(int,int)), bord, SLOT(chngSto()));
     connect(ws, SIGNAL(pawTransed(char)), bord, SLOT(afterPawTrans(char)));
     connect(ws, SIGNAL(gameEnd(char)), this, SLOT(chooseEndMenue(char)));
-    connect(ws, SIGNAL(newStep(int,int)), bord, SLOT(chngSto()));
     connect(ws, SIGNAL(wsConnected()), connectionForm, SLOT(connected()));
     connect(ws, SIGNAL(lose()), menue, SLOT(showDisconnectMenue()));
     connect(ws, SIGNAL(nichia()), menue, SLOT(proposedNichia()));
