@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QNetworkReply>
 #include <QTimer>
+#include <Models.h>
 
 class NetManager : public QObject
 {
@@ -34,7 +35,7 @@ private:
 signals:
     void closed();
     void friendIsFound(int);
-    void newStep(int, int);
+    void newStep(BoardPos, BoardPos);
     void pawTransed(char);
     void gameEnd(char);
     void userDataReceived();

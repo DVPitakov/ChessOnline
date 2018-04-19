@@ -14,12 +14,12 @@ MainWindow::MainWindow(QWidget *parent): QWidget(parent) {
     connect(bord, SIGNAL(moved(int, int)), netManager, SLOT(sendStep(int,int)));
     connect(bord, SIGNAL(pawChanged(char)), netManager, SLOT(sendPawTrans(char)));
     connect(bord, SIGNAL(victory(char, char)), netManager, SLOT(sendGameEnd(char,char)));
-    connect(bord, SIGNAL(victory(char,char)), menue, SLOT(showWinMenue()));
+    connect(bord, SIGNAL(victory(char, char)), menue, SLOT(showWinMenue()));
     connect(netManager, SIGNAL(friendIsFound(int)), this, SLOT(startGame(int)));
     connect(netManager, SIGNAL(friendIsFound(int)), connectionForm, SLOT(friendFounded()));
     connect(netManager, SIGNAL(friendIsFound(int)), menue, SLOT(hide()));
-    connect(netManager, SIGNAL(newStep(int,int)), bord, SLOT(moveFig(int,int)));
-    connect(netManager, SIGNAL(newStep(int,int)), bord, SLOT(chngSto()));
+    connect(netManager, SIGNAL(newStep(BoardPos, BoardPos)), bord, SLOT(moveFig(BoardPos, BoardPos)));
+    connect(netManager, SIGNAL(newStep(BoardPos, BoardPos)), bord, SLOT(chngSto()));
     connect(netManager, SIGNAL(pawTransed(char)), bord, SLOT(afterPawTrans(char)));
     connect(netManager, SIGNAL(gameEnd(char)), this, SLOT(chooseEndMenue(char)));
     connect(netManager, SIGNAL(userDataReceived()), connectionForm, SLOT(connected()));

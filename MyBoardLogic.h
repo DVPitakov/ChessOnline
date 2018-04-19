@@ -5,7 +5,6 @@
 #include <memory>
 #include "MyVec.h"
 
-
 const char MOZHNO = 0b00000010;
 const char VRAG   = 0b00000100;
 const int BOARD_FIELDS_COUNT = 64;

@@ -1,5 +1,6 @@
 #include "MyBoardLogic.h"
 #include <QDebug>
+#include <Models.h>
 
 const char LADIA = 1;
 const char KON = 2;
@@ -57,7 +58,7 @@ void MyBoardLogic::backStep() {
 
 
 
-StepEnum MyBoardLogic::moveFig(char pos1, char pos2, bool b) {
+StepEnum MyBoardLogic::moveFig(BoardPos pos1, BoardPos pos2, bool b) {
     if (target != 64  || (sto[pos1] != curColor)) {
         return StepEnum::WRONG_STEP;
     }

@@ -8,6 +8,7 @@
 #include <QPixmap>
 #include "MyVec.h"
 #include "MyBoardLogic.h"
+#include "Models.h"
 
 const char SELECTED = 0b00000001;
 
@@ -89,7 +90,7 @@ public slots:
     }
 
 
-    StepEnum moveFig(int pos1, int pos2) {
+    StepEnum moveFig(BoardPos pos1, BoardPos pos2) {
         StepEnum res = boardLogic.moveFig(pos1, pos2);
         switch(res) {
         case StepEnum::PROMOTION: {
