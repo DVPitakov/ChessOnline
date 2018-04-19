@@ -23,8 +23,7 @@ SOURCES += main.cpp\
     BoardWidget.cpp \
     MyUserWidget.cpp \
     MyMenueWidget.cpp \
-    MyConnectionStatusWidget.cpp \
-    Models.cpp
+    MyConnectionStatusWidget.cpp
 
 HEADERS  += \
     MyBoardLogic.h \

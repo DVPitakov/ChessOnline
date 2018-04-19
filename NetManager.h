@@ -35,7 +35,7 @@ private:
 signals:
     void closed();
     void friendIsFound(int);
-    void newStep(BoardPos, BoardPos);
+    void newStep(FigurePos, FigurePos);
     void pawTransed(char);
     void gameEnd(char);
     void userDataReceived();
@@ -71,7 +71,7 @@ public slots:
         timer->stop();
     }
 
-    void sendStep(int oldPos, int newPos) {
+    void sendStep(FigurePos oldPos, FigurePos newPos) {
         sendGameMessage((QString("{\"action\": ") + " \"step\"" +
                                  " ,\n\"oldPos\": " + QString::number(oldPos) +
                                  " ,\n\"newPos\": " + QString::number(newPos) +

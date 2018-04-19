@@ -1,12 +1,7 @@
 #ifndef MODELS_H
 #define MODELS_H
 
-typedef char BoardPos;
+typedef char FigurePos;
 
-class Models
-{
-public:
-    Models();
-};
 
 #endif // MODELS_H

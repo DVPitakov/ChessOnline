@@ -4,6 +4,7 @@
 #include <memory.h>
 #include <memory>
 #include "MyVec.h"
+#include "Models.h"
 
 const char MOZHNO = 0b00000010;
 const char VRAG   = 0b00000100;
@@ -52,25 +53,9 @@ struct ChessPositions {
 }
 };
 
-class MyBoardLogic
-{
-private:
-    MyVec<Step> history;
-    char curColor{0};
-    char hodil[BOARD_FIELDS_COUNT]{{0}};
-    char sto[BOARD_FIELDS_COUNT];
-    char mas[BOARD_FIELDS_COUNT];
-    char masBuf[BOARD_FIELDS_COUNT];
-    char stoBuf[BOARD_FIELDS_COUNT];
-    char target{BOARD_FIELDS_COUNT};
-    inline bool isEmpty(char _pos) {return mas[_pos] == 0;}
-    inline bool isNotEmpty(char _pos) {return mas[_pos] != 0;}
-    inline bool isRival(char pos1, char pos2) {return sto[pos1] != sto[pos2];}
-    bool thisIsVictory(char pos);
-
+class MyBoardLogic {
 public:
-
-    bool podUdarom(char pos);
+    bool podUdarom(FigurePos pos);
     void backStep();
 
     char kingPos(char kingColor);
@@ -93,7 +78,21 @@ public:
 
     MyBoardLogic();
     MyVec<char> steps(char pos);
-    StepEnum moveFig(char pos1, char pos2, bool b = true);
+    StepEnum moveFig(FigurePos pos1, FigurePos pos2, bool b = true);
+
+private:
+    MyVec<Step> history;
+    char curColor{0};
+    char hodil[BOARD_FIELDS_COUNT]{{0}};
+    char sto[BOARD_FIELDS_COUNT];
+    char mas[BOARD_FIELDS_COUNT];
+    char masBuf[BOARD_FIELDS_COUNT];
+    char stoBuf[BOARD_FIELDS_COUNT];
+    char target{BOARD_FIELDS_COUNT};
+    inline bool isEmpty(char _pos) {return mas[_pos] == 0;}
+    inline bool isNotEmpty(char _pos) {return mas[_pos] != 0;}
+    inline bool isRival(char pos1, char pos2) {return sto[pos1] != sto[pos2];}
+    bool thisIsVictory(char pos);
 };
 
 #endif // MYBOARDLOGIC_H

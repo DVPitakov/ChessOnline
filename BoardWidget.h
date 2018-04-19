@@ -70,7 +70,7 @@ public:
 
     void bordChng(char current);
 signals:
-    void moved(int, int);
+    void moved(FigurePos, FigurePos);
     void pawOnOtherSide();
     void pawChanged(char);
     void victory(char, char);
@@ -90,7 +90,7 @@ public slots:
     }
 
 
-    StepEnum moveFig(BoardPos pos1, BoardPos pos2) {
+    StepEnum moveFig(FigurePos pos1, FigurePos pos2) {
         StepEnum res = boardLogic.moveFig(pos1, pos2);
         switch(res) {
         case StepEnum::PROMOTION: {
