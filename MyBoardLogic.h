@@ -11,11 +11,11 @@ const char VRAG   = 0b00000100;
 const int BOARD_FIELDS_COUNT = 64;
 
 
-enum class COLOR {
-
+enum class StoronaEnum {
+    WHITE, BLACK
 };
 
-enum class STEP {
+enum class StepEnum {
     SIMPLE_STEP, NOT_TARGETED_USER_OR_FREE_FIELD, KING_UNDER_ATTACK, WRONG_STEP, PROMOTION, VICTORY_STEP
 };
 
@@ -94,7 +94,7 @@ public:
 
     MyBoardLogic();
     MyVec<char> steps(char pos);
-    STEP moveFig(char pos1, char pos2, bool b = true);
+    StepEnum moveFig(char pos1, char pos2, bool b = true);
 };
 
 #endif // MYBOARDLOGIC_H

@@ -89,16 +89,16 @@ public slots:
     }
 
 
-    STEP moveFig(int pos1, int pos2) {
-        STEP res = boardLogic.moveFig(pos1, pos2);
+    StepEnum moveFig(int pos1, int pos2) {
+        StepEnum res = boardLogic.moveFig(pos1, pos2);
         switch(res) {
-        case STEP::PROMOTION: {
+        case StepEnum::PROMOTION: {
             if ((whiteOpen && !boardLogic.getCurColor()) || (blackOpen && boardLogic.getCurColor())) {
                 emit pawOnOtherSide();
             }
             break;
         }
-        case STEP::SIMPLE_STEP: {
+        case StepEnum::SIMPLE_STEP: {
             positions = boardLogic.getPositions();
             update();
             break;

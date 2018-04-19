@@ -47,12 +47,12 @@ void BordWidget::bordChng(char current) {
     else if(targeted != 64) {
         MyVec<char> vec = boardLogic.steps(targeted);
         if (vec.pos(current) != -1) {    
-                STEP res = moveFig(targeted, current);
-                if ((res == STEP::SIMPLE_STEP) || (res == STEP::PROMOTION)) {
+                StepEnum res = moveFig(targeted, current);
+                if ((res == StepEnum::SIMPLE_STEP) || (res == StepEnum::PROMOTION)) {
                     storona = !storona;
                     emit moved(targeted, current);
                 }
-                else if (res == STEP::VICTORY_STEP) {
+                else if (res == StepEnum::VICTORY_STEP) {
                      emit victory(0, 0);
                 }
 

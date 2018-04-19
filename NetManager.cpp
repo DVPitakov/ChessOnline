@@ -5,7 +5,6 @@
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QtXml>
-#include <QUrlQuery>
 #include <QDomElement>
 #include <QDomDocument>
 
@@ -17,12 +16,11 @@ NetManager::NetManager(QObject *parent) : QObject(parent) {
 }
 
 void NetManager::sendGameMessage(QString msg) {
-    QUrl url("http://127.0.0.1:8080");
-    QUrlQuery querystr;
-    querystr.addQueryItem("user_id", userId);
-    querystr.addQueryItem("game_id", gameId);
-    querystr.addQueryItem("user_msg", msg);
-    url.setQuery(querystr);
+    QUrl url(QString("http://127.0.0.1:8000")
+             + "?user_id=" + userId
+             + "&game_id=" + gameId
+             + "&user_msg=" + msg
+             );
     QNetworkRequest request(url);
     restclient->get(request);
 }

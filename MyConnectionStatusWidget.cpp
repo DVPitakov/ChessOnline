@@ -2,7 +2,6 @@
 
 MyConnectionStatusWidget::MyConnectionStatusWidget(QWidget *parent) : QWidget(parent) {}
 
-
 void MyConnectionStatusWidget::paintEvent(QPaintEvent *) {
     QPainter painter(this);
     QColor color1(255,255,255,200);

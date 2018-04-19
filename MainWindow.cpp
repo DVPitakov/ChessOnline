@@ -22,7 +22,7 @@ MainWindow::MainWindow(QWidget *parent): QWidget(parent) {
     connect(netManager, SIGNAL(newStep(int,int)), bord, SLOT(chngSto()));
     connect(netManager, SIGNAL(pawTransed(char)), bord, SLOT(afterPawTrans(char)));
     connect(netManager, SIGNAL(gameEnd(char)), this, SLOT(chooseEndMenue(char)));
-    connect(netManager, SIGNAL(wsConnected()), connectionForm, SLOT(connected()));
+    connect(netManager, SIGNAL(userDataReceived()), connectionForm, SLOT(connected()));
     connect(netManager, SIGNAL(lose()), menue, SLOT(showDisconnectMenue()));
     connect(netManager, SIGNAL(nichia()), menue, SLOT(proposedNichia()));
     connect(netManager, SIGNAL(saidYes()), menue, SLOT(showNichia()));

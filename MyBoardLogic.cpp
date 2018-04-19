@@ -57,13 +57,13 @@ void MyBoardLogic::backStep() {
 
 
 
-STEP MyBoardLogic::moveFig(char pos1, char pos2, bool b) {
+StepEnum MyBoardLogic::moveFig(char pos1, char pos2, bool b) {
     if (target != 64  || (sto[pos1] != curColor)) {
-        return STEP::WRONG_STEP;
+        return StepEnum::WRONG_STEP;
     }
-    if ((mas[pos1] == 0)) return STEP::NOT_TARGETED_USER_OR_FREE_FIELD;
+    if ((mas[pos1] == 0)) return StepEnum::NOT_TARGETED_USER_OR_FREE_FIELD;
     MyVec<char> avaliable = steps(pos1);
-    if (avaliable.pos(pos2) == -1) { return STEP::WRONG_STEP;}
+    if (avaliable.pos(pos2) == -1) { return StepEnum::WRONG_STEP;}
     history.push(Step(pos1, pos2, sto[pos1], mas[pos1], mas[pos2]));
     if ((mas[pos1] == PESHKA) && (mas[pos2] == 0) && (pos2 - pos1 != 8) && (pos1 - pos2 !=8) && (pos2 - pos1 != 16) && (pos1 - pos2 !=16)) {
         int len;
@@ -102,18 +102,18 @@ STEP MyBoardLogic::moveFig(char pos1, char pos2, bool b) {
     }
     if (podUdarom(kingPos(curColor))) {
         backStep();
-        return STEP::KING_UNDER_ATTACK;
+        return StepEnum::KING_UNDER_ATTACK;
     }
 
     if (b && (mas[pos2] == PESHKA) && (((pos2 / 8) == 0) || ((pos2 / 8) == 7))) {
         target = pos2;
-        return STEP::PROMOTION;
+        return StepEnum::PROMOTION;
     }
     if (thisIsVictory(kingPos(1 - curColor))) {
-        return STEP::VICTORY_STEP;
+        return StepEnum::VICTORY_STEP;
     }
     curColor = 1 - curColor;
-    return STEP::SIMPLE_STEP;
+    return StepEnum::SIMPLE_STEP;
 }
 
 bool MyBoardLogic::podUdarom(char pos1) {
@@ -394,8 +394,8 @@ bool MyBoardLogic::thisIsVictory(char pos)
         if (vecs.lastNum() != - 1) {
             while(vecs.lastNum() >= 0) {
                 char posa = vecs.pop();
-                STEP res = moveFig(pos, posa, false);
-                if ((res == STEP::SIMPLE_STEP) || (res == STEP::PROMOTION)) {
+                StepEnum res = moveFig(pos, posa, false);
+                if ((res == StepEnum::SIMPLE_STEP) || (res == StepEnum::PROMOTION)) {
                     if (!podUdarom(posa)) {
                         backStep();
                         curColor = 1 - curColor;
@@ -413,8 +413,8 @@ bool MyBoardLogic::thisIsVictory(char pos)
                 MyVec<char> vec = steps(i);
                 while(vec.lastNum() >= 0) {
                     char posa = vec.pop();
-                    STEP res = moveFig(i, posa, false);
-                    if ((res == STEP::SIMPLE_STEP) || (res == STEP::PROMOTION)) {
+                    StepEnum res = moveFig(i, posa, false);
+                    if ((res == StepEnum::SIMPLE_STEP) || (res == StepEnum::PROMOTION)) {
                         if (!podUdarom(pos)) {
                             backStep();
                             curColor = 1 - curColor;
