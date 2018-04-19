@@ -49,7 +49,6 @@ public slots:
 
     void replyFinished(QNetworkReply * reply) {
         QString replyData = reply->readAll();
-        qDebug() << replyData;
         performResponse(replyData);
     }
 
