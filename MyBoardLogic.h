@@ -10,11 +10,6 @@ const char MOZHNO = 0b00000010;
 const char VRAG   = 0b00000100;
 const int BOARD_FIELDS_COUNT = 64;
 
-
-enum class StoronaEnum {
-    WHITE, BLACK
-};
-
 enum class StepEnum {
     SIMPLE_STEP, NOT_TARGETED_USER_OR_FREE_FIELD, KING_UNDER_ATTACK, WRONG_STEP, PROMOTION, VICTORY_STEP
 };

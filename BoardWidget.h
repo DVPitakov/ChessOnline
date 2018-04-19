@@ -18,7 +18,7 @@ class BordWidget:public QWidget
 public:
     BordWidget(QWidget *parent = 0);
 
-    void setColor(char color) {
+    void setColor(Storona color) {
         if (color == 0) {
             whiteOpen = true;
             blackOpen = false;
