@@ -63,7 +63,7 @@ private:
     inline bool isEmpty(const FigurePos _pos) const {return figuresTypes[_pos] == 0;}
     inline bool isNotEmpty(const FigurePos _pos) const {return figuresTypes[_pos] != 0;}
     inline bool isRival(const FigurePos pos1, const FigurePos pos2) const {return blackPoses[pos1] != blackPoses[pos2];}
-    bool thisIsVictory(Storona storona);
+    bool thisIsVictory(Storona winner);
 };
 
 #endif // MYBOARDLOGIC_H

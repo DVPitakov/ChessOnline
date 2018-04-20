@@ -56,7 +56,7 @@ void MyBoardLogic::backStep() {
 
 
 StepEnum MyBoardLogic::moveFig(FigurePos posOne, FigurePos posTwo, bool b) {
-    if (target != 64  || (blackPoses[posOne] != curColor)) {
+    if (target != 64  || ((blackPoses[posOne] != curColor) && b)) {
         return StepEnum::WRONG_STEP;
     }
     if ((figuresTypes[posOne] == 0)) return StepEnum::NOT_TARGETED_USER_OR_FREE_FIELD;
@@ -107,7 +107,7 @@ StepEnum MyBoardLogic::moveFig(FigurePos posOne, FigurePos posTwo, bool b) {
         target = posTwo;
         return StepEnum::PROMOTION;
     }
-    if (thisIsVictory(1 - curColor)) {
+    if (b && thisIsVictory(curColor)) {
         return StepEnum::VICTORY_STEP;
     }
     curColor = 1 - curColor;
@@ -375,11 +375,12 @@ MyVec<unsigned char> MyBoardLogic::steps(FigurePos pos) const{
     return out;
 }
 
-bool MyBoardLogic::thisIsVictory(Storona storona) {
-    FigurePos pos = kingPos(storona);
+bool MyBoardLogic::thisIsVictory(Storona winner) {
+    FigurePos pos = kingPos(1 - winner);
     if (!podUdarom(pos)) {
+        qDebug() << "SECTION 1";
         for(int i = 0; i < BOARD_FIELDS_COUNT; i++) {
-            if ((blackPoses[i] == storona) && figuresTypes[i]) {
+            if ((blackPoses[i] != winner) && figuresTypes[i]) {
                 MyVec<unsigned char> vec = steps(i);
                 if (!vec.isEmpty()) {
                     return false;
@@ -389,24 +390,34 @@ bool MyBoardLogic::thisIsVictory(Storona storona) {
 
     }
     else {
+        qDebug() << "SECTION 2";
         MyVec<unsigned char> vecs = steps(pos);
         while(vecs.lastNum() >= 0) {
             unsigned char posa = vecs.pop();
             StepEnum res = moveFig(pos, posa, false);
-            if ((res == StepEnum::SIMPLE_STEP) || (res == StepEnum::PROMOTION)) {
+            qDebug() << "res==StepEnum::SIMPLE_STEP:" << (res==StepEnum::SIMPLE_STEP);
+            qDebug() << "res==StepEnum:: NOT_TARGETED_USER_OR_FREE_FIELD:" << (res==StepEnum:: NOT_TARGETED_USER_OR_FREE_FIELD);
+            qDebug() << "res==StepEnum::KING_UNDER_ATTACK:" << (res==StepEnum::KING_UNDER_ATTACK);
+            qDebug() << "res==StepEnum::WRONG_STEP:" << (res==StepEnum::WRONG_STEP);
+            qDebug() << "res==StepEnum::PROMOTION:" << (res==StepEnum::PROMOTION);
+            qDebug() << "res==StepEnum::VICTORY_STEP:" << (res==StepEnum::VICTORY_STEP);
+            if ((res == StepEnum::SIMPLE_STEP) || (res == StepEnum::PROMOTION) || (res == StepEnum::VICTORY_STEP)) {
                 if (!podUdarom(posa)) {
+                    qDebug() << "SECTION 2.1";
                     backStep();
                     curColor = 1 - curColor;
                     return false;
                 }
                 else {
+                    qDebug() << "SECTION 2.2";
                     backStep();
                     curColor = 1 - curColor;
                 }
             }
         }
         for(int i = 0; i < BOARD_FIELDS_COUNT; i++) {
-            if ((blackPoses[i] == blackPoses[pos]) && figuresTypes[i] && (i != pos)) {
+            qDebug() << "SECTION 3";
+            if ((blackPoses[i] != winner) && figuresTypes[i] && (i != pos)) {
                 MyVec<unsigned char> vec = steps(i);
                 while(vec.lastNum() >= 0) {
                     unsigned char posa = vec.pop();
@@ -414,10 +425,12 @@ bool MyBoardLogic::thisIsVictory(Storona storona) {
                     if ((res == StepEnum::SIMPLE_STEP) || (res == StepEnum::PROMOTION)) {
                         if (!podUdarom(pos)) {
                             backStep();
+                            qDebug() << "SECTION 3.1";
                             curColor = 1 - curColor;
                             return false;
                         }
                         else {
+                            qDebug() << "SECTION 3.2";
                             backStep();
                             curColor = 1 - curColor;
                         }
@@ -440,7 +453,7 @@ int MyBoardLogic::pawTrans(const unsigned char chosed) {
     figuresTypes[target] = chosed;
     target = BOARD_FIELDS_COUNT;
     curColor = 1 - curColor;
-    return thisIsVictory(curColor);
+    return thisIsVictory(1 - curColor);
 }
 
 unsigned char MyBoardLogic::getCurColor() const {
