@@ -49,3 +49,94 @@ void MyMenue::mouseReleaseEvent(QMouseEvent* event) {
         }
     }
 }
+
+void MyMenue::startMenue() {
+    addButton("online", "Играть онлайн");
+    addButton("exit", "Выход");
+}
+void MyMenue::gameMenue() {
+    addButton("return", "Вернуться");
+    addButton("sdatsa", "Сдаться");
+    addButton("nichia", "Предложить ничью");
+    addButton("exit", "Выход");
+}
+void MyMenue::failMenue() {
+    addButton("defeat", "Вы проиграли", "header");
+    addButton("continue", "Ок");
+}
+void MyMenue::disconnectMenue() {
+    addButton("defeat", "Соединение разорвано", "header");
+    addButton("continue", "Ок");
+}
+void MyMenue::winMenue() {
+    addButton("victory", "Вы выиграли", "header");
+    addButton("continue", "Ок");
+}
+void MyMenue::nichiaMenue() {
+    addButton("defeat", "Противник предлагает ничью", "header");
+    addButton("sayYes", "Согласиться");
+    addButton("sayNot", "Отказаться");
+}
+void MyMenue::staticNichia() {
+    addButton("continue", "Ничья", "header");
+    addButton("continue", "Ок");
+}
+void MyMenue::waitMenue() {
+    addButton("info", "Ожидание ответа", "header");
+}
+
+void MyMenue::showStartGame() {
+    releaseButton();
+    startMenue();
+    this->show();
+    update();
+}
+
+void MyMenue::showGameMenue() {
+    releaseButton();
+    gameMenue();
+    this->show();
+    update();
+}
+
+void MyMenue::showWinMenue() {
+    releaseButton();
+    winMenue();
+    this->show();
+    update();
+}
+
+void MyMenue::showWait() {
+    releaseButton();
+    waitMenue();
+    this->show();
+    update();
+}
+
+void MyMenue::showFailMenue() {
+    releaseButton();
+    failMenue();
+    this->show();
+    update();
+}
+
+void MyMenue::showDisconnectMenue() {
+    releaseButton();
+    disconnectMenue();
+    this->show();
+    update();
+}
+
+void MyMenue::proposedNichia() {
+    releaseButton();
+    nichiaMenue();
+    this->show();
+    update();
+}
+
+void MyMenue::showNichia() {
+    releaseButton();
+    staticNichia();
+    this->show();
+    update();
+}

@@ -11,9 +11,7 @@ class NetManager : public QObject
     Q_OBJECT
 public:
     explicit NetManager(QObject *parent = 0);
-    void run() {
-        runUpdates(500);
-    }
+    void run();
 
 private:
     bool online{false};
@@ -47,65 +45,24 @@ signals:
 public slots:
     void upgradeGameState();
 
-    void replyFinished(QNetworkReply * reply) {
-        QString replyData = reply->readAll();
-        performResponse(replyData);
-    }
+    void replyFinished(QNetworkReply * reply);
 
-    void stop() {
-        online = false;
-        isConnected = false;
-        isActive = false;
-        myId = 0;
-        timer->stop();
-    }
+    void stop();
 
-    void sendStep(FigurePos oldPos, FigurePos newPos) {
-        sendGameMessage((QString("{\"action\": ") + " \"step\"" +
-                                 " ,\n\"oldPos\": " + QString::number(oldPos) +
-                                 " ,\n\"newPos\": " + QString::number(newPos) +
-                                 " \n}"));
+    void sendStep(FigurePos oldPos, FigurePos newPos);
 
-    }
-    void sendNichia() {
-         sendGameMessage((QString("{\"action\": ") + " \"nichia\"" +  " \n}"));
-    }
+    void sendNichia();
 
-    void sendPawTrans(char figure) {
-        sendGameMessage((QString("{\"action\": ") + " \"pawTrans\"" +
-                                 " ,\n\"figure\": " + QString::number(figure) +
-                                 " ,\n\"pos\": " + QString::number(0) +
-                                 " \n}"));
-    }
+    void sendPawTrans(char figure);
 
-    void sendGameEnd(EndCouse couse, char pos) {
-        timer->stop();
-        sendGameMessage((QString("{\"action\": ") + " \"gameEnd\"" +
-                                 " ,\n\"couse\": " + QString::number((char)couse) +
-                                 " ,\n\"data\": " + QString::number(pos) +
-                                 " \n}"));
-        stop();
-    }
+    void sendGameEnd(EndCouse couse, char pos);
 
-    void sayYes() {
-        sendGameMessage((QString("{\"action\": ") + " \"sayYes\"" + " \n}"));
-        stop();
-    }
+    void sayYes();
 
-    void sayNot()  {
-        sendGameMessage((QString("{\"action\": ") + " \"sayNot\"" + " \n}"));
-    }
+    void sayNot();
 
 private slots:
-    void connectionError() {
-        if (isActive == false) {
-            timer->stop();
-            emit connectionFail();
-        }
-        else {
-            isActive = false;
-        }
-    }
+    void connectionError();
 
 };
 

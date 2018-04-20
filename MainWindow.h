@@ -42,92 +42,15 @@ signals:
     void readyToShow(char);
 
 public slots:
-    void chooseEndMenue(EndCouse couse) {
-        if(couse == EndCouse::YOUR_FAIL_ONE) {
-            menue->showFailMenue();
-        }
-        else if (couse == EndCouse::YOUR_WIN) {
-            menue->showWinMenue();
-        }
-        else if (couse == EndCouse::YOUR_FAIL_TWO) {
-            menue->showFailMenue();
-        }
-        else if (couse == EndCouse::RIVAL_SURENDED) {
-            menue->showWinMenue();
-        }
-    }
+    void chooseEndMenue(EndCouse couse);
 
-    void buttonManager(QString eventName) {
-        if (eventName ==  "sdatsa") {
-            menue->showFailMenue();
-            netManager->sendGameEnd(EndCouse::RIVAL_SURENDED,0);
-        }
-        else if (eventName ==  "online") {
-            connectionForm->friendSearch();
-            netManager->run();
-        }
-        else if (eventName ==  "continue") {
-            bord->restart();
-            menue->showStartGame();
-            whiteUser->setIsUser(false);
-            blackUser->setIsUser(false);
-            menue->update();
-        }
-        else if (eventName == "return") {
-            menue->hide();
-            bord->setHidden(false);
-        }
-        else if (eventName ==  "settings") {
+    void buttonManager(QString eventName);
 
-        }
-        else if (eventName ==  "exit") {
-            this->close();
-        }
-        else if (eventName == "nichia") {
-            netManager->sendNichia();
-            menue->showWait();
-        }
-        else if (eventName == "breakGame") {
+    void activeBoard();
 
-        }
-        else if (eventName == "sayYes") {
-            netManager->sayYes();
-            menue->showNichia();
-        }
-        else if (eventName == "sayNot") {
-            netManager->sayNot();
-            menue->setHidden(true);
-        }
-        else {
-        }
-    }
+    void startGame(int color);
 
-    void activeBoard() {
-        bord->setEnabled(true);
-        menueButton->setEnabled(true);
-    }
-
-    void startGame(int color) {
-        activeBoard();
-        whiteUser->setMyStep(true);
-        if(color) {
-            whiteUser->setIsUser(true);
-            bord->setColor(0);
-        }
-        else {
-            blackUser->setIsUser(true);
-            bord->setColor(1);
-        }
-        update();
-    }
-
-    void showMenue() {
-        bord->setEnabled(false);
-        menueButton->setEnabled(false);
-        menue->setEnabled(true);
-        menue->setHidden(false);
-        emit readyToShow(1);
-    }
+    void showMenue();
 };
 
 #endif // MAINWINDOW_H

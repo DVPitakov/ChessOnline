@@ -20,40 +20,14 @@ class MyMenue : public QWidget
     int buttonListLen{0};
     QImage backGround;
 public:
-    void startMenue() {
-        addButton("online", "Играть онлайн");
-        addButton("exit", "Выход");
-    }
-    void gameMenue() {
-        addButton("return", "Вернуться");
-        addButton("sdatsa", "Сдаться");
-        addButton("nichia", "Предложить ничью");
-        addButton("exit", "Выход");
-    }
-    void failMenue() {
-        addButton("defeat", "Вы проиграли", "header");
-        addButton("continue", "Ок");
-    }
-    void disconnectMenue() {
-        addButton("defeat", "Соединение разорвано", "header");
-        addButton("continue", "Ок");
-    }
-    void winMenue() {
-        addButton("victory", "Вы выиграли", "header");
-        addButton("continue", "Ок");
-    }
-    void nichiaMenue() {
-        addButton("defeat", "Противник предлагает ничью", "header");
-        addButton("sayYes", "Согласиться");
-        addButton("sayNot", "Отказаться");
-    }
-    void staticNichia() {
-        addButton("continue", "Ничья", "header");
-        addButton("continue", "Ок");
-    }
-    void waitMenue() {
-        addButton("info", "Ожидание ответа", "header");
-    }
+    void startMenue();
+    void gameMenue();
+    void failMenue();
+    void disconnectMenue();
+    void winMenue();
+    void nichiaMenue();
+    void staticNichia();
+    void waitMenue();
 
     void addButton(QString eventName, QString buttonName, QString buttonType = "button");
 
@@ -67,61 +41,14 @@ signals:
     void buttonClicked(QString);
 
 public slots:
-    void showStartGame() {
-        releaseButton();
-        startMenue();
-        this->show();
-        update();
-    }
-
-    void showGameMenue() {
-        releaseButton();
-        gameMenue();
-        this->show();
-        update();
-    }
-
-    void showWinMenue() {
-        releaseButton();
-        winMenue();
-        this->show();
-        update();
-    }
-
-    void showWait() {
-        releaseButton();
-        waitMenue();
-        this->show();
-        update();
-    }
-
-    void showFailMenue() {
-        releaseButton();
-        failMenue();
-        this->show();
-        update();
-    }
-
-    void showDisconnectMenue() {
-        releaseButton();
-        disconnectMenue();
-        this->show();
-        update();
-    }
-
-    void proposedNichia() {
-        releaseButton();
-        nichiaMenue();
-        this->show();
-        update();
-    }
-
-    void showNichia() {
-        releaseButton();
-        staticNichia();
-        this->show();
-        update();
-    }
+    void showStartGame();
+    void showGameMenue();
+    void showWinMenue();
+    void showWait();
+    void showFailMenue();
+    void showDisconnectMenue();
+    void proposedNichia();
+    void showNichia();
 
 };
 #endif // MYMENUE_H

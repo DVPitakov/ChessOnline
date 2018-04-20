@@ -15,6 +15,10 @@ NetManager::NetManager(QObject *parent) : QObject(parent) {
 
 }
 
+void NetManager::run() {
+    runUpdates(500);
+}
+
 void NetManager::sendGameMessage(QString msg) {
     QUrl url(QString("http://192.168.2.105:8000"));
     QString dataString = QString("{")
@@ -131,5 +135,64 @@ void NetManager::performResponse(QString message) {
             emit userDataReceived();
         }
     }
+}
 
+void NetManager::stop() {
+    online = false;
+    isConnected = false;
+    isActive = false;
+    myId = 0;
+    timer->stop();
+}
+
+void NetManager::sendStep(FigurePos oldPos, FigurePos newPos) {
+    sendGameMessage((QString("{\"action\": ") + " \"step\"" +
+                             " ,\n\"oldPos\": " + QString::number(oldPos) +
+                             " ,\n\"newPos\": " + QString::number(newPos) +
+                             " \n}"));
+
+}
+
+void NetManager::sendNichia() {
+     sendGameMessage((QString("{\"action\": ") + " \"nichia\"" +  " \n}"));
+}
+
+void NetManager::sendPawTrans(char figure) {
+    sendGameMessage((QString("{\"action\": ") + " \"pawTrans\"" +
+                             " ,\n\"figure\": " + QString::number(figure) +
+                             " ,\n\"pos\": " + QString::number(0) +
+                             " \n}"));
+}
+
+void NetManager::sendGameEnd(EndCouse couse, char pos) {
+    timer->stop();
+    sendGameMessage((QString("{\"action\": ") + " \"gameEnd\"" +
+                             " ,\n\"couse\": " + QString::number((char)couse) +
+                             " ,\n\"data\": " + QString::number(pos) +
+                             " \n}"));
+    stop();
+}
+
+void NetManager::sayYes() {
+    sendGameMessage((QString("{\"action\": ") + " \"sayYes\"" + " \n}"));
+    stop();
+}
+
+void NetManager::sayNot()  {
+    sendGameMessage((QString("{\"action\": ") + " \"sayNot\"" + " \n}"));
+}
+
+void NetManager::connectionError() {
+    if (isActive == false) {
+        timer->stop();
+        emit connectionFail();
+    }
+    else {
+        isActive = false;
+    }
+}
+
+void NetManager::replyFinished(QNetworkReply * reply) {
+    QString replyData = reply->readAll();
+    performResponse(replyData);
 }

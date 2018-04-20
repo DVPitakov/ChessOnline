@@ -19,10 +19,10 @@ private:
     bool isWhite{0};
     void paintEvent(QPaintEvent* event);
 public:
-    void setIsWhite(bool b) {isWhite = b; update();}
-    void setIsHuman(bool b) {isHuman = b; update();}
-    void setMyStep(bool b) {myStep = b; update();}
-    void setIsUser(bool b) {isUser = b; update();}
+    void setIsWhite(bool b);
+    void setIsHuman(bool b);
+    void setMyStep(bool b);
+    void setIsUser(bool b);
     MyUser(QWidget *parent);
 
 signals:

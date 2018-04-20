@@ -5,6 +5,11 @@ MyUser::MyUser(QWidget *parent):QWidget(parent) {
     blackImg =  QImage(":/anonim.png");
 }
 
+void MyUser::setIsWhite(bool b) {isWhite = b; update();}
+void MyUser::setIsHuman(bool b) {isHuman = b; update();}
+void MyUser::setMyStep(bool b) {myStep = b; update();}
+void MyUser::setIsUser(bool b) {isUser = b; update();}
+
 void MyUser::paintEvent(QPaintEvent* event) {
     QImage userImage2;
     if (isWhite) {

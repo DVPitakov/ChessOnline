@@ -448,3 +448,22 @@ int MyBoardLogic::pawTrans(const char chosed) {
 char MyBoardLogic::getCurColor() const {
     return curColor;
 }
+
+bool ChessPositions::operator==(const ChessPositions& oth) const {
+    for(int i = 0; i  < BOARD_FIELDS_COUNT; i++) {
+        if (type[i] != oth.type[i] || color[i] != oth.color[i]) {
+            return false;
+        }
+    }
+    return true;
+}
+
+ChessPositions::ChessPositions(const ChessPositions& oth) {
+    memcpy(this->type, oth.type, sizeof(this->type));
+    memcpy(this->color, oth.color, sizeof(this->color));
+}
+
+ChessPositions::ChessPositions(const char* newType64, const char* newColor64) {
+    memcpy(this->type, newType64, sizeof(this->type));
+    memcpy(this->color, newColor64, sizeof(this->color));
+}
