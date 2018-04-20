@@ -72,9 +72,6 @@ void MainWindow::buttonManager(QString eventName) {
         menue->hide();
         bord->setHidden(false);
     }
-    else if (eventName ==  "settings") {
-
-    }
     else if (eventName ==  "exit") {
         this->close();
     }

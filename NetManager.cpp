@@ -1,6 +1,5 @@
 #include "NetManager.h"
 #include <QObject>
-#include <QDebug>
 #include <QNetworkRequest>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
@@ -19,6 +18,7 @@ QString NetManager::defaultUrlString{""};
 NetManager::NetManager(QObject *parent) : QObject(parent) {
     timer = new QTimer(this);
     restclient = new QNetworkAccessManager(this);
+    connect(timer, SIGNAL(timeout()), this, SLOT(upgradeGameState()));
     connect(restclient, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinished(QNetworkReply*)));
 
 }
@@ -48,7 +48,6 @@ void NetManager::upgradeGameState() {
 
 void NetManager::runUpdates(int interval) {
     timer->setInterval(interval);
-    connect(timer, SIGNAL(timeout()), this, SLOT(upgradeGameState()));
     timer->start();
 
 }
@@ -141,6 +140,8 @@ void NetManager::performResponse(QString message) {
 }
 
 void NetManager::stop() {
+    userId = "";
+    gameId = "";
     online = false;
     isConnected = false;
     isActive = false;

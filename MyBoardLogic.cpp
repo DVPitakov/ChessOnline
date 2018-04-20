@@ -378,45 +378,54 @@ MyVec<unsigned char> MyBoardLogic::steps(FigurePos pos) const{
 bool MyBoardLogic::thisIsVictory(Storona winner) {
     FigurePos pos = kingPos(1 - winner);
     if (!podUdarom(pos)) {
-        qDebug() << "SECTION 1";
         for(int i = 0; i < BOARD_FIELDS_COUNT; i++) {
-            if ((blackPoses[i] != winner) && figuresTypes[i]) {
+            if ((blackPoses[i] != winner) && figuresTypes[i] && i != pos) {
                 MyVec<unsigned char> vec = steps(i);
-                if (!vec.isEmpty()) {
-                    return false;
+                if(i == pos) {
+                    while(vec.lastNum() >= 0) {
+                        unsigned char posa = vec.pop();
+                        StepEnum res = moveFig(i, posa, false);
+                        if ((res == StepEnum::SIMPLE_STEP) || (res == StepEnum::PROMOTION)) {
+                            if (!podUdarom(pos)) {
+                                backStep();
+                                curColor = 1 - curColor;
+                                return false;
+                            }
+                            else {
+                                backStep();
+                                curColor = 1 - curColor;
+                            }
+                        }
+                    }
+                }
+                else {
+                    if (!vec.isEmpty()) {
+                        return false;
+                    }
                 }
             }
         }
 
     }
     else {
-        qDebug() << "SECTION 2";
+
         MyVec<unsigned char> vecs = steps(pos);
         while(vecs.lastNum() >= 0) {
             unsigned char posa = vecs.pop();
             StepEnum res = moveFig(pos, posa, false);
-            qDebug() << "res==StepEnum::SIMPLE_STEP:" << (res==StepEnum::SIMPLE_STEP);
-            qDebug() << "res==StepEnum:: NOT_TARGETED_USER_OR_FREE_FIELD:" << (res==StepEnum:: NOT_TARGETED_USER_OR_FREE_FIELD);
-            qDebug() << "res==StepEnum::KING_UNDER_ATTACK:" << (res==StepEnum::KING_UNDER_ATTACK);
-            qDebug() << "res==StepEnum::WRONG_STEP:" << (res==StepEnum::WRONG_STEP);
-            qDebug() << "res==StepEnum::PROMOTION:" << (res==StepEnum::PROMOTION);
-            qDebug() << "res==StepEnum::VICTORY_STEP:" << (res==StepEnum::VICTORY_STEP);
             if ((res == StepEnum::SIMPLE_STEP) || (res == StepEnum::PROMOTION) || (res == StepEnum::VICTORY_STEP)) {
                 if (!podUdarom(posa)) {
-                    qDebug() << "SECTION 2.1";
                     backStep();
                     curColor = 1 - curColor;
                     return false;
                 }
                 else {
-                    qDebug() << "SECTION 2.2";
                     backStep();
                     curColor = 1 - curColor;
                 }
             }
         }
         for(int i = 0; i < BOARD_FIELDS_COUNT; i++) {
-            qDebug() << "SECTION 3";
             if ((blackPoses[i] != winner) && figuresTypes[i] && (i != pos)) {
                 MyVec<unsigned char> vec = steps(i);
                 while(vec.lastNum() >= 0) {
@@ -425,12 +434,10 @@ bool MyBoardLogic::thisIsVictory(Storona winner) {
                     if ((res == StepEnum::SIMPLE_STEP) || (res == StepEnum::PROMOTION)) {
                         if (!podUdarom(pos)) {
                             backStep();
-                            qDebug() << "SECTION 3.1";
                             curColor = 1 - curColor;
                             return false;
                         }
                         else {
-                            qDebug() << "SECTION 3.2";
                             backStep();
                             curColor = 1 - curColor;
                         }
