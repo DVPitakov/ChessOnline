@@ -38,36 +38,32 @@ struct ChessPositions {
     bool operator==(const ChessPositions& oth) const;
 };
 
+
 class MyBoardLogic {
 public:
-    bool podUdarom(const FigurePos pos);
+    bool podUdarom(const FigurePos pos) const;
     void backStep();
-
-    unsigned char kingPos(const unsigned char kingColor) const;
-
+    unsigned char kingPos(Storona kingColor) const;
     ChessPositions getPositions();
-
     int pawTrans(const unsigned char chosed);
-
     unsigned char getCurColor() const;
-
     MyBoardLogic();
     StepEnum moveFig(FigurePos pos1, FigurePos pos2, bool b = true);
-    MyVec<unsigned char> steps(unsigned char pos);
+    MyVec<unsigned char> steps(FigurePos pos) const;
 
 private:
     MyVec<Step> history;
     unsigned char curColor{0};
     bool hodil[BOARD_FIELDS_COUNT]{{false}};
-    unsigned char whitePoses[BOARD_FIELDS_COUNT];
+    Storona blackPoses[BOARD_FIELDS_COUNT];
     unsigned char figuresTypes[BOARD_FIELDS_COUNT];
-    unsigned char figuresTypesBuf[BOARD_FIELDS_COUNT];
-    unsigned char whitePosesBuf[BOARD_FIELDS_COUNT];
+    unsigned char blackPosesBuf[BOARD_FIELDS_COUNT];
     unsigned char target{BOARD_FIELDS_COUNT};
-    inline bool isEmpty(const FigurePos _pos) {return figuresTypes[_pos] == 0;}
-    inline bool isNotEmpty(const FigurePos _pos) {return figuresTypes[_pos] != 0;}
-    inline bool isRival(const FigurePos pos1, const FigurePos pos2) {return whitePoses[pos1] != whitePoses[pos2];}
-    bool thisIsVictory(unsigned char pos);
+
+    inline bool isEmpty(const FigurePos _pos) const {return figuresTypes[_pos] == 0;}
+    inline bool isNotEmpty(const FigurePos _pos) const {return figuresTypes[_pos] != 0;}
+    inline bool isRival(const FigurePos pos1, const FigurePos pos2) const {return blackPoses[pos1] != blackPoses[pos2];}
+    bool thisIsVictory(Storona storona);
 };
 
 #endif // MYBOARDLOGIC_H

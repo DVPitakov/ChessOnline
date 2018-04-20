@@ -26,9 +26,9 @@ const unsigned char startSto[] = {0,0,0,0,0,0,0,0,
                          1,1,1,1,1,1,1,1,
                          1,1,1,1,1,1,1,1};
 
-unsigned char MyBoardLogic::kingPos(const unsigned char kingColor) const {
-    for(int i = 0; i < 64; i++) {
-        if ((figuresTypes[i] == KOROL) && (whitePoses[i] == kingColor)) {
+unsigned char MyBoardLogic::kingPos(Storona kingColor) const {
+    for(int i = 0; i < BOARD_FIELDS_COUNT; i++) {
+        if ((figuresTypes[i] == KOROL) && (blackPoses[i] == kingColor)) {
             return i;
         }
     }
@@ -37,9 +37,7 @@ unsigned char MyBoardLogic::kingPos(const unsigned char kingColor) const {
 
 MyBoardLogic::MyBoardLogic() {
     memcpy(figuresTypes, startMas, 64);
-    memcpy(whitePoses, startSto, 64);
-    memcpy(figuresTypesBuf, startMas, 64);
-    memcpy(whitePosesBuf, startSto, 64);
+    memcpy(blackPoses, startSto, 64);
 }
 
 void MyBoardLogic::backStep() {
@@ -47,8 +45,8 @@ void MyBoardLogic::backStep() {
     figuresTypes[st._posOld] = figuresTypes[st._posNew];
     if(st._eaten) {
         figuresTypes[st._posNew] = st._eaten;
-        whitePoses[st._posOld] = st._storona;
-        whitePoses[st._posNew] = 1 - st._storona;
+        blackPoses[st._posOld] = st._storona;
+        blackPoses[st._posNew] = 1 - st._storona;
     }
     else {
         figuresTypes[st._posNew] = 0;
@@ -58,19 +56,19 @@ void MyBoardLogic::backStep() {
 
 
 StepEnum MyBoardLogic::moveFig(FigurePos posOne, FigurePos posTwo, bool b) {
-    if (target != 64  || (whitePoses[posOne] != curColor)) {
+    if (target != 64  || (blackPoses[posOne] != curColor)) {
         return StepEnum::WRONG_STEP;
     }
     if ((figuresTypes[posOne] == 0)) return StepEnum::NOT_TARGETED_USER_OR_FREE_FIELD;
     MyVec<unsigned char> avaliable = steps(posOne);
     if (avaliable.pos(posTwo) == -1) { return StepEnum::WRONG_STEP;}
-    history.push(Step(posOne, posTwo, whitePoses[posOne], figuresTypes[posOne], figuresTypes[posTwo]));
+    history.push(Step(posOne, posTwo, blackPoses[posOne], figuresTypes[posOne], figuresTypes[posTwo]));
     if ((figuresTypes[posOne] == PESHKA) && (figuresTypes[posTwo] == 0) && (posTwo - posOne != 8) && (posOne - posTwo !=8) && (posTwo - posOne != 16) && (posOne - posTwo !=16)) {
         int len;
-        if (whitePoses[posOne]) len = + 8; else len = - 8;
+        if (blackPoses[posOne]) len = + 8; else len = - 8;
         if (figuresTypes[posTwo + len] == PESHKA) {
             figuresTypes[posTwo + len] = 0;
-            whitePoses[posTwo + len] = 0;
+            blackPoses[posTwo + len] = 0;
         }
 
     }
@@ -94,7 +92,7 @@ StepEnum MyBoardLogic::moveFig(FigurePos posOne, FigurePos posTwo, bool b) {
         }
         else {
             figuresTypes[posTwo] = figuresTypes[posOne];
-            whitePoses[posTwo] = whitePoses[posOne];
+            blackPoses[posTwo] = blackPoses[posOne];
         }
         hodil[posOne] = true;
         hodil[posTwo] = true;
@@ -109,14 +107,14 @@ StepEnum MyBoardLogic::moveFig(FigurePos posOne, FigurePos posTwo, bool b) {
         target = posTwo;
         return StepEnum::PROMOTION;
     }
-    if (thisIsVictory(kingPos(1 - curColor))) {
+    if (thisIsVictory(1 - curColor)) {
         return StepEnum::VICTORY_STEP;
     }
     curColor = 1 - curColor;
     return StepEnum::SIMPLE_STEP;
 }
 
-bool MyBoardLogic::podUdarom(const FigurePos pos1) {
+bool MyBoardLogic::podUdarom(const FigurePos pos1) const {
     int x0 = pos1 % 8;
     int y0 = pos1 / 8;
     int x1 = x0;
@@ -172,7 +170,7 @@ bool MyBoardLogic::podUdarom(const FigurePos pos1) {
     if (x1 < 6 && y1 < 56 && (((figuresTypes[x1 + y1 + 10]) == 2) && isRival(pos,x1 + y1 + 10))) return true;
     if (x1 > 1 && y1 < 56 && (((figuresTypes[x1 + y1 + 6]) == 2) && isRival(pos,x1 + y1 + 6))) return true;
 
-    if (whitePoses[pos]) {
+    if (blackPoses[pos]) {
         if ((y1 > 8) && (x1 > 0) && ((figuresTypes[pos - 9]) == PESHKA) && isRival(pos, pos - 9)) return true;
         if ((y1 > 8) && (x1 < 7) && ((figuresTypes[pos - 7]) == PESHKA) && isRival(pos, pos - 7)) return true;
         if (figuresTypes[pos] == PESHKA) {
@@ -221,7 +219,7 @@ bool MyBoardLogic::podUdarom(const FigurePos pos1) {
     return false;
 }
 
-MyVec<unsigned char> MyBoardLogic::steps(unsigned char pos) {
+MyVec<unsigned char> MyBoardLogic::steps(FigurePos pos) const{
     MyVec<unsigned char> out;
     char x1, y1;
     unsigned char x0 = pos % 8;
@@ -317,6 +315,8 @@ MyVec<unsigned char> MyBoardLogic::steps(unsigned char pos) {
         if (y1 < 64 && (figuresTypes[x1 + y1] != 0) && isRival(pos, x1 + y1)) {out.push(x1 + y1);}
         break;}
     case KOROL:
+        //Походу этот метод возвращает позиции на которые можно переместить короля, но и может вернуть те
+        //ячейки который находятся под ударом противника
         if((!hodil[pos]) && !hodil[pos + 3]
                 && figuresTypes[pos + 1] == 0 && figuresTypes[pos + 2] == 0
                 && !podUdarom(pos) && !podUdarom(pos - 1) && !podUdarom(pos + 2)) {
@@ -332,21 +332,21 @@ MyVec<unsigned char> MyBoardLogic::steps(unsigned char pos) {
             if (y1 < 56 && ((figuresTypes[pos + 7] == 0) || (isRival(pos,pos + 7)))) out.push(pos + 7);
         }
         if (x1 < 7) {
-            if (((figuresTypes[pos + 1] == 0) || isRival(pos,pos + 1))) out.push(pos + 1);
-            if (y1 > 0 && ((figuresTypes[pos - 7] == 0) || isRival(pos,pos - 7))) out.push(pos - 7);
-            if (y1 < 56 && ( (figuresTypes[pos + 9] == 0) || isRival(pos,pos + 9))) out.push(pos + 9);
+            if (((figuresTypes[pos + 1] == 0) || isRival(pos, pos + 1))) out.push(pos + 1);
+            if (y1 > 0  && ((figuresTypes[pos - 7] == 0) || isRival(pos, pos - 7))) out.push(pos - 7);
+            if (y1 < 56 && ((figuresTypes[pos + 9] == 0) || isRival(pos, pos + 9))) out.push(pos + 9);
         }
-        if (y1 > 0 && (figuresTypes[pos - 8] == 0 ||  isRival(pos,pos - 8))) out.push(pos - 8);
-        if (y1 < 56 && (figuresTypes[pos + 8] == 0 ||isRival(pos,pos + 8))) out.push(pos + 8);
+        if (y1 > 0  && (figuresTypes[pos - 8] == 0 || isRival(pos, pos - 8))) out.push(pos - 8);
+        if (y1 < 56 && (figuresTypes[pos + 8] == 0 || isRival(pos, pos + 8))) out.push(pos + 8);
 
         break;
     case PESHKA:
 
-        if (whitePoses[x1 + y1] == 1) {
+        if (blackPoses[x1 + y1] == 1) {
             if (y1 == 48 && figuresTypes[pos - 8] == 0 && figuresTypes[pos - 16] == 0) out.push(pos - 16);
             if ((y1 > 7) && figuresTypes[x1 + y1 - 8] == 0) out.push(x1 + y1 - 8);
-            if ((y1 > 7) && (x1 < 7) && figuresTypes[x1 + y1 - 7] != 0 && !(whitePoses[x1 + y1 - 7])) out.push(x1 + y1 - 7);
-            if ((y1 > 7) && (x1 > 0) && figuresTypes[x1 + y1 - 9] != 0 && !(whitePoses[x1 + y1 - 9])) out.push(x1 + y1 - 9);
+            if ((y1 > 7) && (x1 < 7) && figuresTypes[x1 + y1 - 7] != 0 && !(blackPoses[x1 + y1 - 7])) out.push(x1 + y1 - 7);
+            if ((y1 > 7) && (x1 > 0) && figuresTypes[x1 + y1 - 9] != 0 && !(blackPoses[x1 + y1 - 9])) out.push(x1 + y1 - 9);
             if (y1 == 24 && history.lastNum() != -1) {
                 Step st = history.getLast();
                 if ((st._figura == PESHKA) && (st._posNew - st._posOld  == 16)
@@ -359,8 +359,8 @@ MyVec<unsigned char> MyBoardLogic::steps(unsigned char pos) {
             if (y1 == 8 && figuresTypes[pos + 8] == 0
                     && figuresTypes[pos + 16] == 0) out.push(pos + 16);
             if ((y1 < 56) && figuresTypes[x1 + y1 + 8] == 0) out.push(x1 + y1 + 8);
-            if ((y1 < 56) && (x1 < 7) && figuresTypes[x1 + y1 + 9] != 0 && (whitePoses[x1 + y1 + 9])) out.push(x1 + y1 + 9);
-            if ((y1 < 56) && (x1 > 0) && figuresTypes[x1 + y1 + 7] != 0 && (whitePoses[x1 + y1 + 7])) out.push(x1 + y1 + 7);
+            if ((y1 < 56) && (x1 < 7) && figuresTypes[x1 + y1 + 9] != 0 && (blackPoses[x1 + y1 + 9])) out.push(x1 + y1 + 9);
+            if ((y1 < 56) && (x1 > 0) && figuresTypes[x1 + y1 + 7] != 0 && (blackPoses[x1 + y1 + 7])) out.push(x1 + y1 + 7);
             if (y1 == 32 && history.lastNum() != -1) {
                 Step st = history.getLast();
                 if ((st._figura == PESHKA) && (st._posOld - st._posNew  == 16)
@@ -375,14 +375,13 @@ MyVec<unsigned char> MyBoardLogic::steps(unsigned char pos) {
     return out;
 }
 
-bool MyBoardLogic::thisIsVictory(unsigned char pos)
-{
+bool MyBoardLogic::thisIsVictory(Storona storona) {
+    FigurePos pos = kingPos(storona);
     if (!podUdarom(pos)) {
-
         for(int i = 0; i < BOARD_FIELDS_COUNT; i++) {
-            if ((whitePoses[i] == whitePoses[pos]) && figuresTypes[i]) {
+            if ((blackPoses[i] == storona) && figuresTypes[i]) {
                 MyVec<unsigned char> vec = steps(i);
-                if (vec.lastNum() != -1) {
+                if (!vec.isEmpty()) {
                     return false;
                 }
             }
@@ -391,25 +390,23 @@ bool MyBoardLogic::thisIsVictory(unsigned char pos)
     }
     else {
         MyVec<unsigned char> vecs = steps(pos);
-        if (vecs.lastNum() != - 1) {
-            while(vecs.lastNum() >= 0) {
-                unsigned char posa = vecs.pop();
-                StepEnum res = moveFig(pos, posa, false);
-                if ((res == StepEnum::SIMPLE_STEP) || (res == StepEnum::PROMOTION)) {
-                    if (!podUdarom(posa)) {
-                        backStep();
-                        curColor = 1 - curColor;
-                        return false;
-                    }
-                    else {
-                        backStep();
-                        curColor = 1 - curColor;
-                    }
+        while(vecs.lastNum() >= 0) {
+            unsigned char posa = vecs.pop();
+            StepEnum res = moveFig(pos, posa, false);
+            if ((res == StepEnum::SIMPLE_STEP) || (res == StepEnum::PROMOTION)) {
+                if (!podUdarom(posa)) {
+                    backStep();
+                    curColor = 1 - curColor;
+                    return false;
+                }
+                else {
+                    backStep();
+                    curColor = 1 - curColor;
                 }
             }
         }
         for(int i = 0; i < BOARD_FIELDS_COUNT; i++) {
-            if ((whitePoses[i] == whitePoses[pos]) && figuresTypes[i] && (i != pos)) {
+            if ((blackPoses[i] == blackPoses[pos]) && figuresTypes[i] && (i != pos)) {
                 MyVec<unsigned char> vec = steps(i);
                 while(vec.lastNum() >= 0) {
                     unsigned char posa = vec.pop();
@@ -435,7 +432,7 @@ bool MyBoardLogic::thisIsVictory(unsigned char pos)
 ChessPositions MyBoardLogic::getPositions() {
     ChessPositions positions;
     memcpy(positions.type, figuresTypes, BOARD_FIELDS_COUNT);
-    memcpy(positions.color, whitePoses, BOARD_FIELDS_COUNT);
+    memcpy(positions.color, blackPoses, BOARD_FIELDS_COUNT);
     return positions;
 }
 
@@ -443,7 +440,7 @@ int MyBoardLogic::pawTrans(const unsigned char chosed) {
     figuresTypes[target] = chosed;
     target = BOARD_FIELDS_COUNT;
     curColor = 1 - curColor;
-    return thisIsVictory(kingPos(curColor));
+    return thisIsVictory(curColor);
 }
 
 unsigned char MyBoardLogic::getCurColor() const {

@@ -8,6 +8,14 @@
 #include <QDomElement>
 #include <QDomDocument>
 
+
+void NetManager::setTargetedUrlString(QString str) {
+    defaultUrlString = str;
+
+}
+
+QString NetManager::defaultUrlString{""};
+
 NetManager::NetManager(QObject *parent) : QObject(parent) {
     timer = new QTimer(this);
     restclient = new QNetworkAccessManager(this);
@@ -20,7 +28,7 @@ void NetManager::run() {
 }
 
 void NetManager::sendGameMessage(QString msg) {
-    QUrl url(QString("http://192.168.2.105:8000"));
+    QUrl url(defaultUrlString);
     QString dataString = QString("{")
             + "\"user_id\":" + '"' + userId + '"'
             + ",\"game_id\":" + '"' + gameId + '"'

@@ -1,5 +1,7 @@
+#include <QInputDialog>
 #include "MainWindow.h"
 MainWindow::MainWindow(QWidget *parent): QWidget(parent) {
+    showURLInputDialog();
     netManager = new NetManager(this);
     bord = new BordWidget(this);
     blackUser = new MyUser(this);
@@ -7,7 +9,6 @@ MainWindow::MainWindow(QWidget *parent): QWidget(parent) {
     menueButton = new QPushButton(this);
     menue = new MyMenue(this);
     connectionForm = new MyConnectionStatusWidget(this);
-
     connect(this, SIGNAL(readyToShow(unsigned char)), menue, SLOT(update()));
     connect(menueButton, SIGNAL(clicked(bool)), menue, SLOT(showGameMenue()));
     connect(menue, SIGNAL(buttonClicked(QString)), this, SLOT(buttonManager(QString)));
@@ -176,6 +177,18 @@ void MainWindow::paintEvent(QPaintEvent*) {
     connectionForm->setGeometry(0, 0, width() ,height());
     menue->setGeometry(0,0,width(),height());
 
+}
+
+void MainWindow::showURLInputDialog() {
+    const char DEFAULT_IP_AND_PORT[]="http://127.0.0.1:8000";
+    bool bOk;
+    QString ipInput = QInputDialog::getText( 0, "Ввод URL", "Введите URL:", QLineEdit::Normal, DEFAULT_IP_AND_PORT, &bOk);
+    if (!bOk) {
+        NetManager::setTargetedUrlString(DEFAULT_IP_AND_PORT);
+    }
+    else {
+        NetManager::setTargetedUrlString(ipInput);
+    }
 }
 
 MainWindow::~MainWindow() {}

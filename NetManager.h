@@ -10,10 +10,12 @@ class NetManager : public QObject
 {
     Q_OBJECT
 public:
+    static void setTargetedUrlString(QString str);
     explicit NetManager(QObject *parent = 0);
     void run();
 
 private:
+    static QString defaultUrlString;
     bool online{false};
     bool isConnected{false};
     bool isActive{false};

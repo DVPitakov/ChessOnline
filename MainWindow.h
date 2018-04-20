@@ -31,7 +31,6 @@ private:
     MyUser* blackUser;
     NetManager* netManager;
     BordWidget* bord;
-    QPushButton* pushButton;
     QPushButton* menueButton;
     MyMenue* menue;
     bool listenNow;
@@ -50,6 +49,8 @@ public slots:
     void startGame(int color);
 
     void showMenue();
+
+    void showURLInputDialog();
 };
 
 #endif // MAINWINDOW_H

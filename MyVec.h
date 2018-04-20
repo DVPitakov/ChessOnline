@@ -6,13 +6,18 @@
 template <class T>
 class MyVec {
 public:
-    MyVec():size(32),last(-1) {
+    MyVec():size(256),last(-1) {
         buf = (T*)malloc(size* (sizeof(T)));
     }
 
     ~MyVec() {
         free(buf);
     }
+
+    bool isEmpty() {
+        return last > -1;
+    }
+
 
     void push(T el) {
         last++;
@@ -26,7 +31,7 @@ public:
         buf[last] = el;
     }
 
-    T getLast() {
+    T getLast() const {
         return buf[last];
     }
 
@@ -36,7 +41,7 @@ public:
         return res;
     }
 
-    long lastNum() {
+    long lastNum() const{
         return last;
     }
 
