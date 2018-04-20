@@ -16,13 +16,17 @@ NetManager::NetManager(QObject *parent) : QObject(parent) {
 }
 
 void NetManager::sendGameMessage(QString msg) {
-    QUrl url(QString("http://127.0.0.1:8000")
-             + "?user_id=" + userId
-             + "&game_id=" + gameId
-             + "&user_msg=" + msg
-             );
+    QUrl url(QString("http://192.168.2.105:8000"));
+    QString dataString = QString("{")
+            + "\"user_id\":" + '"' + userId + '"'
+            + ",\"game_id\":" + '"' + gameId + '"'
+            + ",\"user_msg\":" + msg + '}';
+
+    QByteArray data = dataString.toUtf8();
     QNetworkRequest request(url);
-    restclient->get(request);
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    request.setHeader(QNetworkRequest::ContentLengthHeader, data.size());
+    restclient->post(request, data);
 }
 
 void NetManager::upgradeGameState() {

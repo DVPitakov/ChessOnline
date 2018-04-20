@@ -55,16 +55,7 @@ public:
         addButton("info", "Ожидание ответа", "header");
     }
 
-    void pawTrensMenue() {
-
-    }
-
-    void addButton(QString eventName, QString buttonName, QString buttonType = "button") {
-        buttonList[buttonListLen].buttonActionName = eventName;
-        buttonList[buttonListLen].type = buttonType;
-        buttonList[buttonListLen].buttonText = buttonName;
-        buttonListLen += 1;
-    }
+    void addButton(QString eventName, QString buttonName, QString buttonType = "button");
 
     void releaseButton();
 

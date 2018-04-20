@@ -28,6 +28,13 @@ void MyMenue::paintEvent(QPaintEvent *) {
     }
 }
 
+void MyMenue::addButton(QString eventName, QString buttonName, QString buttonType) {
+    buttonList[buttonListLen].buttonActionName = eventName;
+    buttonList[buttonListLen].type = buttonType;
+    buttonList[buttonListLen].buttonText = buttonName;
+    buttonListLen += 1;
+}
+
 
 void MyMenue::releaseButton() {
     buttonListLen = 0;

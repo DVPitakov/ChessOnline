@@ -1,8 +1,8 @@
 #include "MyUserWidget.h"
 
 MyUser::MyUser(QWidget *parent):QWidget(parent) {
-    whiteImg =  QImage(":/whiteImg.jpg");
-    blackImg =  QImage(":/blackImg.jpg");
+    whiteImg =  QImage(":/anonim.png");
+    blackImg =  QImage(":/anonim.png");
 }
 
 void MyUser::paintEvent(QPaintEvent* event) {
