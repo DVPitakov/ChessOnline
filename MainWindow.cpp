@@ -8,19 +8,19 @@ MainWindow::MainWindow(QWidget *parent): QWidget(parent) {
     menue = new MyMenue(this);
     connectionForm = new MyConnectionStatusWidget(this);
 
-    connect(this, SIGNAL(readyToShow(char)), menue, SLOT(update()));
+    connect(this, SIGNAL(readyToShow(unsigned char)), menue, SLOT(update()));
     connect(menueButton, SIGNAL(clicked(bool)), menue, SLOT(showGameMenue()));
     connect(menue, SIGNAL(buttonClicked(QString)), this, SLOT(buttonManager(QString)));
     connect(bord, SIGNAL(moved(FigurePos, FigurePos)), netManager, SLOT(sendStep(FigurePos,FigurePos)));
-    connect(bord, SIGNAL(pawChanged(char)), netManager, SLOT(sendPawTrans(char)));
-    connect(bord, SIGNAL(victory(EndCouse, char)), netManager, SLOT(sendGameEnd(EndCouse,char)));
-    connect(bord, SIGNAL(victory(EndCouse, char)), menue, SLOT(showWinMenue()));
+    connect(bord, SIGNAL(pawChanged(unsigned char)), netManager, SLOT(sendPawTrans(unsigned char)));
+    connect(bord, SIGNAL(victory(EndCouse, unsigned char)), netManager, SLOT(sendGameEnd(EndCouse,unsigned char)));
+    connect(bord, SIGNAL(victory(EndCouse, unsigned char)), menue, SLOT(showWinMenue()));
     connect(netManager, SIGNAL(friendIsFound(int)), this, SLOT(startGame(int)));
     connect(netManager, SIGNAL(friendIsFound(int)), connectionForm, SLOT(friendFounded()));
     connect(netManager, SIGNAL(friendIsFound(int)), menue, SLOT(hide()));
     connect(netManager, SIGNAL(newStep(FigurePos, FigurePos)), bord, SLOT(moveFig(FigurePos, FigurePos)));
     connect(netManager, SIGNAL(newStep(FigurePos, FigurePos)), bord, SLOT(chngSto()));
-    connect(netManager, SIGNAL(pawTransed(char)), bord, SLOT(afterPawTrans(char)));
+    connect(netManager, SIGNAL(pawTransed(unsigned char)), bord, SLOT(afterPawTrans(unsigned char)));
     connect(netManager, SIGNAL(gameEnd(EndCouse)), this, SLOT(chooseEndMenue(EndCouse)));
     connect(netManager, SIGNAL(userDataReceived()), connectionForm, SLOT(connected()));
     connect(netManager, SIGNAL(connectionFail()), menue, SLOT(showDisconnectMenue()));
@@ -123,7 +123,7 @@ void MainWindow::activeBoard() {
     menueButton->setEnabled(true);
 }
 
-void MainWindow::paintEvent(QPaintEvent* event) {
+void MainWindow::paintEvent(QPaintEvent*) {
     int x0 = 0;
     int y0 = 0;
     bool b =  width() > height();

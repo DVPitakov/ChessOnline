@@ -3,14 +3,32 @@
 MyUser::MyUser(QWidget *parent):QWidget(parent) {
     whiteImg =  QImage(":/anonim.png");
     blackImg =  QImage(":/anonim.png");
+
 }
 
-void MyUser::setIsWhite(bool b) {isWhite = b; update();}
-void MyUser::setIsHuman(bool b) {isHuman = b; update();}
-void MyUser::setMyStep(bool b) {myStep = b; update();}
-void MyUser::setIsUser(bool b) {isUser = b; update();}
+void MyUser::setIsWhite(bool b) {
+    isWhite = b;
+    update();
 
-void MyUser::paintEvent(QPaintEvent* event) {
+}
+
+void MyUser::setIsHuman(bool b) {
+    isHuman = b; update();
+}
+
+void MyUser::setMyStep(bool b) {
+    myStep = b;
+    update();
+
+}
+
+void MyUser::setIsUser(bool b) {
+    isUser = b;
+    update();
+
+}
+
+void MyUser::paintEvent(QPaintEvent*) {
     QImage userImage2;
     if (isWhite) {
        userImage2 = whiteImg.scaled(this->width() * 0.9,this->height() * 0.8);

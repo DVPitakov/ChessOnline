@@ -10,7 +10,7 @@
 #include "MyBoardLogic.h"
 #include "Models.h"
 
-const char SELECTED = 0b00000001;
+const unsigned char SELECTED = 0b00000001;
 
 class BordWidget:public QWidget
 {
@@ -22,19 +22,19 @@ public:
 
     void restart();
 
-    void bordChng(char current);
+    void bordChng(unsigned char current);
 signals:
     void moved(FigurePos, FigurePos);
     void pawOnOtherSide();
-    void pawChanged(char);
-    void victory(EndCouse, char);
-    void defeat(char, char);
+    void pawChanged(unsigned char);
+    void victory(EndCouse, unsigned char);
+    void defeat(unsigned char, unsigned char);
 public slots:
     void chngSto() {
         storona = !storona;
     }
 
-    void afterPawTrans(char chosed);
+    void afterPawTrans(unsigned char chosed);
 
 
     StepEnum moveFig(FigurePos pos1, FigurePos pos2);
@@ -45,10 +45,10 @@ private:
     bool whiteOpen{false};
     bool blackOpen{false};
     PawTrans* pawTrans;
-    char masView[64]{0};
-    char targeted;
-    char last;
-    char storona;
+    unsigned char masView[64]{0};
+    unsigned char targeted;
+    unsigned char last;
+    unsigned char storona;
     QImage blackKing;
     QImage blackKon;
     QImage blackPeshka;

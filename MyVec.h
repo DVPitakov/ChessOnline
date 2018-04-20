@@ -17,7 +17,7 @@ public:
     void push(T el) {
         last++;
         if (size == last) {
-            size << 1;
+            size *= 2;
             T* res = (T*)malloc(size * (sizeof(T)));
             memcpy(res, buf, last * (sizeof(T)));
             free(buf);
@@ -49,7 +49,7 @@ public:
 
     MyVec(const MyVec& vec) {
         this->last = vec.last;
-        this->buf = (char*)malloc(vec.size * (sizeof(T)));
+        this->buf = (unsigned char*)malloc(vec.size * (sizeof(T)));
         this->size = vec.size;
         memcpy(this->buf, vec.buf, size * (sizeof(T)));
     }

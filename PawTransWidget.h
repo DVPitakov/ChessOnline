@@ -7,18 +7,18 @@
 #include <QPainter>
 #include <QMouseEvent>
 
-const char LADIA = 1;
-const char KON = 2;
-const char SLON = 3;
-const char FERZ = 4;
-const char KOROL = 5;
-const char PESHKA = 6;
+const unsigned char LADIA = 1;
+const unsigned char KON = 2;
+const unsigned char SLON = 3;
+const unsigned char FERZ = 4;
+const unsigned char KOROL = 5;
+const unsigned char PESHKA = 6;
 
 class PawTrans : public QWidget
 {
     Q_OBJECT
 private:
-    char _pos;
+    unsigned char _pos;
 public:
     void mouseReleaseEvent(QMouseEvent* event);
 
@@ -27,7 +27,7 @@ public:
     explicit PawTrans(QWidget *parent = 0);
 
 signals:
-    void figureChosed(char);
+    void figureChosed(unsigned char);
 public slots:
     void activ() {
         this->show();

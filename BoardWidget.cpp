@@ -1,7 +1,6 @@
 #include "BoardWidget.h"
 
-BordWidget::BordWidget(QWidget* parent):QWidget(parent)
-{
+BordWidget::BordWidget(QWidget* parent):QWidget(parent) {
     positions = boardLogic.getPositions();
     blackKing = QImage(":/blackKing.png");
     blackPeshka = QImage(":/blackPeshka.png");
@@ -24,20 +23,19 @@ BordWidget::BordWidget(QWidget* parent):QWidget(parent)
     last = 64;
     targeted = 64;
     storona = 0;
-    connect(pawTrans, SIGNAL(figureChosed(char)), this, SLOT(afterPawTrans(char)));
+    connect(pawTrans, SIGNAL(figureChosed(unsigned char)), this, SLOT(afterPawTrans(unsigned char)));
     connect(this, SIGNAL(pawOnOtherSide()), pawTrans, SLOT(activ()));
-    connect(pawTrans, SIGNAL(figureChosed(char)), this, SIGNAL(pawChanged(char)));
+    connect(pawTrans, SIGNAL(figureChosed(unsigned char)), this, SIGNAL(pawChanged(unsigned char)));
 }
 
-void BordWidget::bordChng(char current) {
-    char bufa = storona;
+void BordWidget::bordChng(unsigned char current) {
     if ((positions.type[current] != 0) && (positions.color[current] == storona)
             && ((whiteOpen && (storona == 0)) || (blackOpen && (storona == 1)))) {
         for(int i = 0; i < 64; i++) {
             masView[i] = 0;
         }
         masView[current] = masView[current] | SELECTED;
-        MyVec<char> vec = boardLogic.steps(current);
+        MyVec<unsigned char> vec = boardLogic.steps(current);
         for(; vec.lastNum() >= 0;) {
             int num = vec.pop();
             masView[num] = masView[num] | MOZHNO;
@@ -45,7 +43,7 @@ void BordWidget::bordChng(char current) {
         targeted = current;
     }
     else if(targeted != 64) {
-        MyVec<char> vec = boardLogic.steps(targeted);
+        MyVec<unsigned char> vec = boardLogic.steps(targeted);
         if (vec.pos(current) != -1) {    
                 StepEnum res = moveFig(targeted, current);
                 if ((res == StepEnum::SIMPLE_STEP) || (res == StepEnum::PROMOTION)) {
@@ -170,7 +168,7 @@ void BordWidget::restart() {
     update();
 }
 
-void BordWidget::afterPawTrans(char chosed) {
+void BordWidget::afterPawTrans(unsigned char chosed) {
 
     if(boardLogic.pawTrans(chosed)) {
          emit victory(EndCouse::YOUR_FAIL_ONE, 0);

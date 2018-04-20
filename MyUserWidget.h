@@ -17,7 +17,7 @@ private:
     bool isHuman{0};
     bool myStep{0};
     bool isWhite{0};
-    void paintEvent(QPaintEvent* event);
+    void paintEvent(QPaintEvent*);
 public:
     void setIsWhite(bool b);
     void setIsHuman(bool b);

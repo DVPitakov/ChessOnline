@@ -1,14 +1,14 @@
 #include "MyBoardLogic.h"
 #include <QDebug>
 
-const char LADIA = 1;
-const char KON = 2;
-const char SLON = 3;
-const char FERZ = 4;
-const char KOROL = 5;
-const char PESHKA = 6;
+const unsigned char LADIA = 1;
+const unsigned char KON = 2;
+const unsigned char SLON = 3;
+const unsigned char FERZ = 4;
+const unsigned char KOROL = 5;
+const unsigned char PESHKA = 6;
 
-const char startMas[] = {1,2,3,4,5,3,2,1,
+const unsigned char startMas[] = {1,2,3,4,5,3,2,1,
                          6,6,6,6,6,6,6,6,
                          0,0,0,0,0,0,0,0,
                          0,0,0,0,0,0,0,0,
@@ -17,7 +17,7 @@ const char startMas[] = {1,2,3,4,5,3,2,1,
                          6,6,6,6,6,6,6,6,
                          1,2,3,4,5,3,2,1};
 
-const char startSto[] = {0,0,0,0,0,0,0,0,
+const unsigned char startSto[] = {0,0,0,0,0,0,0,0,
                          0,0,0,0,0,0,0,0,
                          0,0,0,0,0,0,0,0,
                          0,0,0,0,0,0,0,0,
@@ -26,12 +26,13 @@ const char startSto[] = {0,0,0,0,0,0,0,0,
                          1,1,1,1,1,1,1,1,
                          1,1,1,1,1,1,1,1};
 
-char MyBoardLogic::kingPos(const char kingColor) const {
+unsigned char MyBoardLogic::kingPos(const unsigned char kingColor) const {
     for(int i = 0; i < 64; i++) {
         if ((figuresTypes[i] == KOROL) && (whitePoses[i] == kingColor)) {
             return i;
         }
     }
+    return BOARD_FIELDS_COUNT;
 }
 
 MyBoardLogic::MyBoardLogic() {
@@ -61,7 +62,7 @@ StepEnum MyBoardLogic::moveFig(FigurePos posOne, FigurePos posTwo, bool b) {
         return StepEnum::WRONG_STEP;
     }
     if ((figuresTypes[posOne] == 0)) return StepEnum::NOT_TARGETED_USER_OR_FREE_FIELD;
-    MyVec<char> avaliable = steps(posOne);
+    MyVec<unsigned char> avaliable = steps(posOne);
     if (avaliable.pos(posTwo) == -1) { return StepEnum::WRONG_STEP;}
     history.push(Step(posOne, posTwo, whitePoses[posOne], figuresTypes[posOne], figuresTypes[posTwo]));
     if ((figuresTypes[posOne] == PESHKA) && (figuresTypes[posTwo] == 0) && (posTwo - posOne != 8) && (posOne - posTwo !=8) && (posTwo - posOne != 16) && (posOne - posTwo !=16)) {
@@ -120,9 +121,9 @@ bool MyBoardLogic::podUdarom(const FigurePos pos1) {
     int y0 = pos1 / 8;
     int x1 = x0;
     int y1 = y0 << 3;
-    char pos = pos1;
-    char cend = pos - 9 * ((x0 > y0)?y0:x0);
-    char cbuf;
+    unsigned char pos = pos1;
+    unsigned char cend = pos - 9 * ((x0 > y0)?y0:x0);
+    unsigned char cbuf;
 
     for (cbuf = pos - 9; cbuf >= cend && figuresTypes[cbuf] == 0; cbuf -= 9);
     if (cbuf >= cend && ((figuresTypes[cbuf]) == SLON || (figuresTypes[cbuf]) == FERZ) && isRival(pos,cbuf)) return true;
@@ -220,11 +221,11 @@ bool MyBoardLogic::podUdarom(const FigurePos pos1) {
     return false;
 }
 
-MyVec<char> MyBoardLogic::steps(char pos) {
-    MyVec<char> out;
+MyVec<unsigned char> MyBoardLogic::steps(unsigned char pos) {
+    MyVec<unsigned char> out;
     char x1, y1;
-    char x0 = pos % 8;
-    char y0 = pos / 8;
+    unsigned char x0 = pos % 8;
+    unsigned char y0 = pos / 8;
     x1 = x0;
     y1 = y0 << 3;
     switch (figuresTypes[pos])
@@ -260,8 +261,8 @@ MyVec<char> MyBoardLogic::steps(char pos) {
         if (x1 > 1 && y1 < 56 && (isEmpty(x1 + y1 + 6) ||  isRival(pos,x1 + y1 + 6))) out.push(x1 + y1 + 6);
         break;
     case SLON: {
-        char cend = pos - 9 * ((x0 > y0)?y0:x0);
-        char cbuf;
+        unsigned char cend = pos - 9 * ((x0 > y0)?y0:x0);
+        unsigned char cbuf;
 
         for (cbuf = pos - 9; cbuf >= cend && figuresTypes[cbuf] == 0; cbuf -= 9) out.push(cbuf);
         if (cbuf >= cend && figuresTypes[cbuf] != 0 && isRival(pos,cbuf)) out.push(cbuf);
@@ -280,8 +281,8 @@ MyVec<char> MyBoardLogic::steps(char pos) {
 
         break;}
     case FERZ:
-    {char cend = pos - 9 * ((x0 > y0)?y0:x0);
-        char cbuf;
+    {unsigned char cend = pos - 9 * ((x0 > y0)?y0:x0);
+        unsigned char cbuf;
 
         for (cbuf = pos - 9; cbuf >= cend && figuresTypes[cbuf] == 0; cbuf -= 9) out.push(cbuf);
         if (cbuf >= cend && figuresTypes[cbuf] != 0 && (isRival(pos,cbuf))) out.push(cbuf);
@@ -374,13 +375,13 @@ MyVec<char> MyBoardLogic::steps(char pos) {
     return out;
 }
 
-bool MyBoardLogic::thisIsVictory(char pos)
+bool MyBoardLogic::thisIsVictory(unsigned char pos)
 {
     if (!podUdarom(pos)) {
 
         for(int i = 0; i < BOARD_FIELDS_COUNT; i++) {
             if ((whitePoses[i] == whitePoses[pos]) && figuresTypes[i]) {
-                MyVec<char> vec = steps(i);
+                MyVec<unsigned char> vec = steps(i);
                 if (vec.lastNum() != -1) {
                     return false;
                 }
@@ -389,10 +390,10 @@ bool MyBoardLogic::thisIsVictory(char pos)
 
     }
     else {
-        MyVec<char> vecs = steps(pos);
+        MyVec<unsigned char> vecs = steps(pos);
         if (vecs.lastNum() != - 1) {
             while(vecs.lastNum() >= 0) {
-                char posa = vecs.pop();
+                unsigned char posa = vecs.pop();
                 StepEnum res = moveFig(pos, posa, false);
                 if ((res == StepEnum::SIMPLE_STEP) || (res == StepEnum::PROMOTION)) {
                     if (!podUdarom(posa)) {
@@ -409,9 +410,9 @@ bool MyBoardLogic::thisIsVictory(char pos)
         }
         for(int i = 0; i < BOARD_FIELDS_COUNT; i++) {
             if ((whitePoses[i] == whitePoses[pos]) && figuresTypes[i] && (i != pos)) {
-                MyVec<char> vec = steps(i);
+                MyVec<unsigned char> vec = steps(i);
                 while(vec.lastNum() >= 0) {
-                    char posa = vec.pop();
+                    unsigned char posa = vec.pop();
                     StepEnum res = moveFig(i, posa, false);
                     if ((res == StepEnum::SIMPLE_STEP) || (res == StepEnum::PROMOTION)) {
                         if (!podUdarom(pos)) {
@@ -438,14 +439,14 @@ ChessPositions MyBoardLogic::getPositions() {
     return positions;
 }
 
-int MyBoardLogic::pawTrans(const char chosed) {
+int MyBoardLogic::pawTrans(const unsigned char chosed) {
     figuresTypes[target] = chosed;
     target = BOARD_FIELDS_COUNT;
     curColor = 1 - curColor;
     return thisIsVictory(kingPos(curColor));
 }
 
-char MyBoardLogic::getCurColor() const {
+unsigned char MyBoardLogic::getCurColor() const {
     return curColor;
 }
 
@@ -463,7 +464,7 @@ ChessPositions::ChessPositions(const ChessPositions& oth) {
     memcpy(this->color, oth.color, sizeof(this->color));
 }
 
-ChessPositions::ChessPositions(const char* newType64, const char* newColor64) {
+ChessPositions::ChessPositions(const unsigned char* newType64, const unsigned char* newColor64) {
     memcpy(this->type, newType64, sizeof(this->type));
     memcpy(this->color, newColor64, sizeof(this->color));
 }

@@ -2,7 +2,6 @@
 #define MAINWINDOW_H
 const int BOARD_X = 8;
 const int BOARD_Y = 8;
-static int counter = 0;
 #include <QMainWindow>
 #include <QPainter>
 #include <QPaintEvent>
@@ -24,7 +23,7 @@ class MainWindow : public QWidget
 public:
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    void paintEvent(QPaintEvent* event);
+    void paintEvent(QPaintEvent*);
 
 private:
     MyConnectionStatusWidget* connectionForm;
@@ -39,7 +38,7 @@ private:
     QTimer timer;
 
 signals:
-    void readyToShow(char);
+    void readyToShow(unsigned char);
 
 public slots:
     void chooseEndMenue(EndCouse couse);

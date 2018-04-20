@@ -33,7 +33,7 @@ private:
 signals:
     void friendIsFound(int);
     void newStep(FigurePos, FigurePos);
-    void pawTransed(char);
+    void pawTransed(unsigned char);
     void gameEnd(EndCouse);
     void userDataReceived();
     void connectionFail();
@@ -53,9 +53,9 @@ public slots:
 
     void sendNichia();
 
-    void sendPawTrans(char figure);
+    void sendPawTrans(unsigned char figure);
 
-    void sendGameEnd(EndCouse couse, char pos);
+    void sendGameEnd(EndCouse couse, unsigned char pos);
 
     void sayYes();
 

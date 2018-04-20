@@ -6,8 +6,8 @@
 #include "MyVec.h"
 #include "Models.h"
 
-const char MOZHNO = 0b00000010;
-const char VRAG   = 0b00000100;
+const unsigned char MOZHNO = 0b00000010;
+const unsigned char VRAG   = 0b00000100;
 const int BOARD_FIELDS_COUNT = 64;
 
 enum class StepEnum {
@@ -15,25 +15,25 @@ enum class StepEnum {
 };
 
 struct Step {
-    char _posOld;
-    char _posNew;
-    char _storona;
-    char _figura;
-    char _eaten;
+    FigurePos _posOld;
+    FigurePos _posNew;
+    unsigned char _storona;
+    unsigned char _figura;
+    unsigned char _eaten;
     bool isWhite{0};
 
-    Step(char posOld, char posNew, char storona = 3, char figura = 0, char eaten = 0):
+    Step(unsigned char posOld, unsigned char posNew, unsigned char storona = 3, unsigned char figura = 0, unsigned char eaten = 0):
         _posOld(posOld),_posNew(posNew),_storona(storona),_figura(figura),_eaten(eaten) {}
 };
 
 struct ChessPositions {
-    char type[BOARD_FIELDS_COUNT];
-    char color[BOARD_FIELDS_COUNT];
+    unsigned char type[BOARD_FIELDS_COUNT];
+    unsigned char color[BOARD_FIELDS_COUNT];
     ChessPositions(){}
 
     ChessPositions(const ChessPositions& oth);
 
-    ChessPositions(const char* newType64, const char* newColor64);
+    ChessPositions(const unsigned char* newType64, const unsigned char* newColor64);
 
     bool operator==(const ChessPositions& oth) const;
 };
@@ -43,21 +43,21 @@ public:
     bool podUdarom(const FigurePos pos);
     void backStep();
 
-    char kingPos(const char kingColor) const;
+    unsigned char kingPos(const unsigned char kingColor) const;
 
     ChessPositions getPositions();
 
-    int pawTrans(const char chosed);
+    int pawTrans(const unsigned char chosed);
 
-    char getCurColor() const;
+    unsigned char getCurColor() const;
 
     MyBoardLogic();
     StepEnum moveFig(FigurePos pos1, FigurePos pos2, bool b = true);
-    MyVec<char> steps(char pos);
+    MyVec<unsigned char> steps(unsigned char pos);
 
 private:
     MyVec<Step> history;
-    char curColor{0};
+    unsigned char curColor{0};
     bool hodil[BOARD_FIELDS_COUNT]{{false}};
     unsigned char whitePoses[BOARD_FIELDS_COUNT];
     unsigned char figuresTypes[BOARD_FIELDS_COUNT];
@@ -67,7 +67,7 @@ private:
     inline bool isEmpty(const FigurePos _pos) {return figuresTypes[_pos] == 0;}
     inline bool isNotEmpty(const FigurePos _pos) {return figuresTypes[_pos] != 0;}
     inline bool isRival(const FigurePos pos1, const FigurePos pos2) {return whitePoses[pos1] != whitePoses[pos2];}
-    bool thisIsVictory(const char pos);
+    bool thisIsVictory(unsigned char pos);
 };
 
 #endif // MYBOARDLOGIC_H
