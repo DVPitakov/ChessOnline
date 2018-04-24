@@ -1,6 +1,4 @@
 #include "MyBoardLogic.h"
-#include <QDebug>
-
 const unsigned char LADIA = 1;
 const unsigned char KON = 2;
 const unsigned char SLON = 3;
