@@ -20,19 +20,19 @@ public:
 
     void setColor(Storona color);
 
-    void restart();
-
     void bordChng(unsigned char current);
+
+    Storona getColor();
+
 signals:
     void moved(FigurePos, FigurePos);
     void pawOnOtherSide();
     void pawChanged(unsigned char);
     void victory(EndCouse, unsigned char);
     void defeat(unsigned char, unsigned char);
+    void userChanged(Storona storona);
 public slots:
-    void chngSto() {
-        storona = !storona;
-    }
+    void chngSto();
 
     void afterPawTrans(unsigned char chosed);
 

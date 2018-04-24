@@ -48,6 +48,7 @@ void BordWidget::bordChng(unsigned char current) {
                 StepEnum res = moveFig(targeted, current);
                 if ((res == StepEnum::SIMPLE_STEP) || (res == StepEnum::PROMOTION)) {
                     storona = !storona;
+                    emit userChanged(storona);
                     emit moved(targeted, current);
                 }
                 else if (res == StepEnum::VICTORY_STEP) {
@@ -155,17 +156,7 @@ void BordWidget::setColor(Storona color) {
         whiteOpen = false;
         blackOpen = true;
     }
-}
-
-void BordWidget::restart() {
-    last = 64;
-    targeted = 64;
-    storona = 0;
-    boardLogic = MyBoardLogic();
-    positions = boardLogic.getPositions();
-    whiteOpen = false;
-    blackOpen = false;
-    update();
+    emit userChanged(storona);
 }
 
 void BordWidget::afterPawTrans(unsigned char chosed) {
@@ -190,3 +181,13 @@ StepEnum BordWidget::moveFig(FigurePos pos1, FigurePos pos2) {
     }
     return res;
 }
+
+Storona BordWidget::getColor() {
+    return blackOpen;
+}
+
+void BordWidget::chngSto() {
+    storona = !storona;
+    emit userChanged(storona);
+}
+

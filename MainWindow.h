@@ -27,11 +27,11 @@ public:
 
 private:
     MyConnectionStatusWidget* connectionForm;
-    MyUser* whiteUser;
-    MyUser* blackUser;
+    MyUser* user;
     NetManager* netManager;
-    BordWidget* bord;
+    BordWidget* board;
     QPushButton* menueButton;
+    QLabel* currentPlayerLabel;
     MyMenue* menue;
     bool listenNow;
     QTimer timer;
@@ -51,6 +51,8 @@ public slots:
     void showMenue();
 
     void showURLInputDialog();
+
+    void changeCurUser(Storona userColor);
 };
 
 #endif // MAINWINDOW_H
